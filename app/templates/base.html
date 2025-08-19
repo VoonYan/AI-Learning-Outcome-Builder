@@ -1,0 +1,15 @@
+!DOCTYPE html>
+<html>
+<head>
+    <title>Base Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
+</head>
+<body>
+    <div>
+        Microblog:
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+</body>
+</html>

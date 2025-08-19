@@ -14,7 +14,18 @@ def user(name):
 def index(username):
     return render_template('test_page.html', title=f'Welcome {username}', username=username)
 
+"""
 @flaskApp.route('/login-form')
 def login_form():
     form = LoginForm()
     return render_template('login_form.html', title='Sign In', form=form)
+"""
+
+@flaskApp.route('/login-page')
+def login_page():
+    form = LoginForm()
+    return render_template('login_form2.html', title='Sign In', form=form)
+
+@flaskApp.route('/main/<username>')
+def main_page():
+    return render_template('main_page.html', title="Dashboard")
