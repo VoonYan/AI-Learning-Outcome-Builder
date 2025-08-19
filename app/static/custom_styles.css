@@ -1,3 +1,25 @@
 .heading-main {
     color: blue;
 }
+
+#ai-building-title {
+    position: absolute;         /* removes it from normal flow */
+    top: 20px;                  /* distance from top of viewport */
+    left: 50%;                  /* center horizontally */
+    transform: translateX(-50%);
+    color: white; 
+    z-index: 10;                /* ensures it stays above the login card */
+}
+
+.login-box {
+    background-color: #202D77;
+    border-radius: 15px;
+    max-width: 400px;
+    color: white;
+    align-items: center;
+}
+
+.login-container {
+    align-items: center;
+    top: 500px;
+}
