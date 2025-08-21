@@ -1,5 +1,6 @@
+/* Adding colour and struct elements */
+
 .bg-image {
-    background-image: url('images/Winthrop Night.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -8,7 +9,7 @@
 }
 
 .title-container {
-    height: 6vh;
+    height: 10vh;
     border: 5px;
     padding-top: 8px;
     background-color: rgba(32,45,119,1);
@@ -16,7 +17,7 @@
 }
 
 .login-container {
-    height: 88vh;
+    height: 80vh;
     border: 5px;
 }
 
@@ -25,6 +26,31 @@
 }
 
 .footer-container {
-    height: 6vh;
+    height: 10vh;
     border: 5px;
+}
+
+/* User dashboard */
+
+.yellow-container {
+    background-color: #E2B600;
+    height: 15vh;
+}
+
+.main-outer {
+    height: 75vh;
+}
+
+.uc-buttons {
+    background-color: #202d77;
+}
+
+.guest-buttons {
+    background-color: aliceblue;
+    color:#202d77;
+}
+
+.admin-buttons {
+    background-color: #E2B600;
+    color: white;
 }

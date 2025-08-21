@@ -26,6 +26,7 @@ def login_page():
     form = LoginForm()
     return render_template('login_form2.html', title='Sign In', form=form)
 
-@flaskApp.route('/main/<username>')
-def main_page():
-    return render_template('main_page.html', title="Dashboard")
+
+@flaskApp.route('/main-page/<username>')
+def main_page(username):
+    return render_template('main_page.html', title=f'{username} Dashboard', username=username)
