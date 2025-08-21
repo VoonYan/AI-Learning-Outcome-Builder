@@ -13,7 +13,7 @@
     <div class="container-fluid d-flex flex-grow justify-content-center align-items-center login-container">
         <div class="card shadow p-3 text-white login-box">
             <h3 class="mb-3 text-center">Sign In</h3><n> 
-            <form action="" method="post" novalidate>
+            <form action="{{ url_for('main.login_page') }}" method="post" novalidate>
                 {{ form.hidden_tag() }}
                 <div>
                     <div class="mb-3">
