@@ -1,20 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ title }} - AI Builder</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
-</head>
-<body>
-    <div class="container-fluid d-flex justify-content-center align-items-center title-container" id="ai-builder-title">
-        <h2>Main Dashboard</h2>
-    </div>
+{% extends "base_main.html" %}
 
-    <div class="container-fluid d-flex justify-content-center align-items-center yellow-container">
-        <h3 class="text-white">Hello {{username}}. Please select from one of the following:</h3>
-    </div>
+{% block title %}Main Dashboard{% endblock %}
+{% block banner_title %}Main Dashboard{% endblock %}
+{% block banner_subtitle %}Hello {{ username }}. Please select from one of the following:{% endblock %}
 
-    <div class="container-lg main-outer">
+{% block content %}
+ <div class="container-lg main-outer" style="border: 2px solid red">
         <div class="row h-50">
             <div class="col-6 d-flex justify-content-center align-items-center">
                 <a href="{{url_for('main.create_lo')}}" class="btn w-50 h-50 bg-primary d-flex justify-content-center align-items-center">
@@ -35,6 +26,4 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-</body>
-</html>
+{% endblock %}

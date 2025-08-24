@@ -37,10 +37,6 @@
     height: 15vh;
 }
 
-.main-outer {
-    height: 75vh;
-}
-
 .uc-buttons {
     background-color: #202d77;
 }
@@ -53,4 +49,26 @@
 .admin-buttons {
     background-color: #E2B600;
     color: white;
+}
+
+/* User dashboard */
+
+.left-sidebar {
+    background-color: #202d77;
+}
+
+.middle {
+    border: 2px solid black;
+}
+
+.right-sidebar {
+    background-color: aliceblue;
+    color:#202d77;
+}
+
+
+/* multi page */
+
+.main-outer {
+    height: 75vh;
 }

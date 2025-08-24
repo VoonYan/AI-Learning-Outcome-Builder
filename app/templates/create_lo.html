@@ -1,19 +1,20 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>{{ title }} - AI Builder</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
-    </head>
-    <body>
-        <div class="container-fluid d-flex justify-content-center align-items-center title-container" id="ai-builder-title">
-            <h2>Unit Creation Page</h2>
-        </div>
+{% extends "base_main.html" %}
 
-        <div class="container-fluid d-flex justify-content-center align-items-center yellow-container">
-            <h3 class="text-white">Lets get started with creating outcomes</h3>
-        </div>
+{% block title %}Learning Outcome Editor{% endblock %}
+{% block banner_title %}Learning Outcome Edtior{% endblock %}
+{% block banner_subtitle %}Lets get started{% endblock %}
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
-</html>
+{% block content %}
+<div class="d-flex w-25 h-100 left-sidebar text-white">
+    <p>a</p>
+</div>
+
+<div class="d-flex w-75 h-100">
+    <p>b</p>
+</div>
+
+<div class="d-flex w-50 h-100 right-sidebar">
+    <p>b</p>
+</div>
+{% endblock %}
+
