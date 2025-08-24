@@ -32,4 +32,5 @@ def create_lo():
     username = session.get('username')
     if not username:
         return redirect(url_for('main.login_page'))
-    return render_template('create_lo.html', title=f'Creation Page', username=username)
+    headings = ['#', 'Learning Outcome', 'How will each outcome be assessed', 'Delete', 'Reorder']
+    return render_template('create_lo.html', title=f'Creation Page', username=username, headings=headings)
