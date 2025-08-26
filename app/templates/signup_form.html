@@ -12,7 +12,6 @@
     {% block content %}
     <div class="container-fluid d-flex flex-grow justify-content-center align-items-center login-container">
         <div class="card shadow p-3 text-white login-box">
-
             {% with messages = get_flashed_messages(category_filter=["error"])%}
             {% if messages%}
             {% for message in messages%}
@@ -20,32 +19,38 @@
             {%endfor%}
             {%endif%}
             {%endwith%}
-
-            {% with messages = get_flashed_messages(category_filter=["success"])%}
-            {% if messages%}
-            {% for message in messages%}
-            <div class="alert alert-success" role="alert">{{message}}</div>
-            {%endfor%}
-            {%endif%}
-            {%endwith%}
-
             <h3 class="mb-3 text-center">Sign In</h3><n> 
-            <form action="{{ url_for('auth.login_page') }}" method="post" novalidate>
+            <form action="{{ url_for('auth.signup_page') }}" method="post" novalidate>
                 {{ form.hidden_tag() }}
                 <div>
                     <div class="mb-3">
                         {{ form.username.label(class="form-label") }}
                         {{ form.username(class="form-control", size=32) }}
+                        {% for error in form.username.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                        {%endfor%}
                     </div>
 
                     <div class="mb-3">
                         {{ form.password.label(class="form-label") }}
                         {{ form.password(class="form-control", size=32) }}
+                        {% for error in form.password.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                        {%endfor%}
                     </div>
 
-                    <div class="form-check mb-3">
-                        {{ form.remember_me(class="form-check-input") }}
-                        {{ form.remember_me.label(class="form-check-label") }}
+                    <div class="mb-3">
+                        {{ form.confirmpassword.label(class="form-label") }}
+                        {{ form.confirmpassword(class="form-control", size=32) }}
+                        {% for error in form.confirmpassword.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                        {%endfor%}
+
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.usertype.label(class="form-label")}}
+                        {{ form.usertype(class="form-select") }}
                     </div>
 
                     <div class="mb-2 d-flex justify-content-center">
@@ -53,7 +58,7 @@
                     </div>
                 </div>
             </form>
-            <p>Don't have an account? <a href="{{url_for('auth.signup_page')}}">Signup Here</a></p>
+            <p>Already have an account? <a href="{{url_for('auth.login_page')}}">Log In Here</a></p>
         </div>
     </div>
     {% endblock %}

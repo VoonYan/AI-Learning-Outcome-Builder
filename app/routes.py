@@ -1,43 +1,48 @@
-from flask import render_template, redirect, url_for, flash, session
-from app.blueprints import main as flaskApp
-from app.forms import LoginForm
+from flask import render_template, redirect, url_for, flash, request, session, Blueprint
+from flask_login import current_user, login_required
+from .forms import NewUnitForm
+from . import db
+from .models import Unit
 
 
-@flaskApp.route('/login-page', methods=['GET', 'POST'])
-def login_page():
-    form = LoginForm()
-    if form.validate_on_submit():
-        username = form.username.data
-        session['username'] = username # store in session
-        return redirect(url_for('main.main_page'))
-    return render_template('login_form2.html', title='Sign In', form=form)
+main = Blueprint('main', __name__)
 
 
-@flaskApp.route('/main-page')
+@main.route('/main-page')
+@main.route('/')
+@login_required
 def main_page(): 
-    username = session.get('username')
-    if not username:
-        return redirect(url_for('main.login_page'))
-    return render_template('main_page.html', title=f'{username} Dashboard', username=username)
+    return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
-@flaskApp.route('/base')
+@main.route('/base')
+@login_required
 def base_main(): 
-    username = session.get('username')
-    if not username:
-        return redirect(url_for('main.login_page'))
-    return render_template('base_main.html', title=f'{username} Dashboard', username=username)
+    return render_template('base_main.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
-@flaskApp.route('/create-lo')
+@main.route('/create-lo')
+@login_required
 def create_lo():
-    username = session.get('username')
-    if not username:
-        return redirect(url_for('main.login_page'))
     headings = ['#', 'Learning Outcome', 'How will each outcome be assessed', 'Delete', 'Reorder']
-    return render_template('create_lo.html', title=f'Creation Page', username=username, headings=headings)
+    return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, headings=headings)
 
-@flaskApp.route('/unit-search')
+@main.route('/unit-search')
+@login_required
 def search_units():
-    username = session.get('username')
-    if not username:
-        return redirect(url_for('main.login_page'))
-    return render_template('search_unit.html', title=f'Creation Page', username=username)
+    return render_template('search_unit.html', title=f'Creation Page', username=current_user.username)
+
+@main.route('/new_unit', methods = ['GET', 'POST'])
+@login_required
+def new_unit():
+    form = NewUnitForm()
+    if request.method == 'GET':
+        return render_template('new_unit_form.html', title=f'Create New Unit', username=current_user.username, form=form)
+    
+    if request.method == 'POST':
+        if not form.validate():
+            return render_template('new_unit_form.html', title=f'Create New Unit', username=current_user.username, form=form)
+        data = request.form
+        newUnit = Unit(unitcode=data["unitcode"], unitname=data["unitname"], level=data["level"], creditpoints=data["creditpoints"], description=data["description"])
+        db.session.add(newUnit)
+        db.session.commit()
+        flash("Unit Created", 'success')
+        return redirect("/main-page")

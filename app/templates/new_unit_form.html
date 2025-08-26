@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }} - AI Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
+</head>
+<body class="bg-image">
+    <div class="container-fluid d-flex justify-content-center align-items-center title-container" id="ai-builder-title">
+        <h2>Create A New Unit</h2>
+    </div>
+    {% block content %}
+    <div class="container-sm bg-primary shadow p-3 text-white rounded-2 border border-3 border-primary-subtle w-75 mt-3">
+        {% with messages = get_flashed_messages(category_filter=["error"])%}
+        {% if messages%}
+        {% for message in messages%}
+        <div class="alert alert-danger" role="alert">{{message}}</div>
+        {%endfor%}
+        {%endif%}
+        {%endwith%}
+        <h3 class="mb-3 text-center">Unit Details</h3><n> 
+        <form action="{{ url_for('main.new_unit') }}" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div>
+                <div class="mb-3">
+                    {{ form.unitcode.label(class="form-label") }}
+                    {{ form.unitcode(class="form-control", size=32) }}
+                    {% for error in form.unitcode.errors %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                    {%endfor%}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.unitname.label(class="form-label") }}
+                    {{ form.unitname(class="form-control", size=32) }}
+                    {% for error in form.unitname.errors %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                    {%endfor%}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.level.label(class="form-label") }}
+                    {{ form.level(class="form-control")}}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.creditpoints.label(class="form-label")}}
+                    {{ form.creditpoints(class="form-select")}}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control", size=32)}}
+                </div>
+
+                <div class="mb-2 d-flex justify-content-center">
+                    {{ form.submit(class="btn btn-warning") }}
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endblock %}
+
+    <div class="container-fluid d-flex justify-content-center align-items-center footer-container" id="ai-builder-title">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

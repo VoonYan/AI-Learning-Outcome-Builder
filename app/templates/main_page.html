@@ -6,6 +6,13 @@
 
 {% block content %}
  <div class="container-lg main-outer" style="border: 2px solid red">
+    {% with messages = get_flashed_messages(category_filter=["success"])%}
+    {% if messages%}
+    {% for message in messages%}
+    <div class="alert alert-success" role="alert">{{message}}</div>
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
         <div class="row h-50">
             <div class="col-6 d-flex justify-content-center align-items-center">
                 <a href="{{url_for('main.create_lo')}}" class="btn w-50 h-50 bg-primary d-flex justify-content-center align-items-center">
@@ -22,6 +29,9 @@
             </div>
             <div class="col-6 d-flex justify-content-center align-items-center">
                 <button class="btn w-50 h-50 bg-warning" >Admin Tools</button>
+            </div>
+                <div class="col-6 d-flex justify-content-center align-items-center">
+                <a class="btn w-50 h-50 bg-primary" href="{{url_for('main.new_unit')}}">Create New Unit</a>
             </div>
         </div>
     </div>
