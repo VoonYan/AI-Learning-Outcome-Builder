@@ -31,9 +31,18 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            width: 400px;
+            width: 500px;
             margin: 20px auto;
         }
+
+        .filter-select {
+            width: 140px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
         .search-input {
             border: none;
             outline: none;
@@ -96,6 +105,11 @@
             <button class="plus-btn"><span>+</span></button>
            <!-- <button class="plus-btn">+</button> -->
             <input type="text" class="search-input" placeholder="">
+             <!-- Filter Dropdown -->
+            <select class="form-select filter-select" aria-label="Search Filter">
+                <option value="name" selected>By Name</option>
+                <option value="code">By Code</option>
+            </select>
         </div>
         <div class="d-flex justify-content-center mt-4 gap-3">
             <button class="btn uwa-btn">View</button>
@@ -107,6 +121,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
 
 <!--
