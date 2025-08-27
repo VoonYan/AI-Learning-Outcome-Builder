@@ -2,15 +2,16 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from werkzeug.security import generate_password_hash
 from .config import DevelopmentConfig
 import os
+from .ai_handler import ConfigManager
 
 #some init
 db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login_page'
+config_manager = ConfigManager('AIConfig.py')
 
 def create_app(config=DevelopmentConfig):
     flaskApp = Flask(__name__)

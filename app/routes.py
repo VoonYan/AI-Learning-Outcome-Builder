@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from .forms import NewUnitForm
 from . import db
 from .models import Unit
+from . import config_manager
 
 
 main = Blueprint('main', __name__)
