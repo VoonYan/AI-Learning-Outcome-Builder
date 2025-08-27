@@ -52,11 +52,16 @@
 
         .results-section {
             text-align: left;
-            max-width: 600px;
-            margin: 0 auto;
-            /*border-top: 1px solid #ccc;*/
-            padding-top: 20px;
+            width: 90%;             /* spans most of the page width */
+            max-width: none;        /* remove previous max-width */
+            margin: 20px auto;      /* spacing from top/bottom */
+            border-top: 1px solid #ccc;
+            padding: 20px;
+            max-height: 300px;
+            min-height: 150px;
+            overflow-y: scroll;     /* scrolling */
         }
+
 
         .sort-select {
             width: 220px;
@@ -95,6 +100,13 @@
         .content-section.compact {
             margin-top: 20px; /* moves search bar up when results appear */
         }
+
+        #resultsList li {
+            background-color: #f8f9fa; /* light gray */
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
 
     </style>
 </head>
@@ -136,21 +148,22 @@
             <button class="btn uwa-btn">Edit</button>
         </div>
 
-        <div id="resultsSection" class="results-section d-none">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="fw-bold mb-0">RESULTS</h4>
-                <!-- Sort Dropdown -->
-                <select class="form-select sort-select" aria-label="Sort Results">
-                    <option value="unitcode" selected>Sort by Unit Code</option>
-                    <option value="unitlevel">Sort by Unit Level</option>
-                </select>
-            </div>
-            <ul class="list-unstyled" id="resultsList">
-                <li>CITS3200 - Professional Computing</li>
-                <li>PHIL2008 - Philosophy Machine Minds</li>
-            </ul>
-        </div>
+    </div>
 
+    <!-- Separate Results Section -->
+    <div id="resultsSection" class="results-section d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">RESULTS</h4>
+            <!-- Sort Dropdown -->
+            <select class="form-select sort-select" aria-label="Sort Results">
+                <option value="unitcode" selected>Sort by Unit Code</option>
+                <option value="unitlevel">Sort by Unit Level</option>
+            </select>
+        </div>
+        <ul class="list-unstyled" id="resultsList">
+            <li>CITS3200 - Professional Computing</li>
+            <li>PHIL2008 - Philosophy Machine Minds</li>
+        </ul>
     </div>
 
     <!-- Bootstrap JS -->
@@ -166,15 +179,47 @@
             const resultsList = document.getElementById("resultsList");
 
             const items = [
-                { code: "CITS3200", name: "Professional Computing" },
-                { code: "PHIL2008", name: "Philosophy Machine Minds" }
+                { 
+                    code: "CITS3200", 
+                    name: "Professional Computing",
+                    type: "Units",
+                    credit: 6,
+                    coordinator: "Associate Professor Michael Wise",
+                    levelOfStudy: "Undergraduate",
+                    school: "Physics, Mathematics and Computing",
+                    field: "Management and Commerce",
+                    level: 3,
+                    availability: "Semester 2",
+                    location: "UWA (Perth)"
+                },
+                { 
+                    code: "PHIL2008", 
+                    name: "Philosophy Machine Minds",
+                    type: "Units",
+                    credit: 6,
+                    coordinator: "Dr Chris Letheby",
+                    levelOfStudy: "Undergraduate",
+                    school: "Humanities",
+                    field: "Society and Culture",
+                    level: 2,
+                    availability: "Semester 2",
+                    location: "UWA (Perth)"
+                }
             ];
 
             function renderResults(data) {
                 resultsList.innerHTML = "";
                 data.forEach(item => {
                     const li = document.createElement("li");
-                    li.textContent = `${item.code} - ${item.name}`;
+                    li.classList.add("mb-3", "p-2", "border", "rounded"); // nice card style
+
+                    li.innerHTML = `
+                        <strong>${item.name} [${item.code}]</strong><br>
+                        Type: ${item.type} | Credit points: ${item.credit} | Coordinator(s): ${item.coordinator}<br>
+                        Level of study: ${item.levelOfStudy} | School: ${item.school} | Field of Education: ${item.field}<br>
+                        Level: ${item.level} | Availability: ${item.availability} | Location: ${item.location}
+                    `;
+
                     resultsList.appendChild(li);
                 });
             }
@@ -205,10 +250,11 @@
                 renderResults(sorted);
             });
         });
-    </script>
+        </script>
 
 </body>
 </html>
+
 
 
 
