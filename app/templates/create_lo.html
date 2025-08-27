@@ -5,34 +5,67 @@
 {% block banner_subtitle %}Lets get started{% endblock %}
 
 {% block content %}
-<div class="d-flex w-25 h-100 left-sidebar text-white">
-    <p>a</p>
-</div>
 
-<div class="d-flex flex-column w-75 h-100">
-    <!-- Table section (top 75%) -->
-    <div class="d-flex w-100 h-75 justify-content-center align-items-start overflow-auto">
-        <table class="table">
-            <thead>
-                <tr>
-                    {% for heading in headings %}
-                    <th>{{ heading }}</th>
-                    {% endfor %}
-                </tr>
+<!-- Main three-column layout -->
+<div class="container-xl my-4">
+  <div class="row g-4 align-items-start">
+
+    <!-- Left sidebar: two rounded blue info blocks -->
+    <aside class="col-12 col-lg-3">
+      <div class="card card-uwa-blue text-white mb-4 rounded-4 text-center p-4">
+        <div class="fs-5 fw-semibold">Learning Outcomes<br>Information Set</div>
+        <div class="small mt-2">Can contain link to Bloom’s Taxonomy Page</div>
+      </div>
+      <div class="card card-uwa-blue text-white rounded-4 text-center p-4">
+        <div class="fs-5 fw-semibold">Search and switch unit box</div>
+      </div>
+    </aside>
+
+    <!-- Middle table area with purple outline -->
+    <section class="col-12 col-lg-6">
+      <div class="table-lo-outline rounded-4 p-3">
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle mb-0">
+            <thead class="table-lo-head text-center">
+              <tr>
+                {% for heading in headings %}
+                  <th scope="col" class="fw-semibold">{{ heading }}</th>
+                {% endfor %}
+              </tr>
             </thead>
-        </table>
-    </div>
+            <tbody>
+              <!-- template rows -->
+              <tr>
+                <td class="text-center">#</td>
+                <td>Example</td>
+                <td>Example</td>
+                <td class="text-center">
+                  <button class="btn btn-danger btn-circle" type="button">−</button>
+                </td>
+                <td class="text-center text-success fs-5">⇅</td>
+              </tr>
+              <!-- Render real rows  -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
-    <!-- Button row (bottom 25%) -->
-    <div class="d-flex w-100 h-25 justify-content-center align-items-center" style="border:2px solid black">
-        <button class="btn w-25 h-25 bg-warning m-3">Add outcome</button>
-        <button class="btn w-25 h-25 bg-danger m-3">Evaluate</button>
-        <button class="btn w-25 h-25 bg-primary m-3">Export</button>
-    </div>
-</div>
+    <!-- Right evaluation panel -->
+    <aside class="col-12 col-lg-3">
+      <div class="card bg-uwa-right rounded-4 p-5 text-center">
+        <div class="text-uwa-blue fs-5">Evaluation Section</div>
+      </div>
+    </aside>
+  </div>
 
-<div class="d-flex w-50 h-100 right-sidebar">
-    <p>b</p>
+  <!-- Big pill buttons row -->
+  <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
+    <button class="btn btn-uwa-pill btn-uwa-blue px-5 py-3 fw-semibold" type="button">Add Outcome</button>
+    <button class="btn btn-uwa-pill btn-uwa-gold px-5 py-3 fw-semibold text-uwa-blue" type="button">Evaluate</button>
+    <button class="btn btn-uwa-pill btn-uwa-blue px-5 py-3 fw-semibold" type="button">Export</button>
+  </div>
 </div>
 {% endblock %}
+
 
