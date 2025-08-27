@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Outcome Builder</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .search-box {
+            border: 2px solid black;
+            border-radius: 50px;
+            padding: 5px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 500px;
+            margin: 20px auto;
+        }
+
+        .btn-wide {
+            width: 180px;
+        }
+
+
+        .filter-select {
+            width: 140px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 18px;
+        }
+
+        .plus-btn {
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .plus-btn span {
+            position: relative;
+            top: -2px;
+            left: 1px;
+        }
+
+        .content-section {
+            margin-top: 120px; 
+            transition: margin-top 0.3s ease;
+        }
+
+        .content-section.compact {
+            margin-top: 20px;
+        }
+
+        #resultsList li {
+            background-color: #f8f9fa;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .results-section {
+            text-align: left;
+            width: 90%;
+            max-width: none;
+            margin: 20px auto;
+            border-top: 1px solid #ccc;
+            padding: 20px;
+            max-height: 300px;
+            min-height: 150px;
+            overflow-y: scroll;
+        }
+
+        .sort-select-sm {
+            width: 160px; 
+            flex-shrink: 0; 
+            font-size: 14px; 
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <nav class="navbar navbar-dark bg-primary p-3">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img src="images/uwa-logo.png" alt="UWA Logo" height="50">
+            </div>
+            <h4 class="text-white mb-0">Learning Outcome Builder</h4>
+            <div>
+                <a href="#" class="text-white mx-2">Home</a>
+                <a href="#" class="text-white mx-2">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Unit Search Section -->
+    <div class="bg-warning text-dark text-center py-4">
+        <h3 class="fw-bold">Unit Search</h3>
+        <p class="mb-0">Please enter unit details or upload a file here.</p>
+    </div>
+
+    <!-- Search Box -->
+    <div id="contentSection" class="content-section text-center mt-5">
+        <div class="search-box">
+            <button class="plus-btn btn btn-warning text-primary"><span>+</span></button>
+            <input type="text" class="search-input" placeholder="">
+            <select class="form-select filter-select" aria-label="Search Filter">
+                <option value="name" selected>By Name</option>
+                <option value="code">By Code</option>
+            </select>
+        </div>
+        <div class="d-flex justify-content-center mt-4 gap-3">
+            <button class="btn btn-warning text-primary fw-bold btn-wide" id="viewBtn">View</button>
+            <button class="btn btn-warning text-primary fw-bold btn-wide">Edit</button>
+        </div>
+
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="results-section d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">RESULTS</h4>
+            <select class="form-select sort-select sort-select-sm" aria-label="Sort Results">
+            <option value="unitcode" selected>Sort by Unit Code</option>
+            <option value="unitlevel">Sort by Unit Level</option>
+        </select>
+
+        </div>
+        <ul class="list-unstyled" id="resultsList"></ul>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const viewBtn = document.getElementById("viewBtn");
+            const resultsSection = document.getElementById("resultsSection");
+            const contentSection = document.querySelector(".content-section");
+            const sortSelect = document.querySelector(".sort-select");
+            const resultsList = document.getElementById("resultsList");
+
+            const items = [
+                { 
+                    code: "CITS3200", 
+                    name: "Professional Computing",
+                    type: "Units",
+                    credit: 6,
+                    coordinator: "Associate Professor Michael Wise",
+                    levelOfStudy: "Undergraduate",
+                    school: "Physics, Mathematics and Computing",
+                    field: "Management and Commerce",
+                    level: 3,
+                    availability: "Semester 2",
+                    location: "UWA (Perth)"
+                },
+                { 
+                    code: "PHIL2008", 
+                    name: "Philosophy Machine Minds",
+                    type: "Units",
+                    credit: 6,
+                    coordinator: "Dr Chris Letheby",
+                    levelOfStudy: "Undergraduate",
+                    school: "Humanities",
+                    field: "Society and Culture",
+                    level: 2,
+                    availability: "Semester 2",
+                    location: "UWA (Perth)"
+                }
+            ];
+
+            function renderResults(data) {
+                resultsList.innerHTML = "";
+                data.forEach(item => {
+                    const li = document.createElement("li");
+                    li.classList.add("mb-3", "p-2", "border", "rounded");
+
+                    li.innerHTML = `
+                        <strong>${item.name} [${item.code}]</strong><br>
+                        Type: ${item.type} | Credit points: ${item.credit} | Coordinator(s): ${item.coordinator}<br>
+                        Level of study: ${item.levelOfStudy} | School: ${item.school} | Field of Education: ${item.field}<br>
+                        Level: ${item.level} | Availability: ${item.availability} | Location: ${item.location}
+                    `;
+
+                    resultsList.appendChild(li);
+                });
+            }
+
+            viewBtn.addEventListener("click", function() {
+                resultsSection.classList.remove("d-none");
+                contentSection.classList.add("compact");
+                renderResults(items);
+            });
+
+            sortSelect.addEventListener("change", function() {
+                const sortBy = sortSelect.value;
+                let sorted = [...items];
+
+                if (sortBy === "unitcode") {
+                    sorted.sort((a, b) => a.code.localeCompare(b.code));
+                } else if (sortBy === "unitlevel") {
+                    sorted.sort((a, b) => {
+                        const levelA = parseInt(a.code.match(/\d+/)[0].charAt(0));
+                        const levelB = parseInt(b.code.match(/\d+/)[0].charAt(0));
+                        return levelA - levelB;
+                    });
+                }
+
+                renderResults(sorted);
+            });
+        });
+    </script>
+</body>
+</html>
