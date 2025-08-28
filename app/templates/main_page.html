@@ -5,7 +5,6 @@
 {% block banner_subtitle %}Hello {{ username }}. Please select from one of the following:{% endblock %}
 
 {% block content %}
- <div class="container-lg main-outer" style="border: 2px solid red">
     {% with messages = get_flashed_messages(category_filter=["success"])%}
     {% if messages%}
     {% for message in messages%}
@@ -13,27 +12,38 @@
     {%endfor%}
     {%endif%}
     {%endwith%}
-        <div class="row h-50">
-            <div class="col-6 d-flex justify-content-center align-items-center">
-                <a href="{{url_for('main.create_lo')}}" class="btn w-50 h-50 bg-primary d-flex justify-content-center align-items-center">
-                    Create New Learning Outcomes
-                </a>
+        <div class="grid row row-cols-2 g-3 text-center flex-grow-1 p-3">
+            <div class="col d-flex">
+                <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
+                    <h1 class="mb-3"><strong>Unit Search</strong></h1>
+                    <p>Click on the button below to search units by unit name or code.</p>
+                    <button class="btn mt-3 btn-warning" >Search Units</button>
+                </div>
             </div>
-            <div class="col-6 d-flex justify-content-center align-items-center">
-                <button class="btn w-50 h-50 bg-primary">Edit Learning Outcomes</button>
+
+            <div class="col d-flex ">
+                <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
+                    <h1 class="mb-3"><strong>Edit Units</strong></h1>
+                    <p>Click the buttons below to edit or create new outcomes</p>
+                    <button class="btn mt-3 btn-warning ">Learning Outcome Editor</button>
+                </div>
+            </div>
+
+            <div class="col d-flex">
+                <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
+                    <h1 class="mb-3"><strong>New Units</strong></h1>
+                    <p>Click on the button below to create new units.</p>
+                    <a class="btn mt-3 btn-warning" href="{{url_for('main.new_unit')}}">New Unit</a>
+                </div>
+            </div>
+
+            <div class="col d-flex">
+                <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
+                    <h1 class="mb-3"><strong>Admin Tools</strong></h1>
+                    <p>Click on the button below to access admin tools.</p>
+                    <button class="btn mt-3 btn-warning ">Admin Tools</button>
+                </div>
             </div>
         </div>
-        <div class="row h-50">
-            <div class="col-6 d-flex justify-content-center align-items-center">
-                <button class="btn w-50 h-50 bg-danger" >View Unit list</button>
-            </div>
-            <div class="col-6 d-flex justify-content-center align-items-center">
-                <button class="btn w-50 h-50 bg-warning" >Admin Tools</button>
-            </div>
-                <div class="col-6 d-flex justify-content-center align-items-center">
-                <a class="btn w-50 h-50 bg-primary" href="{{url_for('main.new_unit')}}">Create New Unit</a>
-            </div>
-        </div>
-    </div>
 
 {% endblock %}
