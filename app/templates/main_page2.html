@@ -8,59 +8,47 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
 </head>
 <body>
-    <div class="container-fluid d-flex flex-column vh-100 p-0 border border-dark">
+    <div class="container-fluid d-flex flex-column vh-100 p-0">
         <!-- Title -->
-        <div class="d-flex justify-content-center align-items-center title-container p-3">
+        <div class="d-flex justify-content-center align-items-center bg-primary p-3">
             <h2>AI Builder</h2>
         </div>
 
         <!-- Subtitle -->
-        <div class="d-flex justify-content-center align-items-center yellow-container p-2">
-            <h3>Welcome to main page.</h3>
+        <div class="d-flex justify-content-center align-items-center bg-warning p-2">
+            <h3>Welcome to your dashboard.</h3>
         </div>
 
         <!-- Content -->
-        <div class="d-flex flex-grow-1 flex-column overflow-auto p-4">
+        <div class="d-grid gap-4 flex-grow-1 p-4" style="grid-template-columns: repeat(2, 1fr);">
 
-            <div class="row mb-3 d-flex h-50 px-2">
-                <div class="col-6">
-                    <div class="card d-flex flex-column justify-content-center align-items-center text-center border border-dark h-100">
-                    <h1>Unit Search</h1>
-                    <p>Click on the button below to search units by unit name or code.</p>
-                    <button class="btn mt-5" id="uwa-yellow">Search Units</button>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="card d-flex flex-column justify-content-center align-items-center text-center border border-dark h-100">
-                        <h1>Edit Units</h1>
-                        <p>To access our learning outcomes editor for units with existing learning outcomes or create new outcomes, 
-                            click the button below</p>
-                        <div class="row">
-                            <button class="col btn mt-5" id="uwa-yellow">Learning Outcome Editor</button>
-                            <button class="col btn mt-5" id="uwa-yellow">New LO Template</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="card shadow-lg d-flex flex-column justify-content-center align-items-center text-center p-3 ">
+                <h1 class="mb-3"><strong>Unit Search</strong></h1>
+                <p>Click on the button below to search units by unit name or code.</p>
+                <button class="btn mt-3 btn-warning" >Search Units</button>
             </div>
 
-            <div class="row mb-3 d-flex h-50 px-2">
-                <div class="col-6">
-                    <div class="card d-flex flex-column justify-content-center align-items-center text-center border border-dark h-100">
-                    <h1>New Units</h1>
-                    <p>Click on the button below to create new units.</p>
-                    <button class="btn mt-5" id="uwa-yellow">New Units</button>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="card d-flex flex-column justify-content-center align-items-center text-center border border-dark h-100">
-                    <h1>Admin Tools</h1>
-                    <p>Click on the button below to access admin tools.</p>
-                    <button class="btn mt-5" id="uwa-yellow">Admin Tools</button>
-                    </div>
-                </div>
+            <div class="card shadow-lg d-flex flex-column justify-content-center align-items-center text-center p-3 ">
+                <h1 class="mb-3"><strong>Edit Units</strong></h1>
+                <p>Click the buttons below to edit or create new outcomes</p>
+                <button class="btn mt-3 btn-warning ">Learning Outcome Editor</button>
             </div>
-           
+
+            <div class="card shadow-lg d-flex flex-column justify-content-center align-items-center text-centerp-3 ">
+                <h1 class="mb-3"><strong>New Units</strong></h1>
+                <p>Click on the button below to create new units.</p>
+                <button class="btn mt-3 btn-warning " id="uwa-yellow">New Units</button>
+            </div>
+
+            <div class="card shadow-lg d-flex flex-column justify-content-center align-items-center text-center p-3 ">
+                <h1 class="mb-3"><strong>Admin Tools</strong></h1>
+                <p>Click on the button below to access admin tools.</p>
+                <button class="btn mt-3 btn-warning " id="uwa-yellow">Admin Tools</button>
+            </div>
         </div>
+
+
+        
     </div>
 </body>
 </html>
