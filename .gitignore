@@ -1,0 +1,6 @@
+AIBuilder/
+__pycache__/
+app/__pycache__/
+venv/
+
+app.db

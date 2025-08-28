@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }} - AI Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
+</head>
+<body class="bg-image">
+    <div class="container-fluid d-flex justify-content-center align-items-center title-container" id="ai-builder-title">
+        <h2>AI Builder Login Page</h2>
+    </div>
+    {% block content %}
+    <div class="container-fluid d-flex flex-grow justify-content-center align-items-center login-container">
+        <div class="card shadow p-3 text-white login-box">
+            {% with messages = get_flashed_messages(category_filter=["error"])%}
+            {% if messages%}
+            {% for message in messages%}
+            <div class="alert alert-danger" role="alert">{{message}}</div>
+            {%endfor%}
+            {%endif%}
+            {%endwith%}
+            <h3 class="mb-3 text-center">Sign In</h3><n> 
+            <form action="{{ url_for('auth.signup_page') }}" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                <div>
+                    <div class="mb-3">
+                        {{ form.username.label(class="form-label") }}
+                        {{ form.username(class="form-control", size=32) }}
+                        {% for error in form.username.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                        {%endfor%}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control", size=32) }}
+                        {% for error in form.password.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                        {%endfor%}
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.confirmpassword.label(class="form-label") }}
+                        {{ form.confirmpassword(class="form-control", size=32) }}
+                        {% for error in form.confirmpassword.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                        {%endfor%}
+
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form.usertype.label(class="form-label")}}
+                        {{ form.usertype(class="form-select") }}
+                    </div>
+
+                    <div class="mb-2 d-flex justify-content-center">
+                        {{ form.submit(class="btn btn-warning") }}
+                    </div>
+                </div>
+            </form>
+            <p>Already have an account? <a href="{{url_for('auth.login_page')}}">Log In Here</a></p>
+        </div>
+    </div>
+    {% endblock %}
+
+    <div class="container-fluid d-flex justify-content-center align-items-center footer-container" id="ai-builder-title">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

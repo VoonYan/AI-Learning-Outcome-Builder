@@ -1,0 +1,74 @@
+/* Adding colour and struct elements */
+
+.bg-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+}
+
+.title-container {
+    height: 10vh;
+    border: 5px;
+    padding-top: 8px;
+    background-color: rgba(32,45,119,1);
+    color: white;
+}
+
+.login-container {
+    height: 80vh;
+    border: 5px;
+}
+
+.login-box {
+    background-color: rgb(32, 45, 119);
+}
+
+.footer-container {
+    height: 10vh;
+    border: 5px;
+}
+
+/* User dashboard */
+
+.yellow-container {
+    background-color: #E2B600;
+    height: 15vh;
+}
+
+.uc-buttons {
+    background-color: #202d77;
+}
+
+.guest-buttons {
+    background-color: aliceblue;
+    color:#202d77;
+}
+
+.admin-buttons {
+    background-color: #E2B600;
+    color: white;
+}
+
+/* User dashboard */
+
+.left-sidebar {
+    background-color: #202d77;
+}
+
+.middle {
+    border: 2px solid black;
+}
+
+.right-sidebar {
+    background-color: aliceblue;
+    color:#202d77;
+}
+
+
+/* multi page */
+
+.main-outer {
+    height: 75vh;
+}

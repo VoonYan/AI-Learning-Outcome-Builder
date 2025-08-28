@@ -1,0 +1,22 @@
+{% extends "base_main.html" %}
+
+{% block title %}Learning Outcome Editor{% endblock %}
+{% block banner_title %}Learning Outcome Edtior{% endblock %}
+{% block banner_subtitle %}Search for a unit{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column w-100 h-100">
+    <div class="d-flex mt-4 justify-content-center">
+        <p class="text-center">Feel free to search for a unit and find information pertaining to the unit. If the unit doesn't exist or doesn't have outcomes you will receive 
+        a popup to ask whether you want to create a new set of outcomes.
+        </p>
+    </div>
+
+    <div class="d-flex w-50 mx-auto my-auto justify-content-center align-items-center" style="border: 2px solid black">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
+            <button class="btn btn-dark" type="button">Go to</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
