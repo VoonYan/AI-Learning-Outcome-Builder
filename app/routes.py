@@ -2,8 +2,8 @@ from flask import render_template, redirect, url_for, flash, request, session, B
 from flask_login import current_user, login_required
 from .forms import NewUnitForm
 from . import db
-from .models import Unit
-
+from .models import db, Unit, LearningOutcome
+from . import create_app
 
 main = Blueprint('main', __name__)
 
@@ -22,8 +22,25 @@ def base_main():
 @main.route('/create-lo')
 @login_required
 def create_lo():
-    headings = ['#', 'Learning Outcome', 'How will each outcome be assessed', 'Delete', 'Reorder']
-    return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, headings=headings)
+    unit_id = request.args.get("unit_id", type=int)
+    unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
+
+    outcomes = unit.learning_outcomes if unit else []
+
+    headings = ['#', 'Learning Outcome', 'Assessment', 'Delete', 'Reorder']
+
+    return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
+
+
+@app.post("/lo/<int:lo_id>/delete")
+def lo_delete(lo_id):
+    lo = LearningOutcome.query.get_or_404(lo_id)
+    unit_id = lo.unit_id
+    db.session.delete(lo)
+    db.session.commit()
+    flash("Outcome deleted", "success")
+    return redirect(url_for("create_lo", unit_id=unit_id))
+
 
 @main.route('/unit-search')
 @login_required
