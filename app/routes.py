@@ -32,14 +32,14 @@ def create_lo():
     return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
 
 
-@app.post("/lo/<int:lo_id>/delete")
+@main.post("/lo/<int:lo_id>/delete")
 def lo_delete(lo_id):
     lo = LearningOutcome.query.get_or_404(lo_id)
     unit_id = lo.unit_id
     db.session.delete(lo)
     db.session.commit()
     flash("Outcome deleted", "success")
-    return redirect(url_for("create_lo", unit_id=unit_id))
+    return redirect(url_for("main.create_lo", unit_id=unit_id))
 
 
 @main.route('/unit-search')
