@@ -21,8 +21,8 @@
   </a>
     </aside>
 
-    <!-- MIDDLE: table (Bootstrap only) -->
-    <section class="col-12 col-lg-6">
+  <!-- Table -->
+    <section class="col-12 col-lg-8">
       <div class="bg-white rounded-4 p-3 border border-primary border-3">
         <div class="table-responsive">
           <table class="table table-bordered align-middle mb-0">
@@ -34,16 +34,25 @@
               </tr>
             </thead>
             <tbody>
-              <!-- sample row; replace with your data -->
+              {% for lo in outcomes %}
               <tr>
-                <td class="text-center">#</td>
-                <td>Example</td>
-                <td>Example</td>
+                <td class="text-center">{{ loop.index }}</td>
+                <td>{{ lo.description }}</td>
+                <td>{{ lo.assessment or '' }}</td>
                 <td class="text-center">
-                  <button class="btn btn-danger rounded-circle btn-sm" type="button">−</button>
+                  <form action="{{ url_for('lo_delete', lo_id=lo.id) }}" method="post" class="d-inline">
+                    <button type="submit"
+                            class="btn btn-danger rounded-circle btn-sm"
+                            onclick="return confirm('Delete this outcome?');">
+                      &minus;
+                    </button>
+                  </form>
                 </td>
                 <td class="text-center text-success fs-5">⇅</td>
               </tr>
+              {% else %}
+              <tr><td colspan="5" class="text-center text-muted py-4">No outcomes yet.</td></tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
