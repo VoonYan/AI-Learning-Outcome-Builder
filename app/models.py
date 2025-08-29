@@ -44,7 +44,7 @@ class LearningOutcome(db.Model):
     __tablename__ = "learning_outcomes"
 
     id = db.Column(db.Integer, primary_key=True)
-    unit_id = db.Column(db.Integer, db.ForeignKey("units.id", ondelete="CASCADE"), nullable=False)
+    unit_id = db.Column(db.Integer, db.ForeignKey("unit.id", ondelete="CASCADE"), nullable=False)
     description = db.Column(db.Text, nullable=False)
     assessment = db.Column(db.String(255), nullable=True)
     position = db.Column(db.Integer, nullable=False, default=0)
@@ -52,4 +52,4 @@ class LearningOutcome(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    unit = db.relationship("Unit", back_populates="learning_outcomes")
+    unit = db.relationship("Unit", back_populates="learning_outcomes",foreign_keys=[unit_id],)
