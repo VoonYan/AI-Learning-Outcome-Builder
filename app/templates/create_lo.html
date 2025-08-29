@@ -40,14 +40,17 @@
                 <td>{{ lo.description }}</td>
                 <td>{{ lo.assessment or '' }}</td>
                 <td class="text-center">
-                  <form action="{{ url_for('lo_delete', lo_id=lo.id) }}" method="post" class="d-inline">
-                    <button type="submit"
-                            class="btn btn-danger rounded-circle btn-sm"
-                            onclick="return confirm('Delete this outcome?');">
-                      &minus;
-                    </button>
-                  </form>
-                </td>
+      <form
+        action="{{ url_for('main.lo_delete', lo_id=lo.id) }}"
+              method="post"
+        class="d-inline"
+      >
+      
+        <button type="submit"
+                class="btn btn-danger rounded-circle btn-sm"
+                onclick="return confirm('Delete this outcome?');">&minus;</button>
+      </form>
+    </td>
                 <td class="text-center text-success fs-5">⇅</td>
               </tr>
               {% else %}
