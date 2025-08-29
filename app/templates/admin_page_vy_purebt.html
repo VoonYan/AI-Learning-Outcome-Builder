@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard - Learning Outcome Builder</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+  <!-- Header Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid px-3 px-lg-4">
+      <a class="navbar-brand d-flex align-items-center gap-3" href="/">
+        <img src="/static/images/uwa-logo.png" alt="The University of Western Australia logo" class="img-fluid">
+        <span class="fw-bold fs-5">Learning Outcome Builder</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="bi bi-speedometer2 me-1"></i>Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-house me-1"></i>Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right me-1"></i>Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="py-4 bg-warning">
+    <div class="container">
+      <h1 class="display-6 fw-bold mb-1 text-primary"><i class="bi bi-sliders me-2"></i>Admin Settings</h1>
+      <p class="lead mb-0 text-primary">Configure AI models, taxonomy settings, and learning outcome parameters</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow-1">
+    <div class="container my-4">
+
+      <!-- Success Message (Hidden by default) -->
+      <div id="successMessage" class="alert alert-success d-none" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>Settings have been successfully updated!
+      </div>
+
+      <form id="adminSettingsForm">
+
+        <!-- AI Configuration -->
+        <section class="card border-warning border-2 shadow-sm mb-4">
+          <div class="card-body">
+            <h3 class="h5 text-primary border-bottom border-warning pb-2 mb-4 d-flex align-items-center">
+              <i class="bi bi-cpu me-2"></i>AI Configuration
+            </h3>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="modelSelect" class="form-label">AI Model</label>
+                <select class="form-select" id="modelSelect">
+                  <option value="1">Gemma 3 27B (Recommended)</option>
+                  <option value="2">Gemma 3 12B</option>
+                  <option value="3">Gemma 3 4B</option>
+                </select>
+                <div class="form-text">Select the AI model for generating learning outcomes</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="apiKey" class="form-label">API Key</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" placeholder="Enter API key..." id="apiKey" value="AIzagi...">
+                  <button class="btn btn-outline-secondary" type="button" id="toggleApiKey">
+                    <i class="bi bi-eye"></i>
+                  </button>
+                </div>
+                <div class="form-text">Your secure API key for AI services</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Bloom's Taxonomy Word Lists -->
+        <section class="card border-warning border-2 shadow-sm mb-4">
+          <div class="card-body">
+            <h3 class="h5 text-primary border-bottom border-warning pb-2 mb-4 d-flex align-items-center">
+              <i class="bi bi-list-ul me-2"></i>Bloom's Taxonomy Word Lists
+            </h3>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="card bg-light border">
+                  <div class="card-body">
+                    <label for="knowledgeList" class="form-label"><i class="bi bi-1-circle-fill text-warning me-1"></i>Knowledge</label>
+                    <textarea class="form-control" id="knowledgeList" placeholder="Define, Identify, List, Name, Recall..." rows="4"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="card bg-light border">
+                  <div class="card-body">
+                    <label for="comprehensionList" class="form-label"><i class="bi bi-2-circle-fill text-warning me-1"></i>Comprehension</label>
+                    <textarea class="form-control" id="comprehensionList" placeholder="Classify, Describe, Explain, Summarize..." rows="4"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="card bg-light border">
+                  <div class="card-body">
+                    <label for="applicationList" class="form-label"><i class="bi bi-3-circle-fill text-warning me-1"></i>Application</label>
+                    <textarea class="form-control" id="applicationList" placeholder="Apply, Demonstrate, Execute, Implement..." rows="4"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="card bg-light border">
+                  <div class="card-body">
+                    <label for="analysisList" class="form-label"><i class="bi bi-4-circle-fill text-warning me-1"></i>Analysis</label>
+                    <textarea class="form-control" id="analysisList" placeholder="Analyze, Compare, Contrast, Examine..." rows="4"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="card bg-light border">
+                  <div class="card-body">
+                    <label for="synthesisList" class="form-label"><i class="bi bi-5-circle-fill text-warning me-1"></i>Synthesis</label>
+                    <textarea class="form-control" id="synthesisList" placeholder="Create, Design, Develop, Formulate..." rows="4"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="card bg-light border">
+                  <div class="card-body">
+                    <label for="evaluationList" class="form-label"><i class="bi bi-6-circle-fill text-warning me-1"></i>Evaluation</label>
+                    <textarea class="form-control" id="evaluationList" placeholder="Assess, Critique, Evaluate, Judge..." rows="4"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Banned Words -->
+        <section class="card border-warning border-2 shadow-sm mb-4">
+          <div class="card-body">
+            <h3 class="h5 text-primary border-bottom border-warning pb-2 mb-4 d-flex align-items-center">
+              <i class="bi bi-exclamation-triangle me-2"></i>Banned Words in Learning Outcomes
+            </h3>
+
+            <div class="mb-3">
+              <label for="bannedList" class="form-label">Words to Exclude</label>
+              <textarea class="form-control" id="bannedList" rows="4" placeholder="Enter banned words separated by commas..."></textarea>
+              <div class="form-text">These words will be flagged or removed from generated learning outcomes</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Unit Level Mapping -->
+        <section class="card border-warning border-2 shadow-sm mb-4">
+          <div class="card-body">
+            <h3 class="h5 text-primary border-bottom border-warning pb-2 mb-4 d-flex align-items-center">
+              <i class="bi bi-diagram-3 me-2"></i>Unit Level to Taxonomy Mapping
+            </h3>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="level1Tax" class="form-label">Level 1</label>
+                <input type="text" class="form-control" id="level1Tax" placeholder="Knowledge">
+              </div>
+              <div class="col-md-6">
+                <label for="level2Tax" class="form-label">Level 2</label>
+                <input type="text" class="form-control" id="level2Tax" placeholder="Comprehension">
+              </div>
+              <div class="col-md-6">
+                <label for="level3Tax" class="form-label">Level 3</label>
+                <input type="text" class="form-control" id="level3Tax" placeholder="Application">
+              </div>
+              <div class="col-md-6">
+                <label for="level4Tax" class="form-label">Level 4</label>
+                <input type="text" class="form-control" id="level4Tax" placeholder="Analysis">
+              </div>
+              <div class="col-md-6">
+                <label for="level5Tax" class="form-label">Level 5</label>
+                <input type="text" class="form-control" id="level5Tax" placeholder="Synthesis">
+              </div>
+              <div class="col-md-6">
+                <label for="level6Tax" class="form-label">Level 6</label>
+                <input type="text" class="form-control" id="level6Tax" placeholder="Evaluation">
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Learning Outcomes per Credit Points -->
+        <section class="card border-warning border-2 shadow-sm mb-4">
+          <div class="card-body">
+            <h3 class="h5 text-primary border-bottom border-warning pb-2 mb-4 d-flex align-items-center">
+              <i class="bi bi-mortarboard me-2"></i>Learning Outcomes per Credit Points
+            </h3>
+
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label for="cp6Num" class="form-label">6 Credit Points</label>
+                <input type="text" class="form-control" id="cp6Num" placeholder="3-6">
+                <div class="form-text">Range of learning outcomes</div>
+              </div>
+              <div class="col-md-4">
+                <label for="cp12Num" class="form-label">12 Credit Points</label>
+                <input type="text" class="form-control" id="cp12Num" placeholder="5-9">
+                <div class="form-text">Range of learning outcomes</div>
+              </div>
+              <div class="col-md-4">
+                <label for="cp24Num" class="form-label">24 Credit Points</label>
+                <input type="text" class="form-control" id="cp24Num" placeholder="8-12">
+                <div class="form-text">Range of learning outcomes</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Actions -->
+        <div class="text-center mt-4">
+          <button type="button" class="btn btn-secondary me-2" onclick="resetForm()">
+            <i class="bi bi-x-circle me-2"></i>Reset
+          </button>
+          <button type="submit" class="btn btn-warning btn-lg text-dark fw-semibold">
+            <i class="bi bi-check-circle me-2"></i>Save Changes
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto py-4 bg-primary text-white">
+    <div class="container text-center">
+      <p class="mb-0">© <span id="year"></span> The University of Western Australia - Learning Outcome Builder</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Scripts -->
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Toggle API Key visibility
+    document.getElementById('toggleApiKey').addEventListener('click', function () {
+      const apiKeyInput = document.getElementById('apiKey');
+      const icon = this.querySelector('i');
+
+      if (apiKeyInput.type === 'password') {
+        apiKeyInput.type = 'text';
+        icon.classList.replace('bi-eye', 'bi-eye-slash');
+      } else {
+        apiKeyInput.type = 'password';
+        icon.classList.replace('bi-eye-slash', 'bi-eye');
+      }
+    });
+
+    // Form submission
+    document.getElementById('adminSettingsForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const successMsg = document.getElementById('successMessage');
+      successMsg.classList.remove('d-none');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => successMsg.classList.add('d-none'), 5000);
+      console.log('Form submitted');
+    });
+
+    // Reset form
+    function resetForm() {
+      if (confirm('Are you sure you want to reset all fields to default values?')) {
+        document.getElementById('adminSettingsForm').reset();
+      }
+    }
+  </script>
+</body>
+</html>
