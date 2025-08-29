@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,176 +7,102 @@
     <title>Learning Outcome Builder</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Custom colors */
-        .uwa-blue {
-            background-color: #003366; 
-        }
-        .uwa-gold {
-            background-color: #D4A100; 
-        }
-        .uwa-btn {
-            background-color: #D4A100;
-            color: #003366;
-            font-weight: bold;
-            width: 180px;
-        }
-        .uwa-btn:hover {
-            background-color: #b98b00;
-            color: white;
-        }
-        .search-box {
-            border: 2px solid black;
-            border-radius: 50px;
-            padding: 5px 15px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            width: 500px;
-            margin: 20px auto;
-        }
-
-        .filter-select {
-            width: 140px;
-            border: none;
-            outline: none;
-            font-size: 16px;
-            margin-left: 10px;
-        }
-
-        .search-input {
-            border: none;
-            outline: none;
-            flex: 1;
-            font-size: 18px;
-        }
-
-        .results-section {
-            text-align: left;
-            width: 90%;             /* spans most of the page width */
-            max-width: none;        /* remove previous max-width */
-            margin: 20px auto;      /* spacing from top/bottom */
-            border-top: 1px solid #ccc;
-            padding: 20px;
-            max-height: 300px;
-            min-height: 150px;
-            overflow-y: scroll;     /* scrolling */
-        }
-
-
-        .sort-select {
-            width: 220px;
-            font-size: 16px;
-        }
-
-
-        .plus-btn {
-            background-color: #D4A100;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 24px;
-            color: #003366;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 10px;
-            line-height: 1;
-            padding: 0;
-        }
-
-        .plus-btn span {
-            position: relative;
-            top: -2px;   /* Move text up */
-            left: 1px;   /* Move text to right */
-        }
-
-
-        .content-section {
-            margin-top: 120px; 
-            transition: margin-top 0.3s ease;
-        }
-
-        .content-section.compact {
-            margin-top: 20px; /* moves search bar up when results appear */
-        }
-
-        #resultsList li {
-            background-color: #f8f9fa; /* light gray */
-            line-height: 1.4;
-            font-size: 14px;
-        }
-
-
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+
     <!-- Header -->
-    <nav class="navbar uwa-blue p-3">
-        <div class="container-fluid d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <img src="images/uwa-logo.png" alt="UWA Logo" height="50">
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">
+                            <img src="images/uwa-logo.png" style="max-width: 75%;" alt="UWA Logo">
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <h4 class="text-white mb-0">Learning Outcome Builder</h4>
-            <div>
-                <a href="#" class="text-white mx-2">Home</a>
-                <a href="#" class="text-white mx-2">Logout</a>
+            <div class="mx-auto order-0">
+                <a class="navbar-brand mx-auto fs-2" href="#">AI Learning Outcome Builder</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="#">Home</a>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
 
     <!-- Unit Search Section -->
-    <div class="uwa-gold text-center py-4">
+    <div class="bg-warning text-dark text-center py-4">
         <h3 class="fw-bold">Unit Search</h3>
         <p class="mb-0">Please enter unit details or upload a file here.</p>
     </div>
 
     <!-- Search Box -->
-    <div id="contentSection" class="content-section text-center mt5">
-        <div class="search-box">
-            <button class="plus-btn"><span>+</span></button>
-           <!-- <button class="plus-btn">+</button> -->
-            <input type="text" class="search-input" placeholder="">
-             <!-- Filter Dropdown -->
-            <select class="form-select filter-select" aria-label="Search Filter">
+    <div class="container my-5 text-center">
+        <div class="input-group input-group-lg mb-4 w-50 mx-auto rounded-pill border border-dark overflow-hidden">
+            <!-- Plus Button -->
+            <button class="btn btn-warning text-primary rounded-circle fw-bold" style="width:50px;height:50px;">+</button>
+            
+            <!-- Search Input -->
+            <input type="text" class="form-control border-0" placeholder="Search">
+            
+            <!-- Smaller Filter Dropdown 
+            <select class="form-select form-select-sm border-0 w-auto flex-shrink-0 px-2">
                 <option value="name" selected>By Name</option>
                 <option value="code">By Code</option>
+            </select>-->
+
+            <!-- Compact Filter Dropdown -->
+            <select id="filterSelect" 
+                    class="form-select form-select-sm border-0 bg-light text-dark rounded-pill px-2"
+                    style="width: 150px; flex: 0 0 auto; font-size: 0.95rem; font-weight: normal;">
+                <option value="name">By Unit Name</option>
+                <option value="code">By Unit Code</option>
             </select>
+
         </div>
-        <div class="d-flex justify-content-center mt-4 gap-3">
-            <button class="btn uwa-btn" id="viewBtn">View</button>
-            <button class="btn uwa-btn">Edit</button>
-        </div>
+    </div>
+
+
+        <div class="d-flex justify-content-center gap-3">
+            <button class="btn btn-warning text-primary fw-bold px-4" style="width:180px;" id="viewBtn">View Results</button>
+        </div> 
+    </div>
 
     </div>
 
-    <!-- Separate Results Section -->
-    <div id="resultsSection" class="results-section d-none">
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="container pt-4 d-none">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="fw-bold mb-0">RESULTS</h4>
-            <!-- Sort Dropdown -->
-            <select class="form-select sort-select" aria-label="Sort Results">
+            <select class="form-select w-auto">
                 <option value="unitcode" selected>Sort by Unit Code</option>
                 <option value="unitlevel">Sort by Unit Level</option>
             </select>
         </div>
-        <ul class="list-unstyled" id="resultsList">
-            <li>CITS3200 - Professional Computing</li>
-            <li>PHIL2008 - Philosophy Machine Minds</li>
-        </ul>
+        <ul class="list-unstyled" id="resultsList" style="max-height:300px; overflow-y:auto;"></ul>
     </div>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
     <script>
+
         document.addEventListener("DOMContentLoaded", function() {
             const viewBtn = document.getElementById("viewBtn");
             const resultsSection = document.getElementById("resultsSection");
-            const contentSection = document.querySelector(".content-section");
-            const sortSelect = document.querySelector(".sort-select");
             const resultsList = document.getElementById("resultsList");
 
             const items = [
@@ -211,7 +138,7 @@
                 resultsList.innerHTML = "";
                 data.forEach(item => {
                     const li = document.createElement("li");
-                    li.classList.add("mb-3", "p-2", "border", "rounded"); // nice card style
+                    li.classList.add("mb-3", "p-3", "border", "rounded", "bg-light");
 
                     li.innerHTML = `
                         <strong>${item.name} [${item.code}]</strong><br>
@@ -224,23 +151,19 @@
                 });
             }
 
-            // Show results when View is clicked
             viewBtn.addEventListener("click", function() {
                 resultsSection.classList.remove("d-none");
-                contentSection.classList.add("compact");
                 renderResults(items);
             });
 
-            // Sort results based on dropdown
-            sortSelect.addEventListener("change", function() {
-                const sortBy = sortSelect.value;
+            document.querySelector(".form-select.w-auto").addEventListener("change", function() {
+                const sortBy = this.value;
                 let sorted = [...items];
 
                 if (sortBy === "unitcode") {
                     sorted.sort((a, b) => a.code.localeCompare(b.code));
                 } else if (sortBy === "unitlevel") {
                     sorted.sort((a, b) => {
-                        // Extract numeric level from code (e.g., 3200 -> 3, 2008 -> 2)
                         const levelA = parseInt(a.code.match(/\d+/)[0].charAt(0));
                         const levelB = parseInt(b.code.match(/\d+/)[0].charAt(0));
                         return levelA - levelB;
@@ -250,13 +173,9 @@
                 renderResults(sorted);
             });
         });
-        </script>
-
+    </script>
 </body>
 </html>
-
-
-
 
 <!--
 {% extends "base_main.html" %}
@@ -283,3 +202,4 @@
 {% endblock %}
 
 -->
+
