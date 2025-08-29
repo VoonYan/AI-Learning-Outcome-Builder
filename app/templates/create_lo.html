@@ -1,32 +1,30 @@
 {% extends "base_main.html" %}
 
 {% block title %}Learning Outcome Editor{% endblock %}
-{% block banner_title %}Learning Outcome Edtior{% endblock %}
-{% block banner_subtitle %}Lets get started{% endblock %}
-
+{% block banner_title %}Learning Outcome Editor{% endblock %}
+{% block banner_subtitle %}Let's get started{% endblock %}
 {% block content %}
-
-<!-- Main three-column layout -->
+<!-- Main layout -->
 <div class="container-xl my-4">
   <div class="row g-4 align-items-start">
 
-    <!-- Left sidebar: two rounded blue info blocks -->
+    <!-- LEFT: two rounded blue info blocks -->
     <aside class="col-12 col-lg-3">
-      <div class="card card-uwa-blue text-white mb-4 rounded-4 text-center p-4">
+      <div class="card bg-primary text-white rounded-4 text-center p-4 mb-4 border-0">
         <div class="fs-5 fw-semibold">Learning Outcomes<br>Information Set</div>
         <div class="small mt-2">Can contain link to Bloom’s Taxonomy Page</div>
       </div>
-      <div class="card card-uwa-blue text-white rounded-4 text-center p-4">
+      <div class="card bg-primary text-white rounded-4 text-center p-4 border-0">
         <div class="fs-5 fw-semibold">Search and switch unit box</div>
       </div>
     </aside>
 
-    <!-- Middle table area with purple outline -->
+    <!-- MIDDLE: table (Bootstrap only) -->
     <section class="col-12 col-lg-6">
-      <div class="table-lo-outline rounded-4 p-3">
+      <div class="bg-white rounded-4 p-3 border border-primary border-3">
         <div class="table-responsive">
           <table class="table table-bordered align-middle mb-0">
-            <thead class="table-lo-head text-center">
+            <thead class="table-primary text-center">
               <tr>
                 {% for heading in headings %}
                   <th scope="col" class="fw-semibold">{{ heading }}</th>
@@ -34,38 +32,35 @@
               </tr>
             </thead>
             <tbody>
-              <!-- template rows -->
+              <!-- sample row; replace with your data -->
               <tr>
                 <td class="text-center">#</td>
                 <td>Example</td>
                 <td>Example</td>
                 <td class="text-center">
-                  <button class="btn btn-danger btn-circle" type="button">−</button>
+                  <button class="btn btn-danger rounded-circle btn-sm" type="button">−</button>
                 </td>
                 <td class="text-center text-success fs-5">⇅</td>
               </tr>
-              <!-- Render real rows  -->
             </tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- Right evaluation panel -->
+    <!-- RIGHT: evaluation panel -->
     <aside class="col-12 col-lg-3">
-      <div class="card bg-uwa-right rounded-4 p-5 text-center">
-        <div class="text-uwa-blue fs-5">Evaluation Section</div>
+      <div class="card bg-light text-primary rounded-4 p-5 text-center">
+        <div class="fs-5 fw-semibold">Evaluation Section</div>
       </div>
     </aside>
   </div>
 
-  <!-- Big pill buttons row -->
+  <!-- Buttons -->
   <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
-    <button class="btn btn-uwa-pill btn-uwa-blue px-5 py-3 fw-semibold" type="button">Add Outcome</button>
-    <button class="btn btn-uwa-pill btn-uwa-gold px-5 py-3 fw-semibold text-uwa-blue" type="button">Evaluate</button>
-    <button class="btn btn-uwa-pill btn-uwa-blue px-5 py-3 fw-semibold" type="button">Export</button>
+    <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button">Add Outcome</button>
+    <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button">Evaluate</button>
+    <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button">Export</button>
   </div>
 </div>
 {% endblock %}
-
-
