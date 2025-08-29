@@ -12,8 +12,9 @@
             <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item active">
-                        <img src="{{ url_for('static', filename='images/logo-uwacrest-white.svg') }}" 
-                            alt="UWA Logo" style="max-height:50px;">
+                        <a class="nav-link" href="#">
+                            <img src="C:\Users\billm\Desktop\CITS3200\AI-Learning-Outcome-Builder\app\static\images\logo-uwacrest-white.svg" style="max-width: 75%;" alt="UWA Logo">
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -35,24 +36,118 @@
             </div>
         </div>
     </nav>
-
+    <div class="container-fluid bg-warning p-3">
+        <h2 class="text-center">Admin Page</h2>
+    </div>
 
     <div class="container-fluid d-flex justify-content-center p-2">
-        <div class=" container w-75 bg-primary border rounded-2 mt-2 text-white">
-            <h3 class="text-center mt-1 m-2">Admin Settings</h3>
-            <form action="{{ url_for('auth.login_page') }}" method="post" novalidate>
-                <div>
-                    <div class="mb-3">
-
+        <div class=" container w-75 bg-primary border rounded-2 mt-2 text-white p-4">
+            <form class="">
+                <h4 class="">AI Settings: </h4>
+                <div class="row mb-3">
+                    <label for="ModelSelect" class="col-sm-2 col-form-label">AI Model: </label>
+                    <div class="col-sm-4">
+                        <select class="form-select" id="ModelSelect">
+                            <option value="1">Gemma 3 27B</option>
+                            <option value="2">Gemma 3 12B</option>
+                            <option value="3">Gemma 3 4B</option>
+                        </select>
                     </div>
-
-                    <div class="mb-3">
-
-                    </div>
-
-                    <div class="mb-2 d-flex justify-content-center">
-
-                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="APIKey" class="col-sm-2 col-form-label">API Key: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="AIzagi..." id="APIKey">
+                    </div> 
+                </div>
+                <h4 class="">Bloom's Taxonomy Word Lists: </h4>
+                <label for="KnowledgeList" class="">Knowledge: </label>
+                <div class="">
+                    <textarea class="container-fluid" name="knowledgeList" id="KnowledgeList"></textarea>
+                </div>
+                <label for="ComprehensionList" class="">Comprehension: </label>
+                <div class="">
+                    <textarea class="container-fluid" name="ComprehensionList" id="ComprehensionList"></textarea>
+                </div>
+                <label for="ApplicationList" class="">Application: </label>
+                <div class="">
+                    <textarea class="container-fluid" name="ApplicationList" id="ApplicationList"></textarea>
+                </div>
+                <label for="AnalysisList" class="">Analysis: </label>
+                <div class="">
+                    <textarea class="container-fluid" name="AnalysisList" id="AnalysisList"></textarea>
+                </div>
+                <label for="SynthesisList" class="">Synthesis: </label>
+                <div class="">
+                    <textarea class="container-fluid" name="SynthesisList" id="SynthesisList"></textarea>
+                </div>
+                <label for="EvaluationList" class="">Evaluation: </label>
+                <div class=" mb-3">
+                    <textarea class="container-fluid" name="EvaluationList" id="EvaluationList"></textarea>
+                </div>
+                <h4 class="mb-3">Words Banned in Learning Outcomes: </h4>
+                <label for="BannedList" class="">Banned Words: </label>
+                <div class=" mb-3">
+                    <textarea class="container-fluid" name="BannedList" id="BannedList"></textarea>
+                </div>
+                <h4 class="mb-3">Unit Level to Taxonomy Level: </h4>
+                <div class="row mb-3">
+                    <label for="Level1Tax" class="col-sm-2 col-form-label">Level 1: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Knowledge..." id="Level1Tax">
+                    </div> 
+                </div>
+                <div class="row mb-3">
+                    <label for="Level2Tax" class="col-sm-2 col-form-label">Level 2: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Comprehension..." id="Level2Tax">
+                    </div> 
+                </div>
+                <div class="row mb-3">
+                    <label for="Level3Tax" class="col-sm-2 col-form-label">Level 3: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Application..." id="Level3Tax">
+                    </div> 
+                </div>
+                <div class="row mb-3">
+                    <label for="Level4Tax" class="col-sm-2 col-form-label">Level 4: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Analysis..." id="Level4Tax">
+                    </div> 
+                </div>
+                <div class="row mb-3">
+                    <label for="Level5Tax" class="col-sm-2 col-form-label">Level 5: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Synthesis..." id="Level5Tax">
+                    </div> 
+                </div>
+                <div class="row mb-3">
+                    <label for="Level6Tax" class="col-sm-2 col-form-label">Level 6: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="Evaluation..." id="Level6Tax">
+                    </div> 
+                </div>
+                <h4 class="mb-3">Learning Outcomes Per Credit Points: </h4>
+                <div class="row mb-3">
+                    <label for="6CPNum" class="col-sm-2 col-form-label">6 Credit Points: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="3-6" id="6CPNum">
+                    </div> 
+                </div>
+                <div class="row mb-3">
+                    <label for="12CPNum" class="col-sm-2 col-form-label">12 Credit Points: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="5-9" id="12CPNum">
+                    </div> 
+                </div>
+                <div class="row mb-3">
+                    <label for="24CPNum" class="col-sm-2 col-form-label">24 Credit Points: </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="8-12" id="24CPNum">
+                    </div> 
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-warning">Submit Changes</button>
                 </div>
             </form>
         </div>
