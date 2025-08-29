@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +51,6 @@
     <!-- Search Box -->
     <div class="container my-5 text-center">
         <div class="input-group input-group-lg mb-4 w-50 mx-auto rounded-pill border border-dark overflow-hidden">
-            <!-- Plus Button -->
             <button class="btn btn-warning text-primary rounded-circle fw-bold" style="width:50px;height:50px;">+</button>
             
             <!-- Search Input -->
@@ -71,7 +69,6 @@
                 <option value="name">By Unit Name</option>
                 <option value="code">By Unit Code</option>
             </select>
-
         </div>
     </div>
 
@@ -140,12 +137,39 @@
                     const li = document.createElement("li");
                     li.classList.add("mb-3", "p-3", "border", "rounded", "bg-light");
 
-                    li.innerHTML = `
-                        <strong>${item.name} [${item.code}]</strong><br>
+                   // Make <a> instead of <strong> so browser handles new tab
+                    const strongLink = document.createElement("a");
+                    strongLink.href = `view.html?code=${encodeURIComponent(item.code)}`;
+                    strongLink.textContent = `${item.name} [${item.code}]`;
+
+                    // Styling: bold + no underline + pointer
+                    strongLink.style.fontWeight = "bold";
+                    strongLink.style.textDecoration = "none";
+                    strongLink.style.color = "black";
+                    strongLink.style.cursor = "pointer";
+
+                    // Hover effect (blue like Bootstrap link)
+                    strongLink.addEventListener("mouseenter", () => {
+                        strongLink.style.color = "blue";
+                        strongLink.style.textDecoration = "underline";
+                    });
+                    strongLink.addEventListener("mouseleave", () => {
+                        strongLink.style.color = "black";
+                        strongLink.style.textDecoration = "none";
+                    });
+
+                    // Add rest of details
+                    const details = document.createElement("div");
+                    details.innerHTML = `
                         Type: ${item.type} | Credit points: ${item.credit} | Coordinator(s): ${item.coordinator}<br>
                         Level of study: ${item.levelOfStudy} | School: ${item.school} | Field of Education: ${item.field}<br>
                         Level: ${item.level} | Availability: ${item.availability} | Location: ${item.location}
                     `;
+
+                    // Append elements to li
+                    li.appendChild(strongLink);
+                    li.appendChild(document.createElement("br"));
+                    li.appendChild(details);
 
                     resultsList.appendChild(li);
                 });
@@ -176,30 +200,3 @@
     </script>
 </body>
 </html>
-
-<!--
-{% extends "base_main.html" %}
-
-{% block title %}Learning Outcome Editor{% endblock %}
-{% block banner_title %}Learning Outcome Edtior{% endblock %}
-{% block banner_subtitle %}Search for a unit{% endblock %}
-
-{% block content %}
-<div class="d-flex flex-column w-100 h-100">
-    <div class="d-flex mt-4 justify-content-center">
-        <p class="text-center">Feel free to search for a unit and find information pertaining to the unit. If the unit doesn't exist or doesn't have outcomes you will receive 
-        a popup to ask whether you want to create a new set of outcomes.
-        </p>
-    </div>
-
-    <div class="d-flex w-50 mx-auto my-auto justify-content-center align-items-center" style="border: 2px solid black">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
-            <button class="btn btn-dark" type="button">Go to</button>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
--->
-
