@@ -1,9 +1,10 @@
-from flask import render_template, redirect, url_for, flash, request, session, Blueprint
+from flask import render_template, redirect, url_for, flash, request, session, Blueprint,jsonify
 from flask_login import current_user, login_required
 from .forms import NewUnitForm
 from . import db
 from .models import db, Unit, LearningOutcome
 from . import create_app
+from sqlalchemy import case
 
 main = Blueprint('main', __name__)
 
@@ -41,6 +42,38 @@ def lo_delete(lo_id):
     flash("Outcome deleted", "success")
     return redirect(url_for("main.create_lo", unit_id=unit_id))
 
+
+@main.post("/lo/reorder")
+def lo_reorder():
+    data = request.get_json(force=True)
+    order = data.get("order", [])
+    unit_id = data.get("unit_id")
+
+    if not order:
+        return jsonify({"ok": False, "error": "empty order"}), 400
+
+    # ensure all ids belong to the same unit if unit_id is provided
+    if unit_id is not None:
+        count = LearningOutcome.query.filter(
+            LearningOutcome.id.in_(order),
+            LearningOutcome.unit_id == unit_id
+        ).count()
+        if count != len(order):
+            return jsonify({"ok": False, "error": "ids mismatch for unit"}), 400
+
+    # Build a CASE expression to bulk update positions in one commit
+    # Order is 1..N in the order received from the client
+    order_map = {int(lo_id): pos for pos, lo_id in enumerate(order, start=1)}
+    stmt = (
+        db.update(LearningOutcome)
+        .where(LearningOutcome.id.in_(order))
+        .values(
+            position=case(order_map, value=LearningOutcome.id)
+        )
+    )
+    db.session.execute(stmt)
+    db.session.commit()
+    return jsonify({"ok": True})
 
 @main.route('/unit-search')
 @login_required
