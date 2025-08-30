@@ -75,6 +75,29 @@ def lo_reorder():
     db.session.commit()
     return jsonify({"ok": True})
 
+
+@main.post("/lo/save")
+def lo_save():
+    # can expand this to persist edits; for now it just flashes success.
+    unit_id = request.form.get("unit_id", type=int)
+    flash("Outcomes saved.", "success")
+    return redirect(url_for("main.create_lo", unit_id=unit_id))
+
+@main.post("/lo/reorder")
+def lo_reorder():
+    data = request.get_json(force=True)
+    order = [int(x) for x in data.get("order", [])]
+    if not order:
+        return jsonify({"ok": False, "error": "empty order"}), 400
+
+    # bulk update positions
+    for pos, lo_id in enumerate(order, start=1):
+        LearningOutcome.query.filter_by(id=lo_id).update({"position": pos})
+    db.session.commit()
+    return jsonify({"ok": True})
+
+
+
 @main.route('/unit-search')
 @login_required
 def search_units():
