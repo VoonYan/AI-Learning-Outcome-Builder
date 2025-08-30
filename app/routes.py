@@ -4,7 +4,7 @@ from .forms import NewUnitForm
 from . import db
 from .models import db, Unit, LearningOutcome
 from . import create_app
-from sqlalchemy import case
+from sqlalchemy import case, update
 
 main = Blueprint('main', __name__)
 
@@ -63,13 +63,13 @@ def lo_reorder():
 
     # Build a CASE expression to bulk update positions in one commit
     # Order is 1..N in the order received from the client
-    order_map = {int(lo_id): pos for pos, lo_id in enumerate(order, start=1)}
+    order = [int(x) for x in order]
+    order_map = {lo_id: pos for pos, lo_id in enumerate(order, start=1)}
+
     stmt = (
-        db.update(LearningOutcome)
+        update(LearningOutcome)
         .where(LearningOutcome.id.in_(order))
-        .values(
-            position=case(order_map, value=LearningOutcome.id)
-        )
+        .values(position=case(order_map, value=LearningOutcome.id))
     )
     db.session.execute(stmt)
     db.session.commit()

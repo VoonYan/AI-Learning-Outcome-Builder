@@ -33,34 +33,34 @@
                 {% endfor %}
               </tr>
             </thead>
-            <tbody>
-              {% for lo in outcomes %}
-              <tr>
-                <td class="text-center">{{ loop.index }}</td>
-                <td>{{ lo.description }}</td>
-                <td>{{ lo.assessment or '' }}</td>
-                <td class="text-center">
-      <form
-        action="{{ url_for('main.lo_delete', lo_id=lo.id) }}"
-              method="post"
-        class="d-inline"
-      >
-      
-        <button type="submit"
-                class="btn btn-danger rounded-circle btn-sm"
-                onclick="return confirm('Delete this outcome?');">&minus;</button>
-      </form>
-    </td>
-                <td class="text-center text-success fs-5">⇅</td>
-              </tr>
-              {% else %}
-              <tr><td colspan="5" class="text-center text-muted py-4">No outcomes yet.</td></tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+       <tbody id="lo-tbody">
+      {% for lo in outcomes %}
+      <tr data-id="{{ lo.id }}">
+        <td class="text-center">{{ loop.index }}</td>
+        <td>{{ lo.description }}</td>
+        <td>{{ lo.assessment or '' }}</td>
+        <td class="text-center">
+          <form action="{{ url_for('main.lo_delete', lo_id=lo.id) }}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger rounded-circle btn-sm"
+                    onclick="return confirm('Delete this outcome?');">&minus;</button>
+          </form>
+        </td>
+        <td class="text-center">
+          <span class="drag-handle" title="Drag to reorder">⇅</span>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="text-center text-muted py-4">No outcomes yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
       </div>
     </section>
+
 
     <!-- RIGHT: evaluation panel -->
     <aside class="col-12 col-lg-3">
@@ -77,4 +77,51 @@
     <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button">Export</button>
   </div>
 </div>
+
+
+
+
+    <!-- SortableJS (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+<script>
+(function() {
+  const tbody = document.getElementById('lo-tbody');
+  const UNIT_ID = JSON.parse('{{ (unit.id if unit else None) | tojson }}');
+  if (!tbody) return;
+
+  const sortable = new Sortable(tbody, {
+    animation: 150,
+    handle: '.drag-handle',       // only allow dragging from the handle cell
+    ghostClass: 'table-active',   // Bootstrap-ish highlight while dragging
+    onEnd: function() {
+      const ids = Array.from(tbody.querySelectorAll('tr')).map(tr => tr.dataset.id);
+      fetch("{{ url_for('main.lo_reorder') }}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // If you use CSRF (Flask-WTF), expose a token in a meta tag and send it here:
+          // "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: JSON.stringify({
+  order: ids,
+  unit_id: UNIT_ID
+})
+      }).then(r => r.json()).then(data => {
+        if (!data.ok) {
+          console.error('Reorder failed:', data.error);
+          return;
+        }
+        // Optionally renumber the first (#) column without a page reload:
+        Array.from(tbody.querySelectorAll('tr')).forEach((tr, idx) => {
+          const firstCell = tr.querySelector('td');
+          if (firstCell) firstCell.textContent = (idx + 1).toString();
+        });
+      }).catch(err => console.error(err));
+    }
+  });
+})();
+</script>
+
+
+
 {% endblock %}
