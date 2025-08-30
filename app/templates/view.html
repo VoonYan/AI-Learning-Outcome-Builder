@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unit Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand mx-auto fs-2" href="search.html">AI Learning Outcome Builder</a>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <div class="bg-warning text-dark text-center py-4">
+        <h3 class="fw-bold">Unit Details</h3>
+        <p class="mb-0">Full information about the selected unit.</p>
+    </div>
+
+    <!-- Content -->
+    <div class="container my-5">
+        <div class="card shadow-lg rounded-3 border-0">
+            <div class="card-body p-4">
+                <h2 id="unitTitle" class="fw-bold mb-4 text-primary"></h2>
+                <p id="unitDetails" class="fs-5"></p>
+
+                <!-- 🔹 Edit button -->
+                <button id="editBtn" class="btn btn-warning text-primary fw-bold mt-3">Edit</button>
+
+                <!-- 🔹 Hidden Edit Form -->
+                <form id="editForm" class="mt-4 d-none">
+                    <div class="mb-3">
+                        <label class="form-label">Unit Name</label>
+                        <input type="text" id="editName" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Coordinator(s)</label>
+                        <input type="text" id="editCoordinator" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Availability</label>
+                        <input type="text" id="editAvailability" class="form-control">
+                    </div>
+                    <button type="button" id="saveBtn" class="btn btn-success">Save</button>
+                    <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const items = [
+            { 
+                code: "CITS3200", 
+                name: "Professional Computing",
+                type: "Units",
+                credit: 6,
+                coordinator: "Associate Professor Michael Wise",
+                levelOfStudy: "Undergraduate",
+                school: "Physics, Mathematics and Computing",
+                field: "Management and Commerce",
+                level: 3,
+                availability: "Semester 2",
+                location: "UWA (Perth)"
+            },
+            { 
+                code: "PHIL2008", 
+                name: "Philosophy Machine Minds",
+                type: "Units",
+                credit: 6,
+                coordinator: "Dr Chris Letheby",
+                levelOfStudy: "Undergraduate",
+                school: "Humanities",
+                field: "Society and Culture",
+                level: 2,
+                availability: "Semester 2",
+                location: "UWA (Perth)"
+            }
+        ];
+
+        const params = new URLSearchParams(window.location.search);
+        const unitCode = params.get("code");
+
+        let unit = items.find(i => i.code === unitCode);
+
+        function renderUnitDetails() {
+            if (unit) {
+                document.getElementById("unitTitle").textContent = `${unit.name} [${unit.code}]`;
+                document.getElementById("unitDetails").innerHTML = `
+                    <strong>Type:</strong> ${unit.type} <br>
+                    <strong>Credit Points:</strong> ${unit.credit} <br>
+                    <strong>Coordinator(s):</strong> ${unit.coordinator} <br>
+                    <strong>Level of Study:</strong> ${unit.levelOfStudy} <br>
+                    <strong>School:</strong> ${unit.school} <br>
+                    <strong>Field of Education:</strong> ${unit.field} <br>
+                    <strong>Level:</strong> ${unit.level} <br>
+                    <strong>Availability:</strong> ${unit.availability} <br>
+                    <strong>Location:</strong> ${unit.location}
+                `;
+            } else {
+                document.getElementById("unitTitle").textContent = "Unit not found";
+            }
+        }
+
+        renderUnitDetails();
+
+        // 🔹 Edit button functionality
+        const editBtn = document.getElementById("editBtn");
+        const editForm = document.getElementById("editForm");
+        const saveBtn = document.getElementById("saveBtn");
+        const cancelBtn = document.getElementById("cancelBtn");
+
+        editBtn.addEventListener("click", () => {
+            if (!unit) return;
+            // Pre-fill form
+            document.getElementById("editName").value = unit.name;
+            document.getElementById("editCoordinator").value = unit.coordinator;
+            document.getElementById("editAvailability").value = unit.availability;
+
+            editForm.classList.remove("d-none");
+            editBtn.classList.add("d-none");
+        });
+
+        cancelBtn.addEventListener("click", () => {
+            editForm.classList.add("d-none");
+            editBtn.classList.remove("d-none");
+        });
+
+        saveBtn.addEventListener("click", () => {
+            // Update unit details in memory
+            unit.name = document.getElementById("editName").value;
+            unit.coordinator = document.getElementById("editCoordinator").value;
+            unit.availability = document.getElementById("editAvailability").value;
+
+            renderUnitDetails();
+
+            editForm.classList.add("d-none");
+            editBtn.classList.remove("d-none");
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,22 +1,203 @@
-{% extends "base_main.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Outcome Builder</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
 
-{% block title %}Learning Outcome Editor{% endblock %}
-{% block banner_title %}Learning Outcome Edtior{% endblock %}
-{% block banner_subtitle %}Search for a unit{% endblock %}
+    <!-- Header -->
 
-{% block content %}
-<div class="d-flex flex-column w-100 h-100">
-    <div class="d-flex mt-4 justify-content-center">
-        <p class="text-center">Feel free to search for a unit and find information pertaining to the unit. If the unit doesn't exist or doesn't have outcomes you will receive 
-        a popup to ask whether you want to create a new set of outcomes.
-        </p>
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">
+                            <img src="images/uwa-logo.png" style="max-width: 75%;" alt="UWA Logo">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="mx-auto order-0">
+                <a class="navbar-brand mx-auto fs-2" href="#">AI Learning Outcome Builder</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Unit Search Section -->
+    <div class="bg-warning text-dark text-center py-4">
+        <h3 class="fw-bold">Unit Search</h3>
+        <p class="mb-0">Please enter unit details or upload a file here.</p>
     </div>
 
-    <div class="d-flex w-50 mx-auto my-auto justify-content-center align-items-center" style="border: 2px solid black">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search..." aria-label="Search">
-            <button class="btn btn-dark" type="button">Go to</button>
+    <!-- Search Box -->
+    <div class="container my-5 text-center">
+        <div class="input-group input-group-lg mb-4 mx-auto rounded-pill border border-dark overflow-hidden"
+     style="max-width: 600px; width: 100%;">
+            <button class="btn btn-warning text-primary rounded-circle fw-bold" style="width:50px;height:50px;">+</button>
+            
+            <!-- Search Input -->
+            <input type="text" class="form-control border-0" placeholder="Search">
+            
+            <!-- Smaller Filter Dropdown 
+            <select class="form-select form-select-sm border-0 w-auto flex-shrink-0 px-2">
+                <option value="name" selected>By Name</option>
+                <option value="code">By Code</option>
+            </select>-->
+
+            <!-- Compact Filter Dropdown -->
+            <select id="filterSelect" 
+                    class="form-select form-select-sm border-0 bg-light text-dark rounded-pill px-2"
+                    style="width: 150px; flex: 0 0 auto; font-size: 0.95rem; font-weight: normal;">
+                <option value="name">By Unit Name</option>
+                <option value="code">By Unit Code</option>
+            </select>
         </div>
     </div>
-</div>
-{% endblock %}
+
+
+        <div class="d-flex justify-content-center gap-3">
+            <button class="btn btn-warning text-primary fw-bold px-4" style="width:180px;" id="viewBtn">View Results</button>
+        </div> 
+    </div>
+
+    </div>
+
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="container pt-4 d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold mb-0">RESULTS</h4>
+            <select class="form-select w-auto">
+                <option value="unitcode" selected>Sort by Unit Code</option>
+                <option value="unitlevel">Sort by Unit Level</option>
+            </select>
+        </div>
+        <ul class="list-unstyled" id="resultsList" style="max-height:300px; overflow-y:auto;"></ul>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const viewBtn = document.getElementById("viewBtn");
+            const resultsSection = document.getElementById("resultsSection");
+            const resultsList = document.getElementById("resultsList");
+
+            const items = [
+                { 
+                    code: "CITS3200", 
+                    name: "Professional Computing",
+                    type: "Units",
+                    credit: 6,
+                    coordinator: "Associate Professor Michael Wise",
+                    levelOfStudy: "Undergraduate",
+                    school: "Physics, Mathematics and Computing",
+                    field: "Management and Commerce",
+                    level: 3,
+                    availability: "Semester 2",
+                    location: "UWA (Perth)"
+                },
+                { 
+                    code: "PHIL2008", 
+                    name: "Philosophy Machine Minds",
+                    type: "Units",
+                    credit: 6,
+                    coordinator: "Dr Chris Letheby",
+                    levelOfStudy: "Undergraduate",
+                    school: "Humanities",
+                    field: "Society and Culture",
+                    level: 2,
+                    availability: "Semester 2",
+                    location: "UWA (Perth)"
+                }
+            ];
+
+            function renderResults(data) {
+                resultsList.innerHTML = "";
+                data.forEach(item => {
+                    const li = document.createElement("li");
+                    li.classList.add("mb-3", "p-3", "border", "rounded", "bg-light");
+
+                   // Make <a> instead of <strong> so browser handles new tab
+                    const strongLink = document.createElement("a");
+                    strongLink.href = `view.html?code=${encodeURIComponent(item.code)}`;
+                    strongLink.textContent = `${item.name} [${item.code}]`;
+
+                    // Styling: bold + no underline + pointer
+                    strongLink.style.fontWeight = "bold";
+                    strongLink.style.textDecoration = "none";
+                    strongLink.style.color = "black";
+                    strongLink.style.cursor = "pointer";
+
+                    // Hover effect (blue like Bootstrap link)
+                    strongLink.addEventListener("mouseenter", () => {
+                        strongLink.style.color = "blue";
+                        strongLink.style.textDecoration = "underline";
+                    });
+                    strongLink.addEventListener("mouseleave", () => {
+                        strongLink.style.color = "black";
+                        strongLink.style.textDecoration = "none";
+                    });
+
+                    // Add rest of details
+                    const details = document.createElement("div");
+                    details.innerHTML = `
+                        Type: ${item.type} | Credit points: ${item.credit} | Coordinator(s): ${item.coordinator}<br>
+                        Level of study: ${item.levelOfStudy} | School: ${item.school} | Field of Education: ${item.field}<br>
+                        Level: ${item.level} | Availability: ${item.availability} | Location: ${item.location}
+                    `;
+
+                    // Append elements to li
+                    li.appendChild(strongLink);
+                    li.appendChild(document.createElement("br"));
+                    li.appendChild(details);
+
+                    resultsList.appendChild(li);
+                });
+            }
+
+            viewBtn.addEventListener("click", function() {
+                resultsSection.classList.remove("d-none");
+                renderResults(items);
+            });
+
+            document.querySelector(".form-select.w-auto").addEventListener("change", function() {
+                const sortBy = this.value;
+                let sorted = [...items];
+
+                if (sortBy === "unitcode") {
+                    sorted.sort((a, b) => a.code.localeCompare(b.code));
+                } else if (sortBy === "unitlevel") {
+                    sorted.sort((a, b) => {
+                        const levelA = parseInt(a.code.match(/\d+/)[0].charAt(0));
+                        const levelB = parseInt(b.code.match(/\d+/)[0].charAt(0));
+                        return levelA - levelB;
+                    });
+                }
+
+                renderResults(sorted);
+            });
+        });
+    </script>
+</body>
+</html>

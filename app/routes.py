@@ -15,6 +15,14 @@ main = Blueprint('main', __name__)
 def main_page(): 
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
+@main.route('/main-page2')
+def main_page2(): 
+    return render_template('main_page2.html' )
+
+@main.route('/navbar')
+def navbar():
+    return render_template('admin_page.html')
+
 @main.route('/base')
 @login_required
 def base_main(): 
