@@ -48,13 +48,18 @@
   <main class="flex-grow-1">
     <div class="container my-4">
 
-      <!-- Success Message (Hidden by default) -->
-      <div id="successMessage" class="alert alert-success d-none" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i>Settings have been successfully updated!
-      </div>
+      {% with messages = get_flashed_messages(category_filter=["success"])%}
+      {% if messages%}
+      {% for message in messages%}
+      <div id="successMessage" class="alert alert-success" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>{{message}}
+      </div>      
+      {%endfor%}
+      {%endif%}
+      {%endwith%}
 
-      <form id="adminSettingsForm">
-
+      <form id="adminSettingsForm" action="{{ url_for('main.admin') }}" method="POST">
+      {{ form.hidden_tag() }}
         <!-- AI Configuration -->
         <section class="card border-warning border-2 shadow-sm mb-4">
           <div class="card-body">
@@ -64,23 +69,17 @@
 
             <div class="row g-3">
               <div class="col-md-6">
-                <label for="modelSelect" class="form-label">AI Model</label>
-                <select class="form-select" id="modelSelect">
-                  <option value="1">Gemma 3 27B (Recommended)</option>
-                  <option value="2">Gemma 3 12B</option>
-                  <option value="3">Gemma 3 4B</option>
-                </select>
+                {{form.model.label(class="form-label")}}
+                {{form.model(class="form-select")}}
                 <div class="form-text">Select the AI model for generating learning outcomes</div>
+                <script>
+                    document.getElementById('modelSelect').value = "{{config['selected_model']}}";
+                </script>
               </div>
 
               <div class="col-md-6">
-                <label for="apiKey" class="form-label">API Key</label>
-                <div class="input-group">
-                  <input type="password" class="form-control" placeholder="Enter API key..." id="apiKey" value="AIzagi...">
-                  <button class="btn btn-outline-secondary" type="button" id="toggleApiKey">
-                    <i class="bi bi-eye"></i>
-                  </button>
-                </div>
+                {{form.apikey.label(class="form-label")}}
+                {{form.apikey(class="form-control", placeholder="Enter API key...", value=config['API_key'] )}}
                 <div class="form-text">Your secure API key for AI services</div>
               </div>
             </div>
@@ -98,8 +97,10 @@
               <div class="col-md-6 mb-3">
                 <div class="card bg-light border">
                   <div class="card-body">
-                    <label for="knowledgeList" class="form-label"><i class="bi bi-1-circle-fill text-warning me-1"></i>Knowledge</label>
-                    <textarea class="form-control" id="knowledgeList" placeholder="Define, Identify, List, Name, Recall..." rows="4"></textarea>
+                    <i class="bi bi-1-circle-fill text-warning me-1"></i>
+                    {{form.knowledge.label(class="form-label")}}
+                    
+                    {{form.knowledge(class="form-control", placeholder="Define, Identify, List, Name, Recall...", rows="4")}}
                   </div>
                 </div>
               </div>
@@ -107,8 +108,9 @@
               <div class="col-md-6 mb-3">
                 <div class="card bg-light border">
                   <div class="card-body">
-                    <label for="comprehensionList" class="form-label"><i class="bi bi-2-circle-fill text-warning me-1"></i>Comprehension</label>
-                    <textarea class="form-control" id="comprehensionList" placeholder="Classify, Describe, Explain, Summarize..." rows="4"></textarea>
+                    <i class="bi bi-2-circle-fill text-warning me-1"></i>
+                    {{form.comprehension.label(class="form-label")}}
+                    {{form.comprehension(class="form-control", placeholder="Classify, Describe, Explain, Summarize...", rows="4")}}
                   </div>
                 </div>
               </div>
@@ -116,8 +118,9 @@
               <div class="col-md-6 mb-3">
                 <div class="card bg-light border">
                   <div class="card-body">
-                    <label for="applicationList" class="form-label"><i class="bi bi-3-circle-fill text-warning me-1"></i>Application</label>
-                    <textarea class="form-control" id="applicationList" placeholder="Apply, Demonstrate, Execute, Implement..." rows="4"></textarea>
+                    <i class="bi bi-3-circle-fill text-warning me-1"></i>
+                    {{form.application.label(class="form-label")}}
+                    {{form.application(class="form-control", placeholder="Apply, Demonstrate, Execute, Implement...", rows="4")}}
                   </div>
                 </div>
               </div>
@@ -125,8 +128,9 @@
               <div class="col-md-6 mb-3">
                 <div class="card bg-light border">
                   <div class="card-body">
-                    <label for="analysisList" class="form-label"><i class="bi bi-4-circle-fill text-warning me-1"></i>Analysis</label>
-                    <textarea class="form-control" id="analysisList" placeholder="Analyze, Compare, Contrast, Examine..." rows="4"></textarea>
+                    <i class="bi bi-4-circle-fill text-warning me-1"></i>
+                    {{form.analysis.label(class="form-label")}}
+                    {{form.analysis(class="form-control", placeholder="Analyse, Compare, Contrast, Examine...", rows="4")}}
                   </div>
                 </div>
               </div>
@@ -134,8 +138,9 @@
               <div class="col-md-6 mb-3">
                 <div class="card bg-light border">
                   <div class="card-body">
-                    <label for="synthesisList" class="form-label"><i class="bi bi-5-circle-fill text-warning me-1"></i>Synthesis</label>
-                    <textarea class="form-control" id="synthesisList" placeholder="Create, Design, Develop, Formulate..." rows="4"></textarea>
+                    <i class="bi bi-5-circle-fill text-warning me-1"></i>
+                    {{form.synthesis.label(class="form-label")}}
+                    {{form.synthesis(class="form-control", placeholder="Create, Design, Develop, Formulate...", rows="4")}}
                   </div>
                 </div>
               </div>
@@ -143,8 +148,9 @@
               <div class="col-md-6 mb-3">
                 <div class="card bg-light border">
                   <div class="card-body">
-                    <label for="evaluationList" class="form-label"><i class="bi bi-6-circle-fill text-warning me-1"></i>Evaluation</label>
-                    <textarea class="form-control" id="evaluationList" placeholder="Assess, Critique, Evaluate, Judge..." rows="4"></textarea>
+                    <i class="bi bi-6-circle-fill text-warning me-1"></i>
+                    {{form.evaluation.label(class="form-label")}}
+                    {{form.evaluation(class="form-control", placeholder="Assess, Critique, Evaluate, Judge...", rows="4")}}
                   </div>
                 </div>
               </div>
@@ -160,8 +166,8 @@
             </h3>
 
             <div class="mb-3">
-              <label for="bannedList" class="form-label">Words to Exclude</label>
-              <textarea class="form-control" id="bannedList" rows="4" placeholder="Enter banned words separated by commas..."></textarea>
+              {{form.banned.label(class="form-label")}}
+              {{form.banned(class="form-control", placeholder="Enter banned words separated by commas...", rows="4")}}
               <div class="form-text">These words will be flagged or removed from generated learning outcomes</div>
             </div>
           </div>
@@ -176,28 +182,28 @@
 
             <div class="row g-3">
               <div class="col-md-6">
-                <label for="level1Tax" class="form-label">Level 1</label>
-                <input type="text" class="form-control" id="level1Tax" placeholder="Knowledge">
+                {{form.level1.label(class="form-label")}}
+                {{form.level1(class="form-control", placeholder="Knowledge", value=config['Level 1'])}}
               </div>
               <div class="col-md-6">
-                <label for="level2Tax" class="form-label">Level 2</label>
-                <input type="text" class="form-control" id="level2Tax" placeholder="Comprehension">
+                {{form.level2.label(class="form-label")}}
+                {{form.level2(class="form-control", placeholder="Comprehension", value=config['Level 2'])}}
               </div>
               <div class="col-md-6">
-                <label for="level3Tax" class="form-label">Level 3</label>
-                <input type="text" class="form-control" id="level3Tax" placeholder="Application">
+                {{form.level3.label(class="form-label")}}
+                {{form.level3(class="form-control", placeholder="Application", value=config['Level 3'])}}
               </div>
               <div class="col-md-6">
-                <label for="level4Tax" class="form-label">Level 4</label>
-                <input type="text" class="form-control" id="level4Tax" placeholder="Analysis">
+                {{form.level4.label(class="form-label")}}
+                {{form.level4(class="form-control", placeholder="Analysis", value=config['Level 4'])}}
               </div>
               <div class="col-md-6">
-                <label for="level5Tax" class="form-label">Level 5</label>
-                <input type="text" class="form-control" id="level5Tax" placeholder="Synthesis">
+                {{form.level5.label(class="form-label")}}
+                {{form.level5(class="form-control", placeholder="Synthesis", value=config['Level 5'])}}
               </div>
               <div class="col-md-6">
-                <label for="level6Tax" class="form-label">Level 6</label>
-                <input type="text" class="form-control" id="level6Tax" placeholder="Evaluation">
+                {{form.level6.label(class="form-label")}}
+                {{form.level6(class="form-control", placeholder="Evaluation", value=config['Level 6'])}}
               </div>
             </div>
           </div>
@@ -212,18 +218,18 @@
 
             <div class="row g-3">
               <div class="col-md-4">
-                <label for="cp6Num" class="form-label">6 Credit Points</label>
-                <input type="text" class="form-control" id="cp6Num" placeholder="3-6">
+                {{form.cp6.label(class="form-label")}}
+                {{form.cp6(class="form-control", placeholder="3-6", value=config['6 Points'])}}
                 <div class="form-text">Range of learning outcomes</div>
               </div>
               <div class="col-md-4">
-                <label for="cp12Num" class="form-label">12 Credit Points</label>
-                <input type="text" class="form-control" id="cp12Num" placeholder="5-9">
+                {{form.cp12.label(class="form-label")}}
+                {{form.cp12(class="form-control", placeholder="5-9", value=config['12 Points'])}}
                 <div class="form-text">Range of learning outcomes</div>
               </div>
               <div class="col-md-4">
-                <label for="cp24Num" class="form-label">24 Credit Points</label>
-                <input type="text" class="form-control" id="cp24Num" placeholder="8-12">
+                {{form.cp24.label(class="form-label")}}
+                {{form.cp24(class="form-control", placeholder="8-12", value=config['24 Points'])}}
                 <div class="form-text">Range of learning outcomes</div>
               </div>
             </div>
@@ -232,8 +238,11 @@
 
         <!-- Actions -->
         <div class="text-center mt-4">
-          <button type="button" class="btn btn-secondary me-2" onclick="resetForm()">
-            <i class="bi bi-x-circle me-2"></i>Reset
+          <button type="button" class="btn btn-lg btn-danger me-2" onclick="resetDefault()">
+            <i class="bi bi-x-circle me-2"></i>Reset to Default
+          </button>
+          <button type="button" class="btn btn-lg btn-secondary me-2" onclick="undoChanges()">
+            <i class="bbi bi-arrow-counterclockwise me-2"></i>Undo Changes
           </button>
           <button type="submit" class="btn btn-warning btn-lg text-dark fw-semibold">
             <i class="bi bi-check-circle me-2"></i>Save Changes
@@ -251,42 +260,26 @@
     </div>
   </footer>
 
-  <!-- Bootstrap JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-
   <!-- Scripts -->
   <script>
     // Set current year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Toggle API Key visibility
-    document.getElementById('toggleApiKey').addEventListener('click', function () {
-      const apiKeyInput = document.getElementById('apiKey');
-      const icon = this.querySelector('i');
-
-      if (apiKeyInput.type === 'password') {
-        apiKeyInput.type = 'text';
-        icon.classList.replace('bi-eye', 'bi-eye-slash');
-      } else {
-        apiKeyInput.type = 'password';
-        icon.classList.replace('bi-eye-slash', 'bi-eye');
-      }
-    });
-
-    // Form submission
-    document.getElementById('adminSettingsForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const successMsg = document.getElementById('successMessage');
-      successMsg.classList.remove('d-none');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => successMsg.classList.add('d-none'), 5000);
-      console.log('Form submitted');
-    });
-
     // Reset form
-    function resetForm() {
-      if (confirm('Are you sure you want to reset all fields to default values?')) {
+    function undoChanges() {
+      if (confirm('Are you sure you want to undo all your current changes?')) {
         document.getElementById('adminSettingsForm').reset();
+      }
+    }
+    function resetDefault() {
+      if (confirm('Are you sure you want to reset all settings to system default?')) {
+        //send reset to default 
+        fetch("/AI_reset", {method: "POST", "body": "Reset"})
+          .then((response)=>{         
+            if(response.ok){
+              window.location.href = window.location.href;
+            }
+          })           
       }
     }
   </script>

@@ -11,7 +11,7 @@ db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login_page'
-config_manager = ConfigManager('AIConfig.py')
+config_manager = ConfigManager('app/AIConfig.json')
 
 def create_app(config=DevelopmentConfig):
     flaskApp = Flask(__name__)
