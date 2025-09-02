@@ -25,11 +25,8 @@ def base_main():
 def create_lo():
     unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
-
     outcomes = unit.learning_outcomes if unit else []
-
     headings = ['#', 'Learning Outcome', 'Assessment', 'Delete', 'Reorder']
-
     return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
 
 
@@ -48,11 +45,8 @@ def lo_reorder():
     data = request.get_json(force=True)
     order = data.get("order", [])
     unit_id = data.get("unit_id")
-
     if not order:
         return jsonify({"ok": False, "error": "empty order"}), 400
-
-    # ensure all ids belong to the same unit if unit_id is provided
     if unit_id is not None:
         count = LearningOutcome.query.filter(
             LearningOutcome.id.in_(order),
@@ -60,12 +54,8 @@ def lo_reorder():
         ).count()
         if count != len(order):
             return jsonify({"ok": False, "error": "ids mismatch for unit"}), 400
-
-    # Build a CASE expression to bulk update positions in one commit
-    # Order is 1..N in the order received from the client
     order = [int(x) for x in order]
     order_map = {lo_id: pos for pos, lo_id in enumerate(order, start=1)}
-
     stmt = (
         update(LearningOutcome)
         .where(LearningOutcome.id.in_(order))
@@ -78,7 +68,6 @@ def lo_reorder():
 
 @main.post("/lo/save")
 def lo_save():
-    # can expand this to persist edits; for now it just flashes success.
     unit_id = request.form.get("unit_id", type=int)
     flash("Outcomes saved.", "success")
     return redirect(url_for("main.create_lo", unit_id=unit_id))
@@ -100,8 +89,6 @@ def lo_export_csv():
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": f'attachment; filename="{unit.unitcode}_outcomes.csv"'
     })
-
-
 
 
 @main.post("/lo/evaluate")

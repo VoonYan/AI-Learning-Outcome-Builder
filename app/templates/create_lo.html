@@ -115,8 +115,6 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // If use CSRF (Flask-WTF), expose a token in a meta tag and send it here:
-          // "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').content
         },
         body: JSON.stringify({
   order: ids,
@@ -127,7 +125,6 @@
           console.error('Reorder failed:', data.error);
           return;
         }
-        // Optionally renumber the first (#) column without a page reload:
         Array.from(tbody.querySelectorAll('tr')).forEach((tr, idx) => {
           const firstCell = tr.querySelector('td');
           if (firstCell) firstCell.textContent = (idx + 1).toString();
