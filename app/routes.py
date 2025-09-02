@@ -83,20 +83,23 @@ def lo_save():
     flash("Outcomes saved.", "success")
     return redirect(url_for("main.create_lo", unit_id=unit_id))
 
-@main.post("/lo/reorder")
-def lo_reorder():
-    data = request.get_json(force=True)
-    order = [int(x) for x in data.get("order", [])]
-    if not order:
-        return jsonify({"ok": False, "error": "empty order"}), 400
 
-    # bulk update positions
-    for pos, lo_id in enumerate(order, start=1):
-        LearningOutcome.query.filter_by(id=lo_id).update({"position": pos})
-    db.session.commit()
-    return jsonify({"ok": True})
-
-
+@main.get("/lo/export.csv")
+def lo_export_csv():
+    unit_id = request.args.get("unit_id", type=int)
+    unit = Unit.query.get_or_404(unit_id)
+    rows = unit.learning_outcomes
+    import csv, io
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(["#", "Description", "Assessment", "Position"])
+    for i, lo in enumerate(rows, start=1):
+        writer.writerow([i, lo.description, lo.assessment or "", lo.position])
+    out = buf.getvalue()
+    return (out, 200, {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": f'attachment; filename="{unit.unitcode}_outcomes.csv"'
+    })
 
 @main.route('/unit-search')
 @login_required
