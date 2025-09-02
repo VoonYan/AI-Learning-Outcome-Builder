@@ -84,7 +84,10 @@
         </form>
 
     <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button">Add Outcome</button>
-    <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button">Evaluate</button>
+    <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">
+  Evaluate
+</button>
+
 <a class="btn btn-primary rounded-pill px-5 py-3 fw-semibold"
    href="{{ url_for('main.lo_export_csv', unit_id=unit.id) }}">Export</a>
 
@@ -112,7 +115,7 @@
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // If you use CSRF (Flask-WTF), expose a token in a meta tag and send it here:
+          // If use CSRF (Flask-WTF), expose a token in a meta tag and send it here:
           // "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').content
         },
         body: JSON.stringify({
@@ -143,7 +146,15 @@
 //   });
 })();
 </script>
-
+<script>
+document.getElementById('evaluateBtn')?.addEventListener('click', async () => {
+  const panel = document.getElementById('evaluationPanel');
+  panel.textContent = 'Evaluating…';
+  // Example: call a simple backend that echoes the outcomes for now
+  const res = await fetch('{{ url_for("main.ai_evaluate") }}', { method: 'POST' });
+  panel.innerHTML = await res.text();
+});
+</script>
 
 
 {% endblock %}

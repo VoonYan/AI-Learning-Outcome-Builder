@@ -101,6 +101,20 @@ def lo_export_csv():
         "Content-Disposition": f'attachment; filename="{unit.unitcode}_outcomes.csv"'
     })
 
+
+
+
+@main.post("/lo/evaluate")
+def ai_evaluate():
+    unit_id = request.args.get("unit_id", type=int)
+    unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
+    rows = unit.learning_outcomes if unit else []
+    # For now, just echo simple HTML; later hook up the real AI
+    items = "".join(f"<li>{lo.description} — {lo.assessment or ''}</li>" for lo in rows)
+    return f"<ul class='mb-0'>{items or '<li>No outcomes</li>'}</ul>"
+
+
+
 @main.route('/unit-search')
 @login_required
 def search_units():
