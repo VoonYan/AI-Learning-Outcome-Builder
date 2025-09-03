@@ -1,5 +1,3 @@
-// static/js/create_lo.js
-
 document.addEventListener("DOMContentLoaded", function () {
   (function() {
   const tbody = document.getElementById('lo-tbody');
