@@ -97,61 +97,15 @@
 
 
 
-    <!-- SortableJS (CDN) -->
+ <!-- SortableJS (CDN) -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-<script>
-(function() {
-  const tbody = document.getElementById('lo-tbody');
-  const UNIT_ID = JSON.parse('{{ (unit.id if unit else None) | tojson }}');
-  if (!tbody) return;
 
-  const sortable = new Sortable(tbody, {
-    animation: 150,
-    handle: '.drag-handle',       // only allow dragging from the handle cell
-    ghostClass: 'table-active',   // Bootstrap-ish highlight while dragging
-    onEnd: function() {
-      const ids = Array.from(tbody.querySelectorAll('tr')).map(tr => tr.dataset.id);
-      fetch("{{ url_for('main.lo_reorder') }}", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-  order: ids,
-  unit_id: UNIT_ID
-})
-      }).then(r => r.json()).then(data => {
-        if (!data.ok) {
-          console.error('Reorder failed:', data.error);
-          return;
-        }
-        Array.from(tbody.querySelectorAll('tr')).forEach((tr, idx) => {
-          const firstCell = tr.querySelector('td');
-          if (firstCell) firstCell.textContent = (idx + 1).toString();
-        });
-      }).catch(err => console.error(err));
-    }
-});
-//   // evaluate on-page (placeholder; wire to the AI endpoint)
-//   document.getElementById('evaluateBtn')?.addEventListener('click', async () => {
-//     const panel = document.getElementById('evaluationPanel');
-//     panel.textContent = 'Evaluating…';
-//     // TODO: POST outcomes to the AI route and render the response:
-//   // const res = await fetch('/ai-evaluate', { method: 'POST' ... });
-//     // panel.innerHTML = (await res.text());
-//     setTimeout(() => { panel.textContent = 'Sample feedback… (connect to AI route)'; }, 600);
-//   });
-})();
-</script>
 <script>
-document.getElementById('evaluateBtn')?.addEventListener('click', async () => {
-  const panel = document.getElementById('evaluationPanel');
-  panel.textContent = 'Evaluating…';
-  // Example: call a simple backend that echoes the outcomes for now
-  const res = await fetch('{{ url_for("main.ai_evaluate") }}', { method: 'POST' });
-  panel.innerHTML = await res.text();
-});
+  const UNIT_ID = JSON.parse('{{ (unit.id if unit else None) | tojson }}');
+  const LO_REORDER_URL = "{{ url_for('main.lo_reorder') }}";
+  const AI_EVALUATE_URL = "{{ url_for('main.ai_evaluate') }}";
 </script>
+<script src="{{ url_for('static', filename='create_lo.js') }}"></script>
 
 
 {% endblock %}
