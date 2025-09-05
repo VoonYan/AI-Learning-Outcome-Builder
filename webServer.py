@@ -5,3 +5,5 @@ app = create_app(DeploymentConfig)
 
 
 #i recommend running flask through `$flask run` but this is fine if youre actually using it
+if __name__ == "__main__":
+    app.run(debug=True)

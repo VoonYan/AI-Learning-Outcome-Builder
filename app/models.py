@@ -2,6 +2,8 @@ from flask_login import UserMixin
 from app import db
 from app import login_manager
 import enum
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(id):
@@ -29,3 +31,25 @@ class Unit(db.Model):
     level = db.Column(db.Integer, nullable=False)
     creditpoints = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(512), nullable=True)
+
+    learning_outcomes = db.relationship(
+        "LearningOutcome",
+        back_populates="unit",
+        cascade="all, delete-orphan",
+        order_by="LearningOutcome.position.asc()"
+    )
+
+
+class LearningOutcome(db.Model):
+    __tablename__ = "learning_outcomes"
+
+    id = db.Column(db.Integer, primary_key=True)
+    unit_id = db.Column(db.Integer, db.ForeignKey("unit.id", ondelete="CASCADE"), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    assessment = db.Column(db.String(255), nullable=True)
+    position = db.Column(db.Integer, nullable=False, default=0)
+
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    unit = db.relationship("Unit", back_populates="learning_outcomes",foreign_keys=[unit_id],)

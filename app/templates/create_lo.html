@@ -1,38 +1,109 @@
 {% extends "base_main.html" %}
 
 {% block title %}Learning Outcome Editor{% endblock %}
-{% block banner_title %}Learning Outcome Edtior{% endblock %}
-{% block banner_subtitle %}Lets get started{% endblock %}
-
+{% block banner_title %}Learning Outcome Editor{% endblock %}
+{% block banner_subtitle %}Let's get started{% endblock %}
 {% block content %}
-<div class="d-flex w-25 h-100 left-sidebar text-white">
-    <p>a</p>
-</div>
+<!-- Main layout -->
+<div class="container-xl my-4">
+  <div class="row g-4 align-items-start">
 
-<div class="d-flex flex-column w-75 h-100">
-    <!-- Table section (top 75%) -->
-    <div class="d-flex w-100 h-75 justify-content-center align-items-start overflow-auto">
-        <table class="table">
-            <thead>
-                <tr>
-                    {% for heading in headings %}
-                    <th>{{ heading }}</th>
-                    {% endfor %}
-                </tr>
+  <!-- LEFT: Bloom’s quick guide -->
+    <aside class="col-12 col-lg-3">
+      <div class="card bg-primary text-white rounded-4 text-center p-4 border-0">
+        <div class="fs-5 fw-semibold">Learning Outcomes<br>Information Set</div>
+        <p class="small mt-2 mb-3 text-white-50">
+          Bloom’s Taxonomy helps write measurable outcomes
+          (Remember → Understand → Apply → Analyze → Evaluate → Create).
+        </p>
+        <a class="btn btn-light btn-sm fw-semibold" target="_blank"
+           href="https://en.wikipedia.org/wiki/Bloom%27s_taxonomy">
+          Learn more
+        </a>
+      </div>
+    </aside>
+
+
+  <!-- Table -->
+    <section class="col-12 col-lg-6">
+      <div class="bg-white rounded-4 p-3 border border-primary border-3">
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle mb-0">
+            <thead class="table-primary text-center">
+              <tr>
+                {% for heading in headings %}
+                  <th scope="col" class="fw-semibold">{{ heading }}</th>
+                {% endfor %}
+              </tr>
             </thead>
-        </table>
-    </div>
+       <tbody id="lo-tbody">
+      {% for lo in outcomes %}
+      <tr data-id="{{ lo.id }}">
+        <td class="text-center">{{ loop.index }}</td>
+        <td>{{ lo.description }}</td>
+        <td>{{ lo.assessment or '' }}</td>
+        <td class="text-center">
+          <form action="{{ url_for('main.lo_delete', lo_id=lo.id) }}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger rounded-circle btn-sm"
+                    onclick="return confirm('Delete this outcome?');">&minus;</button>
+          </form>
+        </td>
+        <td class="text-center">
+  <i class="bi bi-arrows-move drag-handle" title="Drag to reorder"></i>
 
-    <!-- Button row (bottom 25%) -->
-    <div class="d-flex w-100 h-25 justify-content-center align-items-center" style="border:2px solid black">
-        <button class="btn w-25 h-25 bg-warning m-3">Add outcome</button>
-        <button class="btn w-25 h-25 bg-danger m-3">Evaluate</button>
-        <button class="btn w-25 h-25 bg-primary m-3">Export</button>
-    </div>
+</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="text-center text-muted py-4">No outcomes yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
-<div class="d-flex w-50 h-100 right-sidebar">
-    <p>b</p>
+      </div>
+    </section>
+
+
+    <!-- RIGHT: evaluation panel -->
+   <aside class="col-12 col-lg-3">
+      <div class="card bg-light rounded-4 p-4">
+        <h5 class="card-title text-primary text-center mb-3">Evaluation Section</h5>
+        <div id="evaluationPanel" class="small text-muted">
+          Run an AI evaluation to get feedback on the outcomes. Results will appear here.
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
+    <!-- Save -->
+<form action="{{ url_for('main.lo_save') }}" method="post" class="d-flex flex-column flex-md-row gap-3">
+  <input type="hidden" name="unit_id" value="{{ unit.id if unit else '' }}">
+  <button class="btn btn-success rounded-pill px-5 py-3 fw-semibold w-100" type="submit">Save</button>
+</form>
+
+    <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button">Add Outcome</button>
+    <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">
+  Evaluate
+</button>
+
+<a class="btn btn-primary rounded-pill px-5 py-3 fw-semibold"
+   href="{{ url_for('main.lo_export_csv', unit_id=unit.id) }}">Export</a>
+
+  </div>
 </div>
+
+
+ <!-- SortableJS (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+  const UNIT_ID = JSON.parse('{{ (unit.id if unit else None) | tojson }}');
+  const LO_REORDER_URL = "{{ url_for('main.lo_reorder') }}";
+  const AI_EVALUATE_URL = "{{ url_for('main.ai_evaluate') }}";
+</script>
+<script src="{{ url_for('static', filename='create_lo.js') }}"></script>
+
+
 {% endblock %}
-
