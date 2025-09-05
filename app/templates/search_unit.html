@@ -140,7 +140,7 @@
 
                    // Make <a> instead of <strong> so browser handles new tab
                     const strongLink = document.createElement("a");
-                    strongLink.href = `view.html?code=${encodeURIComponent(item.code)}`;
+                    strongLink.href = `/view?code=${encodeURIComponent(item.code)}`;
                     strongLink.textContent = `${item.name} [${item.code}]`;
 
                     // Styling: bold + no underline + pointer

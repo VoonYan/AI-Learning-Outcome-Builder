@@ -25,10 +25,16 @@ def create_lo():
     headings = ['#', 'Learning Outcome', 'How will each outcome be assessed', 'Delete', 'Reorder']
     return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, headings=headings)
 
-@main.route('/unit-search')
+@main.route('/search_unit')
 @login_required
-def search_units():
+def search_unit():
     return render_template('search_unit.html', title=f'Creation Page', username=current_user.username)
+
+@main.route('/view')
+@login_required
+def view():
+    return render_template('view.html', title="Unit Details")
+
 
 @main.route('/new_unit', methods = ['GET', 'POST'])
 @login_required
