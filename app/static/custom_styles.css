@@ -9,9 +9,6 @@
 }
 
 .title-container {
-    height: 10vh;
-    border: 5px;
-    padding-top: 8px;
     background-color: rgba(32,45,119,1);
     color: white;
 }
@@ -34,7 +31,14 @@
 
 .yellow-container {
     background-color: #E2B600;
-    height: 15vh;
+}
+
+#uwa-yellow {
+    background-color: #E2B600;
+}
+
+.uwa-blue {
+    color:#202d77;
 }
 
 .uc-buttons {
