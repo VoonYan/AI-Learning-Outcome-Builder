@@ -1,26 +1,33 @@
-{% extends "base_main.html" %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+          crossorigin="anonymous">
+</head>
+<body class="overflow-x-hidden">
+    <div class="container-fluid d-flex flex-column vh-100 p-0">
+        <!-- Title -->
+        <div class="d-flex justify-content-center align-items-center bg-primary p-3">
+            <h2>AI Builder</h2>
+        </div>
 
-{% block title %}Main Dashboard{% endblock %}
-{% block banner_title %}Main Dashboard{% endblock %}
-{% block banner_subtitle %}Hello {{ username }}. Please select from one of the following:{% endblock %}
+        <!-- Subtitle -->
+        <div class="d-flex justify-content-center align-items-center bg-warning p-2">
+            <h3>Welcome to your dashboard.</h3>
+        </div>
 
-{% block content %}
-    {% with messages = get_flashed_messages(category_filter=["success"])%}
-    {% if messages%}
-    {% for message in messages%}
-    <div class="alert alert-success" role="alert">{{message}}</div>
-    {%endfor%}
-    {%endif%}
-    {%endwith%}
+        <!-- Content -->
         <div class="grid row row-cols-2 g-3 text-center flex-grow-1 p-3">
             <div class="col d-flex">
                 <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
                     <h1 class="mb-3"><strong>Unit Search</strong></h1>
                     <p>Click on the button below to search units by unit name or code.</p>
-                    <a class="btn mt-3 btn-warning" href="{{url_for('main.search_unit')}}">Search Units</a>
+                    <button class="btn mt-3 btn-warning" >Search Units</button>
                 </div>
             </div>
-          
+
             <div class="col d-flex ">
                 <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
                     <h1 class="mb-3"><strong>Edit Units</strong></h1>
@@ -33,7 +40,7 @@
                 <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
                     <h1 class="mb-3"><strong>New Units</strong></h1>
                     <p>Click on the button below to create new units.</p>
-                    <a class="btn mt-3 btn-warning" href="{{url_for('main.new_unit')}}">New Unit</a>
+                    <button class="btn mt-3 btn-warning ">New Units</button>
                 </div>
             </div>
 
@@ -45,5 +52,6 @@
                 </div>
             </div>
         </div>
-
-{% endblock %}
+    </div>
+</body>
+</html>
