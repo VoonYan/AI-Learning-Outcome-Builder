@@ -33,4 +33,8 @@ def create_app(config=DevelopmentConfig):
             db.create_all()
             db.session.commit()
 
+            
+
     return flaskApp
+
+
