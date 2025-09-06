@@ -5,6 +5,7 @@ from . import db
 from .models import db, Unit, LearningOutcome, UserType
 from . import create_app, config_manager
 from sqlalchemy import case, update
+from .ai_evaluate import run_eval
 
 
 main = Blueprint('main', __name__)
@@ -108,6 +109,13 @@ def ai_evaluate():
     unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
     rows = unit.learning_outcomes if unit else []
+    # result = run_eval(
+    #     level=unit.level,
+    #     unit_name=unit.unitname,
+    #     credit_points=unit.creditpoints,
+    #     outcomes_text=outcomes_text,
+    # )
+
     # For now, just echo simple HTML; later hook up the real AI
     items = "".join(f"<li>{lo.description} — {lo.assessment or ''}</li>" for lo in rows)
     return f"<ul class='mb-0'>{items or '<li>No outcomes</li>'}</ul>"
