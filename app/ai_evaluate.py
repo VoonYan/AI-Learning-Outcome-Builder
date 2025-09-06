@@ -1,7 +1,9 @@
 import json
 from typing import List
-from google import genai
-from google.genai import types
+# from google import genai
+# from google.genai import types
+import google.generativeai as genai
+from google.generativeai import types
 
 def build_prompt(level: int, unit_name: str, credit_points: int, outcomes: List[str],
                  config) -> str:
@@ -102,64 +104,61 @@ def build_prompt(level: int, unit_name: str, credit_points: int, outcomes: List[
 
     return system_rules
 
-
 def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = "AIConfig.json"):
     """
-    Run evaluation of learning outcomes using GenAI API.
-
-    Args:
-        level: Unit level (1-6)
-        unit_name: Name of the unit
-        credit_points: Credit points for the unit
-        outcomes_text: List of learning outcomes to evaluate
-        config_path: Config file
-
-    Returns:
-        str: Outcome of evaluation or error message
+    Run evaluation of learning outcomes using Gemini via google-generativeai.
     """
-    # Load configuration from JSON file
+    import os  # <-- in case not at top
+    # Load configuration
     try:
-        with open(config_path, 'r') as f:
+        with open(config_path, 'r', encoding='utf-8') as f:
             config = json.load(f)
     except FileNotFoundError:
         raise FileNotFoundError(f"Configuration file not found at {config_path}")
     except json.JSONDecodeError:
         raise ValueError(f"Invalid JSON in configuration file: {config_path}")
 
-    api_key_text = config["API_key"]
-    model_name = config["selected_model"]
-    api_key = api_key_text.strip()
+    # Resolve API key
+    api_key_text = (config.get("API_key") or "").strip()
+    if api_key_text == "environ":
+        api_key = os.getenv("GEMINI_API_KEY", "").strip()
+    else:
+        api_key = api_key_text
 
-    if api_key == "environ":
-        return "❌ ERROR: No API key provided. Please contact admin to add it."
+    if not api_key:
+        return "❌ ERROR: Missing Gemini API key (set GEMINI_API_KEY or AIConfig.json)."
 
+    # Validate numbers
     try:
         level = int(level)
         credit_points = int(credit_points)
     except Exception:
         return "❌ ERROR: Level and Credit Points must be integers."
 
+    # Prepare prompt
     outcomes = outcomes_text.splitlines()
     prompt = build_prompt(level, unit_name, credit_points, outcomes, config)
 
-    try:
-        client = genai.Client(api_key=api_key)
-    except Exception as e:
-        return f"❌ ERROR creating client: {e}"
-    contents = [types.Content(role="user", parts=[types.Part.from_text(text=prompt)])]
-    cfg = types.GenerateContentConfig()
+    # Configure SDK + model
+    genai.configure(api_key=api_key)
 
-    # Collect streamed chunks into a single string to display in Markdown
-    buf = []
+    model_name = (config.get("selected_model") or "gemini-1.5-flash").strip()
+    # If a non-Gemini id (e.g., gemma-*) was set, fall back to a valid Gemini model
+    if not model_name.startswith("gemini-"):
+        model_name = "gemini-1.5-flash"
+
+    generation_cfg = types.GenerationConfig(
+        temperature=0.3,
+        max_output_tokens=2048,
+    )
+    model = genai.GenerativeModel(model_name, generation_config=generation_cfg)
+
+    # Generate (non-streaming for simplicity)
     try:
-        for chunk in client.models.generate_content_stream(
-                model=model_name, contents=contents, config=cfg
-        ):
-            if chunk and getattr(chunk, "text", None):
-                buf.append(chunk.text)
+        resp = model.generate_content(prompt)
+        return getattr(resp, "text", "") or "⚠️ No text returned."
     except Exception as e:
         return f"❌ ERROR during generation: {e}"
-    return "".join(buf) or "⚠️ No text returned."
 
 # Example usage:
 if __name__ == "__main__":

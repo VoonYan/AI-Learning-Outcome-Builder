@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request, session, Blueprint, jsonify
+from flask import render_template, redirect, url_for, flash, request, session, Blueprint, jsonify,current_app
 from flask_login import current_user, login_required
 from .forms import NewUnitForm, AdminForm
 from . import db
@@ -6,6 +6,7 @@ from .models import db, Unit, LearningOutcome, UserType
 from . import create_app, config_manager
 from sqlalchemy import case, update
 from .ai_evaluate import run_eval
+import os
 
 
 main = Blueprint('main', __name__)
@@ -109,18 +110,19 @@ def ai_evaluate():
     unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
     rows = unit.learning_outcomes if unit else []
-    # result = run_eval(
-    #     level=unit.level,
-    #     unit_name=unit.unitname,
-    #     credit_points=unit.creditpoints,
-    #     outcomes_text=outcomes_text,
-    # )
+    outcomes_text = "\n".join(lo.description for lo in rows)
 
-    # For now, just echo simple HTML; later hook up the real AI
-    items = "".join(f"<li>{lo.description} — {lo.assessment or ''}</li>" for lo in rows)
-    return f"<ul class='mb-0'>{items or '<li>No outcomes</li>'}</ul>"
+    try:
 
+        cfg_path = os.path.join(current_app.root_path, "AIConfig.json")
 
+        result = run_eval(
+            unit.level, unit.unitname, unit.creditpoints, outcomes_text, cfg_path
+        )
+
+        return jsonify({"ok": True, "html": result})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
 
 @main.route('/search_unit')
 @login_required
