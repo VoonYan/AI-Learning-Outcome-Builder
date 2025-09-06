@@ -129,9 +129,8 @@ def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = 
     except json.JSONDecodeError:
         raise ValueError(f"Invalid JSON in configuration file: {config_path}")
 
-    # api_key_text = config["API_key"]
+   
     model_name = config["selected_model"]
-    # api_key = api_key_text.strip()
     api_key = os.getenv("GOOGLE_API_KEY") 
 
     if not api_key:
@@ -145,10 +144,10 @@ def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = 
 
     outcomes = outcomes_text.splitlines()
     prompt = build_prompt(level, unit_name, credit_points, outcomes, config)
-    # configure SDK once you’ve resolved api_key (you already do above)
+    # configure SDK 
     genai.configure(api_key=api_key)
 
-    # use Gemma model from config (or default)
+    # use Gemma model from config 
     model = genai.GenerativeModel(model_name)
 
     try:
