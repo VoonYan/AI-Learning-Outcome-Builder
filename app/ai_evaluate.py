@@ -1,7 +1,10 @@
 import json
 from typing import List
-from google import genai
-from google.genai import types
+
+import os, json
+import google.generativeai as genai
+
+
 
 def build_prompt(level: int, unit_name: str, credit_points: int, outcomes: List[str],
                  config) -> str:
@@ -126,12 +129,13 @@ def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = 
     except json.JSONDecodeError:
         raise ValueError(f"Invalid JSON in configuration file: {config_path}")
 
-    api_key_text = config["API_key"]
+    # api_key_text = config["API_key"]
     model_name = config["selected_model"]
-    api_key = api_key_text.strip()
+    # api_key = api_key_text.strip()
+    api_key = os.getenv("GOOGLE_API_KEY") 
 
-    if api_key == "environ":
-        return "❌ ERROR: No API key provided. Please contact admin to add it."
+    if not api_key:
+        return "❌ ERROR: Missing API key. Set GOOGLE_API_KEY in your environment or put it in AIConfig.json."
 
     try:
         level = int(level)
@@ -141,25 +145,17 @@ def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = 
 
     outcomes = outcomes_text.splitlines()
     prompt = build_prompt(level, unit_name, credit_points, outcomes, config)
+    # configure SDK once you’ve resolved api_key (you already do above)
+    genai.configure(api_key=api_key)
+
+    # use Gemma model from config (or default)
+    model = genai.GenerativeModel(model_name)
 
     try:
-        client = genai.Client(api_key=api_key)
-    except Exception as e:
-        return f"❌ ERROR creating client: {e}"
-    contents = [types.Content(role="user", parts=[types.Part.from_text(text=prompt)])]
-    cfg = types.GenerateContentConfig()
-
-    # Collect streamed chunks into a single string to display in Markdown
-    buf = []
-    try:
-        for chunk in client.models.generate_content_stream(
-                model=model_name, contents=contents, config=cfg
-        ):
-            if chunk and getattr(chunk, "text", None):
-                buf.append(chunk.text)
+        resp = model.generate_content(prompt)   # simple non-streaming call
+        return getattr(resp, "text", "") or "⚠️ No text returned."
     except Exception as e:
         return f"❌ ERROR during generation: {e}"
-    return "".join(buf) or "⚠️ No text returned."
 
 # Example usage:
 if __name__ == "__main__":
