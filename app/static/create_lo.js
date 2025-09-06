@@ -26,23 +26,36 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  document.getElementById("evaluateBtn")?.addEventListener("click", async () => {
+document.getElementById("evaluateBtn")?.addEventListener("click", async () => {
   const p = document.getElementById("evaluationPanel");
-  p.innerHTML = "Evaluating…";
+  p.innerHTML = "Saving…";
+
   try {
+    // 1. Find the save form
+    const saveForm = document.querySelector('form[action*="lo_save"]');
+    if (saveForm) {
+      const fd = new FormData(saveForm);
+      // Post to the lo_save route
+      await fetch(saveForm.action, {
+        method: "POST",
+        body: fd
+      });
+    }
+
+    // 2. Now run the evaluation (your original code)
+    p.innerHTML = "Evaluating…";
     const res = await fetch(`${AI_EVALUATE_URL}?unit_id=${encodeURIComponent(UNIT_ID)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ unit_id: UNIT_ID }) // okay even if route reads query
+      body: JSON.stringify({ unit_id: UNIT_ID })
     });
     const data = await res.json();
 
     if (!data.ok) throw new Error(data.error || `HTTP ${res.status}`);
 
-    // ⬇️ key line: render the HTML, not the whole JSON
     p.innerHTML = data.html;
   } catch (err) {
-    p.innerHTML = `<div class="text-danger">AI evaluation failed: ${String(err)}</div>`;
+    p.innerHTML = `<div class="text-danger">❌ AI evaluation failed: ${String(err)}`;
   }
 });
 
