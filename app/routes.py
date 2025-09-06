@@ -10,8 +10,11 @@ from sqlalchemy import case, update
 main = Blueprint('main', __name__)
 
 
-@main.route('/main-page')
 @main.route('/')
+def homepage():
+    return render_template('homepage.html' )
+
+@main.route('/main-page')
 @login_required
 def main_page(): 
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
