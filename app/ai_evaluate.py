@@ -108,7 +108,7 @@ def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = 
     """
     Run evaluation of learning outcomes using Gemini via google-generativeai.
     """
-    import os  # <-- in case not at top
+    import os  
     # Load configuration
     try:
         with open(config_path, 'r', encoding='utf-8') as f:

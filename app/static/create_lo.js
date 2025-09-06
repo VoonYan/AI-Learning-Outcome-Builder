@@ -31,18 +31,15 @@ document.getElementById("evaluateBtn")?.addEventListener("click", async () => {
   p.innerHTML = "Saving…";
 
   try {
-    // 1. Find the save form
     const saveForm = document.querySelector('form[action*="lo_save"]');
     if (saveForm) {
       const fd = new FormData(saveForm);
-      // Post to the lo_save route
       await fetch(saveForm.action, {
         method: "POST",
         body: fd
       });
     }
 
-    // 2. Now run the evaluation (your original code)
     p.innerHTML = "Evaluating…";
     const res = await fetch(`${AI_EVALUATE_URL}?unit_id=${encodeURIComponent(UNIT_ID)}`, {
       method: "POST",
