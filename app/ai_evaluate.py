@@ -1,8 +1,10 @@
 import json
 from typing import List
+from . import config_manager
 
 import os, json
-import google.generativeai as genai
+import google.genai as genai
+from google.genai import types
 
 
 
@@ -121,17 +123,13 @@ def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = 
         str: Outcome of evaluation or error message
     """
     # Load configuration from JSON file
-    try:
-        with open(config_path, 'r') as f:
-            config = json.load(f)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Configuration file not found at {config_path}")
-    except json.JSONDecodeError:
-        raise ValueError(f"Invalid JSON in configuration file: {config_path}")
-
+    config = config_manager.getCurrentParams()
    
     model_name = config["selected_model"]
-    api_key = os.getenv("GOOGLE_API_KEY") 
+    if config["API_key"] == 'environ':
+        api_key = os.getenv("GOOGLE_API_KEY") 
+    else:
+        api_key = config["API_key"]
 
     if not api_key:
         return "❌ ERROR: Missing API key. Set GOOGLE_API_KEY in your environment or put it in AIConfig.json."
@@ -144,18 +142,24 @@ def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = 
 
     outcomes = outcomes_text.splitlines()
     prompt = build_prompt(level, unit_name, credit_points, outcomes, config)
+    
     # configure SDK 
-    genai.configure(api_key=api_key)
+    client = genai.Client(api_key=api_key)
 
-    # use Gemma model from config 
-    model = genai.GenerativeModel(model_name)
+    resp = client.models.generate_content(
+        model=model_name,
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            temperature=0.0
+        )
+    )
 
     try:
-        resp = model.generate_content(prompt)   # simple non-streaming call
         return getattr(resp, "text", "") or "⚠️ No text returned."
     except Exception as e:
-        return f"❌ ERROR during generation: {e}"
+        return f"❌ ERROR during generation: {e}. Try again in 1 minute."
 
+###delete this later
 # Example usage:
 if __name__ == "__main__":
     # Example call
