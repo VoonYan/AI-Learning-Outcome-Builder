@@ -25,7 +25,7 @@
                 <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
                     <h1 class="mb-3"><strong>Edit Units</strong></h1>
                     <p>Click the buttons below to edit or create new outcomes</p>
-                    <button class="btn mt-3 btn-warning ">Learning Outcome Editor</button>
+                    <a class="btn mt-3 btn-warning" href="{{url_for('main.create_lo')}}">Learning Outcome Editor</a>
                 </div>
             </div>
 
@@ -41,7 +41,7 @@
                 <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
                     <h1 class="mb-3"><strong>Admin Tools</strong></h1>
                     <p>Click on the button below to access admin tools.</p>
-                    <button class="btn mt-3 btn-warning ">Admin Tools</button>
+                    <a class="btn mt-3 btn-warning " href="{{url_for('main.admin')}}">Admin Tools</a>
                 </div>
             </div>
         </div>

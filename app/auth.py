@@ -23,7 +23,7 @@ def login_page():
             return redirect("/login_page")
         else:
             login_user(userDB, remember=True)
-            return redirect("/main-page")
+            return redirect("/main_page")
 
 
 @auth.route('/signup_page', methods = ['GET', 'POST'])
@@ -52,4 +52,4 @@ def signup_page():
 @auth.route('/Logout')
 def Logout():
     logout_user()
-    return redirect("/main-page")
+    return redirect("/main_page")
