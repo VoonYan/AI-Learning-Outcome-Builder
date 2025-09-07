@@ -34,40 +34,39 @@ def navbar():
 def base_main(): 
     return render_template('base_main.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
-@main.route('/create-lo')
+@main.route('/create_lo/<int:unit_id>')
 @login_required
-def create_lo():
-    unit_id = request.args.get("unit_id", type=int)
-    unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
-    outcomes = unit.learning_outcomes if unit else []
+def create_lo(unit_id):
+    unit = Unit.query.get_or_404(unit_id)
+    outcomes = unit.learning_outcomes
     #why are we parsing headings here?
     headings = ['#', 'Learning Outcome', 'Assessment', 'Delete', 'Reorder']
     return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
 
 #all of this should be moved to some new api file
 
-@main.post("/lo/<int:lo_id>/delete")
-def lo_delete(lo_id):
+@main.delete("/lo_api/delete/<int:unit_id>/<int:lo_id>")
+@login_required
+def lo_delete(unit_id, lo_id):
     lo = LearningOutcome.query.get_or_404(lo_id)
-    unit_id = lo.unit_id
     db.session.delete(lo)
     db.session.commit()
     flash("Outcome deleted", "success")
-    return redirect(url_for("main.create_lo", unit_id=unit_id))
+    return jsonify({"ok": True})
 
-#this doesnt work yet but we need to do some restructuring 
-# @main.post("/lo/add")
-# def lo_add():
-#     existing_los = LearningOutcome.query.filter_by(unit_id="TESTING").all()
-#     blank_lo = LearningOutcome(unit_id="TESTING", position=len(existing_los))
-#     db.session.add(blank_lo)
-#     db.session.commit()
-#     flash("Outcome Added", "success")
-#     return redirect(url_for("main.create_lo", unit_id="TESTING"))
+@main.post("/lo_api/add/<int:unit_id>")
+@login_required
+def lo_add(unit_id):
+    existing_los = LearningOutcome.query.filter_by(unit_id=unit_id).all()
+    blank_lo = LearningOutcome(unit_id=unit_id, position=len(existing_los), description="")
+    db.session.add(blank_lo)
+    db.session.commit()
+    flash("Outcome Added", "success")
+    return jsonify({"ok": True})
 
-
-@main.post("/lo/reorder")
-def lo_reorder():
+@main.post("/lo_api/reorder/<int:unit_id>")
+@login_required
+def lo_reorder(unit_id):
     data = request.get_json(force=True)
     order = data.get("order", [])
     unit_id = data.get("unit_id")
@@ -92,16 +91,17 @@ def lo_reorder():
     return jsonify({"ok": True})
 
 
-@main.post("/lo/save")
-def lo_save():
+@main.post("/lo_api/save/<int:unit_id>")
+@login_required
+def lo_save(unit_id):
     unit_id = request.form.get("unit_id", type=int)
     flash("Outcomes saved.", "success")
-    return redirect(url_for("main.create_lo", unit_id=unit_id))
+    return jsonify({'status': 'ok'})
 
 
 #we need a button to export all of the units, and im assuming this is for one specific unit, perhaps a general function with single unit option is best here 
-@main.get("/lo/export.csv")
-def lo_export_csv():
+@main.get("/lo_api/export.csv/<int:unit_id>")
+def lo_export_csv(unit_id):
     unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get_or_404(unit_id)
     rows = unit.learning_outcomes
@@ -118,19 +118,14 @@ def lo_export_csv():
     })
 
 
-@main.post("/lo/evaluate")
-def ai_evaluate():
-    unit_id = request.args.get("unit_id", type=int)
-    unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
-    rows = unit.learning_outcomes if unit else []
+@main.post("/lo_api/evaluate/<int:unit_id>")
+def ai_evaluate(unit_id):
+    unit = Unit.query.get_or_404(unit_id)
+    rows = unit.learning_outcomes
     outcomes_text = "\n".join(lo.description for lo in rows)
-
     try:
-
-        cfg_path = os.path.join(current_app.root_path, "AIConfig.json")
-
         result = run_eval(
-            unit.level, unit.unitname, unit.creditpoints, outcomes_text, cfg_path
+            unit.level, unit.unitname, unit.creditpoints, outcomes_text
         )
 
         return jsonify({"ok": True, "html": result})

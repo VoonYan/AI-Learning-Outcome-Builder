@@ -45,7 +45,7 @@ class LearningOutcome(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     unit_id = db.Column(db.Integer, db.ForeignKey("unit.id", ondelete="CASCADE"), nullable=False)
-    description = db.Column(db.Text, nullable=True)
+    description = db.Column(db.Text, nullable=False)
     assessment = db.Column(db.String(255), nullable=True)
     position = db.Column(db.Integer, nullable=False, default=0)
 

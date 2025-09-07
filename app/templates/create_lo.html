@@ -2,10 +2,17 @@
 
 {% block title %}Learning Outcome Editor{% endblock %}
 {% block banner_title %}Learning Outcome Editor{% endblock %}
-{% block banner_subtitle %}Let's get started{% endblock %}
+{% block banner_subtitle %}Let's get started. {{unit.unitcode}}{% endblock %}
 {% block content %}
 <!-- Main layout -->
 <div class="container-xl my-4">
+  {% with messages = get_flashed_messages(category_filter=["success"])%}
+  {% if messages%}
+  {% for message in messages%}
+  <div class="alert alert-success" role="alert">{{message}}</div>
+  {%endfor%}
+  {%endif%}
+  {%endwith%}
   <div class="row g-4 align-items-start">
 
   <!-- LEFT: Bloom’s quick guide -->
@@ -14,7 +21,7 @@
         <div class="fs-5 fw-semibold">Learning Outcomes<br>Information Set</div>
         <p class="small mt-2 mb-3 text-white-50">
           Bloom’s Taxonomy helps write measurable outcomes
-          (Remember → Understand → Apply → Analyze → Evaluate → Create).
+          (Knowledge → Comprehension → Application → Analysis → Synthesis → Evaluation).
         </p>
         <a class="btn btn-light btn-sm fw-semibold" target="_blank"
            href="https://en.wikipedia.org/wiki/Bloom%27s_taxonomy">
@@ -43,10 +50,7 @@
         <td>{{ lo.description }}</td>
         <td>{{ lo.assessment or '' }}</td>
         <td class="text-center">
-          <form action="{{ url_for('main.lo_delete', lo_id=lo.id) }}" method="post" class="d-inline">
-            <button type="submit" class="btn btn-danger rounded-circle btn-sm"
-                    onclick="return confirm('Delete this outcome?');">&minus;</button>
-          </form>
+            <button type="submit" class="btn btn-danger rounded-circle btn-sm" onclick="deleteOutcome('{{lo.id}}')">&minus;</button>
         </td>
         <td class="text-center">
   <i class="bi bi-arrows-move drag-handle" title="Drag to reorder"></i>
@@ -79,7 +83,7 @@
   <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
  
 
-    <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button">Add Outcome</button>
+    <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button" onclick="addBlankOutcome()">Add Outcome</button>
     <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">
   Evaluate
 </button>
@@ -96,8 +100,26 @@
 
 <script>
   const UNIT_ID = JSON.parse('{{ (unit.id if unit else None) | tojson }}');
-  const LO_REORDER_URL = "{{ url_for('main.lo_reorder') }}";
-  const AI_EVALUATE_URL = "{{ url_for('main.ai_evaluate') }}";
+  const LO_REORDER_URL = "{{ url_for('main.lo_reorder', unit_id=unit.id) }}";
+  const AI_EVALUATE_URL = "{{ url_for('main.ai_evaluate', unit_id=unit.id) }}";
+
+  function addBlankOutcome(){
+    fetch("{{ url_for('main.lo_add', unit_id=unit.id) }}", {method: "POST", "body": "Add LO"})
+          .then((response)=>{         
+            if(response.ok){
+              window.location.href = window.location.href;
+            }
+    })
+  }
+
+  function deleteOutcome(lo_id){
+        fetch("{{ url_for('main.lo_delete', unit_id=unit.id, lo_id=-1) }}".replace("-1", lo_id), {method: "DELETE", "body": "Delete LO"})
+          .then((response)=>{         
+            if(response.ok){
+              window.location.href = window.location.href;
+            }
+    })
+  }
 </script>
 <script src="{{ url_for('static', filename='create_lo.js') }}"></script>
 

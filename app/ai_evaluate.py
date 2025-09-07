@@ -108,7 +108,7 @@ def build_prompt(level: int, unit_name: str, credit_points: int, outcomes: List[
     return system_rules
 
 
-def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = "AIConfig.json"):
+def run_eval(level, unit_name, credit_points, outcomes_text):
     """
     Run evaluation of learning outcomes using GenAI API.
 
