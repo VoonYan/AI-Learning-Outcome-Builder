@@ -157,6 +157,8 @@ def run_eval(level, unit_name, credit_points, outcomes_text, config_path: str = 
     try:
         return getattr(resp, "text", "") or "⚠️ No text returned."
     except Exception as e:
+        #genai will raise APIException child Exceptions so we can except that specifically
+        # but it will also return a large exception object we dont want to print all of it so we should probably do some error checkign here rather than returining just e
         return f"❌ ERROR during generation: {e}. Try again in 1 minute."
 
 ###delete this later

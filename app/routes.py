@@ -40,9 +40,11 @@ def create_lo():
     unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
     outcomes = unit.learning_outcomes if unit else []
+    #why are we parsing headings here?
     headings = ['#', 'Learning Outcome', 'Assessment', 'Delete', 'Reorder']
     return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
 
+#all of this should be moved to some new api file
 
 @main.post("/lo/<int:lo_id>/delete")
 def lo_delete(lo_id):
@@ -52,6 +54,16 @@ def lo_delete(lo_id):
     db.session.commit()
     flash("Outcome deleted", "success")
     return redirect(url_for("main.create_lo", unit_id=unit_id))
+
+#this doesnt work yet but we need to do some restructuring 
+# @main.post("/lo/add")
+# def lo_add():
+#     existing_los = LearningOutcome.query.filter_by(unit_id="TESTING").all()
+#     blank_lo = LearningOutcome(unit_id="TESTING", position=len(existing_los))
+#     db.session.add(blank_lo)
+#     db.session.commit()
+#     flash("Outcome Added", "success")
+#     return redirect(url_for("main.create_lo", unit_id="TESTING"))
 
 
 @main.post("/lo/reorder")
@@ -87,6 +99,7 @@ def lo_save():
     return redirect(url_for("main.create_lo", unit_id=unit_id))
 
 
+#we need a button to export all of the units, and im assuming this is for one specific unit, perhaps a general function with single unit option is best here 
 @main.get("/lo/export.csv")
 def lo_export_csv():
     unit_id = request.args.get("unit_id", type=int)
@@ -123,6 +136,7 @@ def ai_evaluate():
         return jsonify({"ok": True, "html": result})
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
+
 
 @main.route('/search_unit')
 @login_required
