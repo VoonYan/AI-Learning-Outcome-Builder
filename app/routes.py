@@ -32,6 +32,7 @@ def base_main():
 @main.route('/create-lo')
 @login_required
 def create_lo():
+<<<<<<< HEAD
     unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
     outcomes = unit.learning_outcomes if unit else []
@@ -111,10 +112,47 @@ def ai_evaluate():
 
 
 
+=======
+    headings = ['#', 'Learning Outcome', 'How will each outcome be assessed', 'Delete', 'Reorder']
+    return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, headings=headings)
+"""
+>>>>>>> 212f874 (adding backend to search page)
 @main.route('/search_unit')
 @login_required
 def search_unit():
     return render_template('search_unit.html', title=f'Creation Page', username=current_user.username)
+"""
+
+@main.route('/search_unit')
+@login_required
+def search_unit():
+    query = request.args.get("query", "").strip()
+    filter_type = request.args.get("filter", "name")
+    sort_by = request.args.get("sort", "unitcode")  # default sorting
+
+    results = []
+
+    if query:
+        if filter_type == "code":
+            results = Unit.query.filter(Unit.unitcode.ilike(f"%{query}%")).all()
+        else:
+            results = Unit.query.filter(Unit.unitname.ilike(f"%{query}%")).all()
+
+        # Sorting
+        if sort_by == "unitcode":
+            results.sort(key=lambda u: u.unitcode)
+        elif sort_by == "unitlevel":
+            results.sort(key=lambda u: u.level)
+
+    return render_template(
+        'search_unit.html',
+        title='Unit Search',
+        username=current_user.username,
+        results=results,
+        query=query,
+        filter_type=filter_type,
+        sort_by=sort_by
+    )
 
 @main.route('/view')
 @login_required
