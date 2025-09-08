@@ -40,6 +40,7 @@ class Unit(db.Model):
     )
 
 
+
 class LearningOutcome(db.Model):
     __tablename__ = "learning_outcomes"
 

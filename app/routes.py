@@ -32,7 +32,6 @@ def base_main():
 @main.route('/create-lo')
 @login_required
 def create_lo():
-<<<<<<< HEAD
     unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
     outcomes = unit.learning_outcomes if unit else []
@@ -112,11 +111,7 @@ def ai_evaluate():
 
 
 
-=======
-    headings = ['#', 'Learning Outcome', 'How will each outcome be assessed', 'Delete', 'Reorder']
-    return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, headings=headings)
 """
->>>>>>> 212f874 (adding backend to search page)
 @main.route('/search_unit')
 @login_required
 def search_unit():
@@ -154,10 +149,29 @@ def search_unit():
         sort_by=sort_by
     )
 
-@main.route('/view')
+
+@main.route('/view', methods=['GET', 'POST'])
 @login_required
 def view():
-    return render_template('view.html', title="Unit Details")
+    unit_code = request.args.get("code")
+    if not unit_code:
+        abort(404)
+
+    unit = Unit.query.filter_by(unitcode=unit_code).first()
+    if not unit:
+        abort(404)
+
+    if request.method == "POST":
+        # update unit from form data
+        unit.unitname = request.form.get("unitname")
+        unit.creditpoints = request.form.get("creditpoints")  # optional if editable
+        unit.description = request.form.get("description")
+        # add more fields as needed
+        db.session.commit()
+        flash("Unit updated successfully", "success")
+        return redirect(url_for("main.view", code=unit.unitcode))
+
+    return render_template("view.html", title="Unit Details", unit=unit)
 
 
 @main.route('/new_unit', methods = ['GET', 'POST'])

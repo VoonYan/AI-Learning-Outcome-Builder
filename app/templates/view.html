@@ -7,52 +7,86 @@
 </head>
 <body>
 
-    <!-- Header -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
-        <div class="container-fluid">
-            <a class="navbar-brand mx-auto fs-2" href="search.html">AI Learning Outcome Builder</a>
-        </div>
-    </nav>
-
-    <!-- Banner -->
-    <div class="bg-warning text-dark text-center py-4">
-        <h3 class="fw-bold">Unit Details</h3>
-        <p class="mb-0">Full information about the selected unit.</p>
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand mx-auto fs-2" href="{{ url_for('main.search_unit') }}">AI Learning Outcome Builder</a>
     </div>
+</nav>
 
-    <!-- Content -->
-    <div class="container my-5">
-        <div class="card shadow-lg rounded-3 border-0">
-            <div class="card-body p-4">
-                <h2 id="unitTitle" class="fw-bold mb-4 text-primary"></h2>
-                <p id="unitDetails" class="fs-5"></p>
+<div class="bg-warning text-dark text-center py-4">
+    <h3 class="fw-bold">Unit Details</h3>
+    <p class="mb-0">Full information about the selected unit.</p>
+</div>
 
-                <!-- 🔹 Edit button -->
-                <button id="editBtn" class="btn btn-warning text-primary fw-bold mt-3">Edit</button>
+<div class="container my-5">
+    <div class="card shadow-lg rounded-3 border-0">
+        <div class="card-body p-4">
+            
+            <!-- Display Unit Details -->
+            <h2 id="unitTitle" class="fw-bold mb-4 text-primary">{{ unit.unitname }} [{{ unit.unitcode }}]</h2>
+            <p id="unitDetails" class="fs-5">
+                <strong>Credit Points:</strong> {{ unit.creditpoints }}<br>
+                <strong>Level:</strong> {{ unit.level }}<br>
+                <strong>Description:</strong> {{ unit.description or "No description available" }}
+            </p>
+            <!--
+            <h4 class="mt-4">Learning Outcomes</h4>
+            <ul>
+                {% for lo in unit.learning_outcomes %}
+                <li>
+                    <strong>{{ loop.index }}.</strong> {{ lo.description }}
+                    {% if lo.assessment %}
+                    (Assessment: {{ lo.assessment }})
+                    {% endif %}
+                </li>
+                {% else %}
+                <li>No learning outcomes defined for this unit.</li>
+                {% endfor %}
+            </ul>
+        -->
 
-                <!-- 🔹 Hidden Edit Form -->
-                <form id="editForm" class="mt-4 d-none">
-                    <div class="mb-3">
-                        <label class="form-label">Unit Name</label>
-                        <input type="text" id="editName" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Coordinator(s)</label>
-                        <input type="text" id="editCoordinator" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Availability</label>
-                        <input type="text" id="editAvailability" class="form-control">
-                    </div>
-                    <button type="button" id="saveBtn" class="btn btn-success">Save</button>
-                    <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
-                </form>
-            </div>
+            <!-- Edit button -->
+            <button id="editBtn" class="btn btn-warning text-primary fw-bold mt-3">Edit</button>
+
+            <!-- Edit Form -->
+            <form id="editForm" class="mt-4 d-none" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Unit Name</label>
+                    <input type="text" name="unitname" id="editName" class="form-control" value="{{ unit.unitname }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Credit Points</label>
+                    <input type="number" name="creditpoints" id="editCredit" class="form-control" value="{{ unit.creditpoints }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" id="editDescription" class="form-control">{{ unit.description }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+                <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+            </form>
+
         </div>
     </div>
+</div>
 
-    <script src="{{ url_for('static', filename='js/view.js') }}"></script>
+<script>
+    // show/hide edit form
+    const editBtn = document.getElementById("editBtn");
+    const editForm = document.getElementById("editForm");
+    const cancelBtn = document.getElementById("cancelBtn");
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    editBtn.addEventListener("click", () => {
+        editForm.classList.remove("d-none");
+        editBtn.classList.add("d-none");
+    });
+
+    cancelBtn.addEventListener("click", () => {
+        editForm.classList.add("d-none");
+        editBtn.classList.remove("d-none");
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
