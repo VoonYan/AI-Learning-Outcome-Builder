@@ -268,7 +268,7 @@
     // Reset form
     function undoChanges() {
       if (confirm('Are you sure you want to undo all your current changes?')) {
-        document.getElementById('adminSettingsForm').reset();
+        window.location.href = window.location.href;
       }
     }
     function resetDefault() {

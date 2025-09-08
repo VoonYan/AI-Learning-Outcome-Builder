@@ -10,28 +10,11 @@ from sqlalchemy import case, update
 main = Blueprint('main', __name__)
 
 
-@main.route('/main-page')
+@main.route('/main_page')
 @main.route('/')
 @login_required
 def main_page(): 
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
-
-@main.route('/main-page2')
-def main_page2(): 
-    return render_template('main_page2.html' )
-
-@main.route('/navbar')
-def navbar():
-    return render_template('admin_page.html')
-
-@main.route('/base')
-@login_required
-def base_main(): 
-    return render_template('base_main.html', title=f'{current_user.username} Dashboard', username=current_user.username)
-
-@main.route('/guest')
-def guest():
-    return render_template('guest_mainpage.html', title='Guest Page')
 
 @main.route('/create-lo')
 @login_required
@@ -141,7 +124,7 @@ def new_unit():
         db.session.add(newUnit)
         db.session.commit()
         flash("Unit Created", 'success')
-        return redirect("/main-page")
+        return redirect("/main_page")
 
 #small helper functions
 def listToStringByComma(List):
