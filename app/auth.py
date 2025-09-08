@@ -48,8 +48,8 @@ def signup_page():
             flash("Account Created", 'success')
             return redirect("/login_page")
 
-
-@auth.route('/Logout')
-def Logout():
-    logout_user()
-    return redirect("/main-page")
+@auth.route('/logout')
+def logout():
+    logout_user()  # this clears the session
+    flash("You have been logged out.", "success")
+    return redirect(url_for('main.home'))

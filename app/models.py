@@ -23,6 +23,10 @@ class User(UserMixin, db.Model):
     userType = db.Column(db.Enum(UserType), nullable=False)  
     password_hash = db.Column("password_hash", db.String(256), nullable=False)
 
+    @property
+    def role(self):
+        return self.userType
+
 class Unit(db.Model):
     __tablename__ = "unit"
     id = db.Column(db.Integer, primary_key=True)
