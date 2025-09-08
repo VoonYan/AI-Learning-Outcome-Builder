@@ -5,6 +5,9 @@ from . import db
 from .models import db, Unit, LearningOutcome, UserType
 from . import create_app, config_manager
 from sqlalchemy import case, update
+import csv
+import pandas as pd
+from io import TextIOWrapper
 
 
 main = Blueprint('main', __name__)
@@ -118,9 +121,60 @@ def search_unit():
     return render_template('search_unit.html', title=f'Creation Page', username=current_user.username)
 """
 
-@main.route('/search_unit')
+@main.route('/search_unit', methods=['GET', 'POST'])
 @login_required
 def search_unit():
+    # Handle CSV/Excel Upload
+    if request.method == "POST":
+        file = request.files.get("upload_file")
+        if not file:
+            flash("No file uploaded", "danger")
+            return redirect(url_for("main.search_unit"))
+
+        filename = file.filename.lower()
+        try:
+            if filename.endswith(".csv"):
+                # CSV → use csv.DictReader
+                stream = TextIOWrapper(file.stream, encoding="utf-8")
+                reader = csv.DictReader(stream)
+                rows = list(reader)
+            elif filename.endswith(".xlsx"):
+                # Excel → use pandas
+                df = pd.read_excel(file, engine="openpyxl")
+                rows = df.to_dict(orient="records")
+            else:
+                flash("Unsupported file format. Upload CSV or Excel.", "danger")
+                return redirect(url_for("main.search_unit"))
+
+            for row in rows:
+                unit_code = row.get("unitcode")
+                unit_name = row.get("unitname")
+                level = row.get("level") 
+                credit_points = row.get("creditpoints")
+                description = row.get("description")
+
+                if unit_code and unit_name and level:
+                    existing = Unit.query.filter_by(unitcode=unit_code).first()
+                    if not existing:
+                        new_unit = Unit(
+                            unitcode=unit_code,
+                            unitname=unit_name,
+                            level=int(level),
+                            creditpoints=int(credit_points) if credit_points else None,
+                            description=description
+                        )
+                        db.session.add(new_unit)
+
+
+            db.session.commit()
+            flash("Units added successfully from file", "success")
+
+        except Exception as e:
+            flash(f"Error processing file: {str(e)}", "danger")
+
+        return redirect(url_for("main.search_unit"))
+
+    #normal search
     query = request.args.get("query", "").strip()
     filter_type = request.args.get("filter", "name")
     sort_by = request.args.get("sort", "unitcode")  # default sorting
@@ -162,6 +216,9 @@ def view():
         abort(404)
 
     if request.method == "POST":
+        #only if user is admin or unit creator
+        if not (current_user.userType == UserType.ADMIN or current_user.id == unit.creator_id):
+            abort(403)  # Forbidden
         # update unit from form data
         unit.unitname = request.form.get("unitname")
         unit.creditpoints = request.form.get("creditpoints")  # optional if editable

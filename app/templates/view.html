@@ -2,91 +2,130 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Unit Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Outcome Builder</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-primary">
-    <div class="container-fluid">
-        <a class="navbar-brand mx-auto fs-2" href="{{ url_for('main.search_unit') }}">AI Learning Outcome Builder</a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">
+                            <img src="{{ url_for('static', filename='images/uwa-logo.png') }}" style="max-width: 75%;" alt="UWA Logo">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="mx-auto order-0">
+                <a class="navbar-brand mx-auto fs-2" href="#">AI Learning Outcome Builder</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-4" href="#">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="bg-warning text-dark text-center py-4">
+        <h3 class="fw-bold">Unit Details</h3>
+        <p class="mb-0">Full information about the selected unit.</p>
     </div>
-</nav>
 
-<div class="bg-warning text-dark text-center py-4">
-    <h3 class="fw-bold">Unit Details</h3>
-    <p class="mb-0">Full information about the selected unit.</p>
-</div>
-
-<div class="container my-5">
-    <div class="card shadow-lg rounded-3 border-0">
-        <div class="card-body p-4">
+    <div class="container my-5">
+        <div class="card shadow-lg rounded-3 border-0">
+            <div class="card-body p-4">
+                
+                <!-- Display Unit Details -->
+                <h2 id="unitTitle" class="fw-bold mb-4 text-primary">{{ unit.unitname }} [{{ unit.unitcode }}]</h2>
+                <p id="unitDetails" class="fs-5">
+                    <strong>Credit Points:</strong> {{ unit.creditpoints }}<br>
+                    <strong>Level:</strong> {{ unit.level }}<br>
+                    <strong>Description:</strong> {{ unit.description or "No description available" }}
+                </p>
+                
+                <h4 class="mt-4">Learning Outcomes</h4>
+                <ul>
+                    {% for lo in unit.learning_outcomes %}
+                    <li>
+                        <strong>{{ loop.index }}.</strong> {{ lo.description }}
+                        {% if lo.assessment %}
+                        (Assessment: {{ lo.assessment }})
+                        {% endif %}
+                    </li>
+                    {% else %}
+                    <li>No learning outcomes defined for this unit.</li>
+                    {% endfor %}
+                </ul>
             
-            <!-- Display Unit Details -->
-            <h2 id="unitTitle" class="fw-bold mb-4 text-primary">{{ unit.unitname }} [{{ unit.unitcode }}]</h2>
-            <p id="unitDetails" class="fs-5">
-                <strong>Credit Points:</strong> {{ unit.creditpoints }}<br>
-                <strong>Level:</strong> {{ unit.level }}<br>
-                <strong>Description:</strong> {{ unit.description or "No description available" }}
-            </p>
-            <!--
-            <h4 class="mt-4">Learning Outcomes</h4>
-            <ul>
-                {% for lo in unit.learning_outcomes %}
-                <li>
-                    <strong>{{ loop.index }}.</strong> {{ lo.description }}
-                    {% if lo.assessment %}
-                    (Assessment: {{ lo.assessment }})
-                    {% endif %}
-                </li>
-                {% else %}
-                <li>No learning outcomes defined for this unit.</li>
-                {% endfor %}
-            </ul>
-        -->
+                {% if current_user.is_admin or current_user.id == unit.creator_id %}
+                    <!-- Edit button -->
+                    <button id="editBtn" class="btn btn-warning text-primary fw-bold mt-3">Edit</button>
 
-            <!-- Edit button -->
-            <button id="editBtn" class="btn btn-warning text-primary fw-bold mt-3">Edit</button>
+                    <!-- Edit Form -->
+                    <form id="editForm" class="mt-4 d-none" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Unit Name</label>
+                            <input type="text" name="unitname" id="editName" class="form-control" value="{{ unit.unitname }}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Credit Points</label>
+                            <input type="number" name="creditpoints" id="editCredit" class="form-control" value="{{ unit.creditpoints }}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea name="description" id="editDescription" class="form-control">{{ unit.description }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+                    </form>
+                {% endif %}
 
-            <!-- Edit Form -->
-            <form id="editForm" class="mt-4 d-none" method="POST">
-                <div class="mb-3">
-                    <label class="form-label">Unit Name</label>
-                    <input type="text" name="unitname" id="editName" class="form-control" value="{{ unit.unitname }}">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Credit Points</label>
-                    <input type="number" name="creditpoints" id="editCredit" class="form-control" value="{{ unit.creditpoints }}">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Description</label>
-                    <textarea name="description" id="editDescription" class="form-control">{{ unit.description }}</textarea>
-                </div>
-                <button type="submit" class="btn btn-success">Save</button>
-                <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
-            </form>
-
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    // show/hide edit form
-    const editBtn = document.getElementById("editBtn");
-    const editForm = document.getElementById("editForm");
-    const cancelBtn = document.getElementById("cancelBtn");
+    <script>
+        // show/hide edit form
+        const editBtn = document.getElementById("editBtn");
+        const editForm = document.getElementById("editForm");
+        const cancelBtn = document.getElementById("cancelBtn");
 
-    editBtn.addEventListener("click", () => {
-        editForm.classList.remove("d-none");
-        editBtn.classList.add("d-none");
-    });
+        editBtn.addEventListener("click", () => {
+            editForm.classList.remove("d-none");
+            editBtn.classList.add("d-none");
+        });
 
-    cancelBtn.addEventListener("click", () => {
-        editForm.classList.add("d-none");
-        editBtn.classList.remove("d-none");
-    });
-</script>
+        cancelBtn.addEventListener("click", () => {
+            editForm.classList.add("d-none");
+            editBtn.classList.remove("d-none");
+        });
+    </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
