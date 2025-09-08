@@ -116,7 +116,6 @@ def search_unit():
 def view():
     return render_template('view.html', title="Unit Details")
 
-
 @main.route('/new_unit', methods = ['GET', 'POST'])
 @login_required
 def new_unit():
