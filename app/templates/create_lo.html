@@ -47,8 +47,8 @@
       {% for lo in outcomes %}
       <tr data-id="{{ lo.id }}">
         <td class="text-center">{{ loop.index }}</td>
-        <td>{{ lo.description }}</td>
-        <td>{{ lo.assessment or '' }}</td>
+        <td><div contenteditable>{{ lo.description }}</div></td>
+        <td><div contenteditable></div>{{ lo.assessment or '' }}</div></td>
         <td class="text-center">
             <button type="submit" class="btn btn-danger rounded-circle btn-sm" onclick="deleteOutcome('{{lo.id}}')">&minus;</button>
         </td>
