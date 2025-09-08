@@ -7,6 +7,7 @@ from . import create_app, config_manager
 from sqlalchemy import case, update
 from .ai_evaluate import run_eval
 import os
+import json
 
 
 main = Blueprint('main', __name__)
@@ -58,7 +59,7 @@ def lo_delete(unit_id, lo_id):
 @login_required
 def lo_add(unit_id):
     existing_los = LearningOutcome.query.filter_by(unit_id=unit_id).all()
-    blank_lo = LearningOutcome(unit_id=unit_id, position=len(existing_los), description="")
+    blank_lo = LearningOutcome(unit_id=unit_id, position=len(existing_los)+1, description="")
     db.session.add(blank_lo)
     db.session.commit()
     flash("Outcome Added", "success")
@@ -94,7 +95,16 @@ def lo_reorder(unit_id):
 @main.post("/lo_api/save/<int:unit_id>")
 @login_required
 def lo_save(unit_id):
-    unit_id = request.form.get("unit_id", type=int)
+    loList = LearningOutcome.query.filter_by(unit_id=unit_id).all()
+    newLoDict = json.loads(request.data)
+    print(newLoDict)
+    for lo in loList:
+        newLOData = newLoDict[str(lo.position)]
+        lo.description = newLOData[0]
+        lo.assessment = newLOData[1]
+        db.session.add(lo)
+    
+    db.session.commit()    
     flash("Outcomes saved.", "success")
     return jsonify({'status': 'ok'})
 

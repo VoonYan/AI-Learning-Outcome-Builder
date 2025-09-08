@@ -35,7 +35,7 @@
     <section class="col-12 col-lg-6">
       <div class="bg-white rounded-4 p-3 border border-primary border-3">
         <div class="table-responsive">
-          <table class="table table-bordered align-middle mb-0">
+          <table class="table table-bordered align-middle mb-0" id="LOTable">
             <thead class="table-primary text-center">
               <tr>
                 {% for heading in headings %}
@@ -46,9 +46,9 @@
        <tbody id="lo-tbody">
       {% for lo in outcomes %}
       <tr data-id="{{ lo.id }}">
-        <td class="text-center">{{ loop.index }}</td>
-        <td><div contenteditable>{{ lo.description }}</div></td>
-        <td><div contenteditable></div>{{ lo.assessment or '' }}</div></td>
+        <td class="text-center loPos">{{ loop.index }}</td>
+        <td class="loDesc"><div contenteditable>{{ lo.description }}</div></td>
+        <td class="loAss"><div contenteditable>{{ lo.assessment or '' }}</div></td>
         <td class="text-center">
             <button type="submit" class="btn btn-danger rounded-circle btn-sm" onclick="deleteOutcome('{{lo.id}}')">&minus;</button>
         </td>
@@ -84,9 +84,8 @@
  
 
     <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button" onclick="addBlankOutcome()">Add Outcome</button>
-    <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">
-  Evaluate
-</button>
+    <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">Evaluate</button>
+    <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="saveBtn" onclick="saveOutcomes()"><i class="bi bi-check-circle me-2"></i>Save Changes</button>
 
 <a class="btn btn-primary rounded-pill px-5 py-3 fw-semibold"
    href="{{ url_for('main.lo_export_csv', unit_id=unit.id) }}">Export</a>
@@ -118,6 +117,25 @@
             if(response.ok){
               window.location.href = window.location.href;
             }
+    })
+  }
+
+  function saveOutcomes(){
+    var rows = document.getElementById("LOTable").rows;
+    jsonString = '{'
+    for( var i = 1 ; i < rows.length; i++){
+      jsonString = jsonString + "\"" + rows[i].cells[0].textContent + "\" " + ': [ \"' + rows[i].cells[1].textContent + '\", \"' + rows[i].cells[2].textContent + '\"]' + ', \n'
+    }
+    jsonString = jsonString.substring(0, jsonString.length-3) + '}'
+    console.log(jsonString)
+    fetch("{{ url_for('main.lo_save', unit_id=unit.id) }}", {
+      method: "POST", 
+      "body": jsonString
+    })
+      .then((response)=>{         
+        if(response.ok){
+          window.location.href = window.location.href;
+        }
     })
   }
 </script>
