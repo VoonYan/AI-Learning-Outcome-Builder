@@ -102,6 +102,7 @@
   const AI_EVALUATE_URL = "{{ url_for('main.ai_evaluate', unit_id=unit.id) }}";
 
   function addBlankOutcome(){
+    autoSave();
     fetch("{{ url_for('main.lo_add', unit_id=unit.id) }}", {method: "POST", "body": "Add LO"})
           .then((response)=>{         
             if(response.ok){
@@ -111,6 +112,7 @@
   }
 
   function deleteOutcome(lo_id){
+    autoSave();
         fetch("{{ url_for('main.lo_delete', unit_id=unit.id, lo_id=-1) }}".replace("-1", lo_id), {method: "DELETE", "body": "Delete LO"})
           .then((response)=>{         
             if(response.ok){
@@ -119,24 +121,34 @@
     })
   }
 
-  function saveOutcomes(){
-    var rows = document.getElementById("LOTable").rows;
-    jsonString = '{'
-    for( var i = 1 ; i < rows.length; i++){
-      jsonString = jsonString + "\"" + rows[i].cells[0].textContent + "\" " + ': [ \"' + rows[i].cells[1].textContent + '\", \"' + rows[i].cells[2].textContent + '\"]' + ', \n'
-    }
-    jsonString = jsonString.substring(0, jsonString.length-3) + '}'
-    console.log(jsonString)
-    fetch("{{ url_for('main.lo_save', unit_id=unit.id) }}", {
-      method: "POST", 
-      "body": jsonString
-    })
-      .then((response)=>{         
-        if(response.ok){
-          window.location.href = window.location.href;
+  let saveTimeout;
+
+  function autoSave() {
+    clearTimeout(saveTimeout); // reset debounce timer
+    saveTimeout = setTimeout(() => {
+      const loDict = {};
+      const rows = document.getElementById("LOTable").rows;
+
+      for (let i = 1; i < rows.length; i++) {
+        let pos = rows[i].cells[0].textContent.trim();
+        let desc = rows[i].cells[1].textContent.trim();
+        let assessment = rows[i].cells[2].textContent.trim();
+        loDict[pos] = [desc, assessment];
+      }
+
+      fetch("{{ url_for('main.lo_save', unit_id=unit.id) }}", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loDict)
+      })
+      .then(response => {
+        if (!response.ok) {
+          console.error("Auto-save failed");
         }
-    })
+      });
+    }, 250); // debounce: wait 400ms after last input
   }
+
 </script>
 <script src="{{ url_for('static', filename='create_lo.js') }}"></script>
 
