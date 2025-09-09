@@ -47,8 +47,8 @@
       {% for lo in outcomes %}
       <tr data-id="{{ lo.id }}">
         <td class="text-center loPos">{{ loop.index }}</td>
-        <td class="loDesc"><div contenteditable>{{ lo.description }}</div></td>
-        <td class="loAss"><div contenteditable>{{ lo.assessment or '' }}</div></td>
+        <td class="loDesc"><div contenteditable oninput="autoSave()">{{ lo.description }}</div></td>
+        <td class="loAss"><div contenteditable oninput="autoSave()">{{ lo.assessment or '' }}</div></td>
         <td class="text-center">
             <button type="submit" class="btn btn-danger rounded-circle btn-sm" onclick="deleteOutcome('{{lo.id}}')">&minus;</button>
         </td>
@@ -85,7 +85,6 @@
 
     <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button" onclick="addBlankOutcome()">Add Outcome</button>
     <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">Evaluate</button>
-    <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="saveBtn" onclick="saveOutcomes()"><i class="bi bi-check-circle me-2"></i>Save Changes</button>
 
 <a class="btn btn-primary rounded-pill px-5 py-3 fw-semibold"
    href="{{ url_for('main.lo_export_csv', unit_id=unit.id) }}">Export</a>

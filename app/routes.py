@@ -62,7 +62,7 @@ def lo_add(unit_id):
     blank_lo = LearningOutcome(unit_id=unit_id, position=len(existing_los)+1, description="")
     db.session.add(blank_lo)
     db.session.commit()
-    flash("Outcome Added", "success")
+    flash("Outcome Added and Saved", "success")
     return jsonify({"ok": True})
 
 @main.post("/lo_api/reorder/<int:unit_id>")
@@ -104,8 +104,7 @@ def lo_save(unit_id):
         lo.assessment = newLOData[1]
         db.session.add(lo)
     
-    db.session.commit()    
-    flash("Outcomes saved.", "success")
+    db.session.commit()
     return jsonify({'status': 'ok'})
 
 
