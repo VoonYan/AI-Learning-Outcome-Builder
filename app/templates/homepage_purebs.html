@@ -20,10 +20,10 @@
         <div class="col-12 col-md-6 col-lg-4">
           <div class="card h-100 border border-2 border-warning shadow-sm">
             <div class="card-body text-center d-flex flex-column">
-              <h2 class="card-title h4 text-primary mb-3">Guest Area</h2>
+              <h2 class="card-title h4 text-primary mb-3">Guest</h2>
               <p class="card-text flex-grow-1">Browse and explore unit outcomes without needing to log in.</p>
               <div>
-                <a class="btn btn-warning fw-bold px-4 text-dark" href="{{ url_for('main.explore') }}">Explore</a>
+                <a class="btn btn-warning px-4 text-dark" href="{{ url_for('main.explore') }}">Explore</a>
               </div>
             </div>
           </div>
@@ -32,11 +32,11 @@
         <div class="col-12 col-md-6 col-lg-4">
           <div class="card h-100 border border-2 border-warning shadow-sm">
             <div class="card-body text-center d-flex flex-column">
-              <h2 class="card-title h4 text-primary mb-3">Unit Coordinator Area</h2>
+              <h2 class="card-title h4 text-primary mb-3">Unit Coordinator</h2>
               <p class="card-text flex-grow-1">For UWA Unit Coordinators to manage units, edit outcomes, approve changes, and oversee alignment with university standards.</p>
               <div class="d-flex justify-content-center gap-2">
-                <a href="{{url_for('auth.login_page')}}" class="btn btn-warning fw-bold px-4 text-dark">Login</a>
-                <a href="/coordinator/help" class="btn btn-primary fw-bold px-4">Help</a>
+                <a href="{{url_for('auth.login_page')}}" class="btn btn-warning px-4 text-dark">Login</a>
+                <a href="/coordinator/help" class="btn btn-primary px-4">Help</a>
               </div>
             </div>
           </div>
@@ -45,11 +45,11 @@
         <div class="col-12 col-md-6 col-lg-4">
           <div class="card h-100 border border-2 border-warning shadow-sm">
             <div class="card-body text-center d-flex flex-column">
-              <h2 class="card-title h4 text-primary mb-3">Admin Area</h2>
+              <h2 class="card-title h4 text-primary mb-3">Admin</h2>
               <p class="card-text flex-grow-1">Admins can oversee the entire system, manage accounts, configure settings, and maintain platform integrity.</p>
               <div class="d-flex justify-content-center gap-2">
-                <a href="{{url_for('auth.login_page')}}" class="btn btn-warning fw-bold px-4 text-dark">Login</a>
-                <a href="/admin/help" class="btn btn-primary fw-bold px-4">Help</a>
+                <a href="{{url_for('auth.login_page')}}" class="btn btn-warning px-4 text-dark">Login</a>
+                <a href="/admin/help" class="btn btn-primary px-4">Help</a>
               </div>
             </div>
           </div>
