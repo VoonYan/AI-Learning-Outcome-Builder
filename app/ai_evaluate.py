@@ -160,17 +160,3 @@ def run_eval(level, unit_name, credit_points, outcomes_text):
         #genai will raise APIException child Exceptions so we can except that specifically
         # but it will also return a large exception object we dont want to print all of it so we should probably do some error checkign here rather than returining just e
         return f"❌ ERROR during generation: {e}. Try again in 1 minute."
-
-###delete this later
-# Example usage:
-if __name__ == "__main__":
-    # Example call
-    outcomes = [
-        "create computer algorithms for novel problems",
-        "analyse the correctness and complexity of algorithms",
-        "implement algorithms in code and test them for correctness and efficiency",
-        "evaluate and apply common algorithmic problem-solving techniques",
-        "evaluate and apply well-known algorithms"
-    ]
-
-    print(run_eval(3, "Advanced Algorithms", 6, "\n".join(outcomes), "AIConfig.json"))
