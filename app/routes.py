@@ -6,7 +6,6 @@ from .models import db, Unit, LearningOutcome, UserType
 from . import create_app, config_manager
 from sqlalchemy import case, update
 
-
 main = Blueprint('main', __name__)
 
 
@@ -25,6 +24,9 @@ def main_page():
 @main.route('/create-lo')
 @login_required
 def create_lo():
+    if current_user.role not in [UserType.ADMIN, UserType.UC]:
+        flash("You do not have permission to access that page.", "danger")
+        return redirect(url_for("main.home")) 
     unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
     outcomes = unit.learning_outcomes if unit else []
@@ -117,6 +119,10 @@ def view():
 @main.route('/new_unit', methods = ['GET', 'POST'])
 @login_required
 def new_unit():
+    if current_user.role not in [UserType.ADMIN, UserType.UC]:
+        flash("You do not have permission to access that page.", "danger")
+        return redirect(url_for("main.home")) 
+    
     form = NewUnitForm()
     if request.method == 'GET':
         return render_template('new_unit_form.html', title=f'Create New Unit', username=current_user.username, form=form)
@@ -166,7 +172,8 @@ def updateAIParams(data):
 @login_required
 def admin():
     if current_user.userType != UserType.ADMIN:
-        return "Unauthorised", 401
+        flash("You do not have permission to access that page.", "danger")
+        return redirect(url_for("main.home")) 
     form = AdminForm()
     if request.method == 'GET':
         #this creates the config for jinja based on the config since config needs lists but jinja needs strings, this could be done in jina with many more lines 
