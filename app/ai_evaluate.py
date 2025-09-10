@@ -140,13 +140,13 @@ def run_eval(level, unit_name, credit_points, outcomes_text):
         api_key = config["API_key"]
 
     if not api_key:
-        return "⌠ERROR: Missing API key. Set GOOGLE_API_KEY in your environment or put it in AIConfig.json."
+        return "❌ERROR: Missing API key. Set GOOGLE_API_KEY in your environment or put it in AIConfig.json."
 
     try:
         level = int(level)
         credit_points = int(credit_points)
     except Exception:
-        return "⌠ERROR: Level and Credit Points must be integers."
+        return "❌ERROR: Level and Credit Points must be integers."
 
     outcomes = outcomes_text.splitlines()
     prompt = build_prompt(level, unit_name, credit_points, outcomes, config)
@@ -168,4 +168,4 @@ def run_eval(level, unit_name, credit_points, outcomes_text):
     except Exception as e:
         # genai will raise APIException child Exceptions so we can except that specifically
         # but it will also return a large exception object we dont want to print all of it so we should probably do some error checkign here rather than returining just e
-        return f"⌠ERROR during generation: {e}. Try again in 1 minute."
+        return f"❌ERROR during generation: {e}. Try again in 1 minute."
