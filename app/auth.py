@@ -23,7 +23,7 @@ def login_page():
             return redirect("/login_page")
         else:
             login_user(userDB, remember=True)
-            return redirect("/main_page")
+            return redirect("/dashboard")
 
 
 @auth.route('/signup_page', methods = ['GET', 'POST'])
@@ -48,7 +48,7 @@ def signup_page():
             flash("Account Created", 'success')
             return redirect("/login_page")
 
-@auth.route('/Logout')
-def Logout():
+@auth.route('/logout')
+def logout():
     logout_user()
-    return redirect("/main_page")
+    return redirect("/base")
