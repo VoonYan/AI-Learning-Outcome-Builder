@@ -86,6 +86,7 @@
   <!-- Buttons -->
   <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
     <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button" onclick="addBlankOutcome()">Add Outcome</button>
+    <button class="btn btn-success rounded-pill px-5 py-3 fw-semibold" type="button" id="saveBtn" onclick="autoSave()">Save</button>
     <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">Evaluate</button>
     <a class="btn btn-primary rounded-pill px-5 py-3 fw-semibold"
        href="{{ url_for('main.lo_export_csv', unit_id=unit.id) }}">Export</a>
@@ -178,8 +179,13 @@
         }
       })
       .catch(err => console.error('Auto-save error:', err));
-    }, 250); // debounce: wait 250ms after last input
+    }, 500); // debounce: wait 500ms after last input
   }
+
+  document.getElementById("saveBtn").addEventListener("click", function() {
+    autoSave();
+    alert("Your edits have been saved successfully!")
+  })
 </script>
 
 <!-- Load the main JavaScript file -->
