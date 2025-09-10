@@ -239,4 +239,42 @@ def AI_reset():
             flash("Settings Successfully Reset to Default.", 'success')
             return jsonify({'status': 'ok'})
         return "Failed To Reset To Default", 500
-    
+
+
+@main.route('/bloom-guide')
+def bloom_guide():
+    """
+    Display the Bloom's Taxonomy guide page with current configuration
+    """
+    # Get current AI configuration parameters
+    config = config_manager.getCurrentParams()
+
+    # Process the credit points data to make it template-friendly
+    config['6_Points_Min'] = config['6 Points'][0]
+    config['6_Points_Max'] = config['6 Points'][1]
+    config['12_Points_Min'] = config['12 Points'][0]
+    config['12_Points_Max'] = config['12 Points'][1]
+    config['24_Points_Min'] = config['24 Points'][0]
+    config['24_Points_Max'] = config['24 Points'][1]
+
+    # Convert lists to JSON strings for JavaScript
+    config_json = {
+        'KNOWLEDGE': config['KNOWLEDGE'],
+        'COMPREHENSION': config['COMPREHENSION'],
+        'APPLICATION': config['APPLICATION'],
+        'ANALYSIS': config['ANALYSIS'],
+        'SYNTHESIS': config['SYNTHESIS'],
+        'EVALUATION': config['EVALUATION'],
+        'BANNED': config['BANNED'],
+        'Level 1': config['Level 1'],
+        'Level 2': config['Level 2'],
+        'Level 3': config['Level 3'],
+        'Level 4': config['Level 4'],
+        'Level 5': config['Level 5'],
+        'Level 6': config['Level 6'],
+        '6 Points': config['6 Points'],
+        '12 Points': config['12 Points'],
+        '24 Points': config['24 Points']
+    }
+
+    return render_template('bloom_guide.html', config=config, config_json=json.dumps(config_json))

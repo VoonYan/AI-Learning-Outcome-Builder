@@ -524,7 +524,7 @@ function showLoading() {
         <div class="spinner-border text-primary mb-3" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        <p class="text-muted">Analyzing learning outcomes...</p>
+        <p class="text-muted">Analysing learning outcomes...</p>
       </div>
     </div>
   `;
