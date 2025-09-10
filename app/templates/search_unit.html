@@ -1,69 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Outcome Builder</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
+{% extends "base_main.html" %}
 
-    <!-- Header -->
+{% block title %}Main Dashboard{% endblock %}
+{% block banner_subtitle %}
+<div class="text-dark text-center py-4">
+    <h3 class="fw-bold">Unit Search</h3>
+    <p class="mb-0">Please enter unit details or upload a file here.</p>
+</div>
+{% endblock %}
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
-        <div class="container-fluid">
-            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">
-                            <img src="images/uwa-logo.png" style="max-width: 75%;" alt="UWA Logo">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="mx-auto order-0">
-                <a class="navbar-brand mx-auto fs-2" href="#">AI Learning Outcome Builder</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link fs-4" href="#">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-4" href="#">Home</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{% block content %}
 
-    <!-- Unit Search Section -->
-    <div class="bg-warning text-dark text-center py-4">
-        <h3 class="fw-bold">Unit Search</h3>
-        <p class="mb-0">Please enter unit details or upload a file here.</p>
-    </div>
-
+<div class="container my-5">
     <!-- Search Box -->
-    <div class="container my-5 text-center">
-        <div class="input-group input-group-lg mb-4 mx-auto rounded-pill border border-dark overflow-hidden"
-     style="max-width: 600px; width: 100%;">
+    <div class="text-center mb-3">
+        <div class="input-group input-group-lg mx-auto rounded-pill border border-dark overflow-hidden"
+             style="max-width: 600px; width: 100%;">
             <button class="btn btn-warning text-primary rounded-circle fw-bold" style="width:50px;height:50px;">+</button>
-            
-            <!-- Search Input -->
             <input type="text" class="form-control border-0" placeholder="Search">
-            
-            <!-- Smaller Filter Dropdown 
-            <select class="form-select form-select-sm border-0 w-auto flex-shrink-0 px-2">
-                <option value="name" selected>By Name</option>
-                <option value="code">By Code</option>
-            </select>-->
-
-            <!-- Compact Filter Dropdown -->
             <select id="filterSelect" 
                     class="form-select form-select-sm border-0 bg-light text-dark rounded-pill px-2"
                     style="width: 150px; flex: 0 0 auto; font-size: 0.95rem; font-weight: normal;">
@@ -71,32 +24,26 @@
                 <option value="code">By Unit Code</option>
             </select>
         </div>
-    </div>
-
-
-        <div class="d-flex justify-content-center gap-3">
+        <!-- View Results Button -->
+        <div class="d-flex justify-content-center gap-3 mt-3">
             <button class="btn btn-warning text-primary fw-bold px-4" style="width:180px;" id="viewBtn">View Results</button>
-        </div> 
+        </div>
     </div>
-
-    </div>
-
 
     <!-- Results Section -->
-    <div id="resultsSection" class="container pt-4 d-none">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0">RESULTS</h4>
-            <select class="form-select w-auto">
-                <option value="unitcode" selected>Sort by Unit Code</option>
-                <option value="unitlevel">Sort by Unit Level</option>
-            </select>
+    <div id="resultsSection" class="container pt-4 d-none w-100">
+        <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                <h4 class="fw-bold mb-0">RESULTS</h4>
+                <select class="form-select w-auto mt-2 mt-md-0">
+                    <option value="unitcode" selected>Sort by Unit Code</option>
+                    <option value="unitlevel">Sort by Unit Level</option>
+                </select>
+            </div>
+            <ul class="list-unstyled" id="resultsList" style="max-height:300px; overflow-y:auto;"></ul>
         </div>
-        <ul class="list-unstyled" id="resultsList" style="max-height:300px; overflow-y:auto;"></ul>
     </div>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/search_unit.js') }}"></script>
+</div>
 
-
-</body>
-</html>
+<script src="{{ url_for('static', filename='js/search_unit.js') }}"></script>
+{% endblock %}

@@ -48,7 +48,6 @@ def signup_page():
             flash("Account Created", 'success')
             return redirect("/login_page")
 
-
 @auth.route('/Logout')
 def Logout():
     logout_user()

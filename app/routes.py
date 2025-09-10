@@ -10,11 +10,17 @@ from sqlalchemy import case, update
 main = Blueprint('main', __name__)
 
 
+
 @main.route('/main_page')
 @main.route('/')
+def home(): 
+    return render_template('homepage_purebs.html' )
+
+@main.route('/main-page')
 @login_required
 def main_page(): 
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
+
 
 @main.route('/create-lo')
 @login_required
@@ -108,7 +114,6 @@ def search_unit():
 def view():
     return render_template('view.html', title="Unit Details")
 
-
 @main.route('/new_unit', methods = ['GET', 'POST'])
 @login_required
 def new_unit():
@@ -176,7 +181,7 @@ def admin():
         form.synthesis.data = listToStringByComma(loadconfig['SYNTHESIS'])
         form.evaluation.data = listToStringByComma(loadconfig['EVALUATION'])
         form.banned.data = listToStringByComma(loadconfig['BANNED'])
-        return render_template('admin_page_template.html', form=form, config=loadconfig)
+        return render_template('admin_page_template.html', form=form, config=loadconfig, getattr=getattr)
 
     if request.method == 'POST':
         updateAIParams(request.form)

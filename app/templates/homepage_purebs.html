@@ -1,48 +1,16 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learning Outcome Builder - Home</title>
+{% extends "base_main.html" %}
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="d-flex flex-column min-vh-100">
-
-  <!-- Header Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid px-3 px-lg-4">
-      <a class="navbar-brand d-flex align-items-center gap-3" href="#">
-        <img src="/static/images/uwa-logo.png" alt="The University of Western Australia logo" class="img-fluid" style="max-width:140px">
-        <span class="fw-bold fs-5">Learning Outcome Builder</span>
-      </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link fw-semibold" href="/coordinator/login">Unit Coordinator Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link fw-semibold" href="/admin/login">Admin Login</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="py-4 py-md-5 bg-warning">
+{% block title %}Main Dashboard{% endblock %}
+{% block banner_subtitle %}
+    <section class="py-4 py-md-5 bg-warning">
     <div class="container text-center">
       <h1 class="display-5 fw-bold mb-3 text-primary">Welcome to the Learning Outcome Builder</h1>
       <p class="lead text-primary">Understand <strong>what this is</strong>, <strong>how we do it</strong>, and choose your access below.</p>
     </div>
   </section>
+{% endblock %}
 
+{% block content %}
   <!-- Main Content -->
   <main class="flex-grow-1">
     <div class="container my-5">
@@ -80,7 +48,7 @@
               <h2 class="card-title h4 text-primary mb-3">Admin Area</h2>
               <p class="card-text flex-grow-1">Admins can oversee the entire system, manage accounts, configure settings, and maintain platform integrity.</p>
               <div class="d-flex justify-content-center gap-2">
-                <a href="/admin/login" class="btn btn-warning fw-bold px-4 text-dark">Login</a>
+                <a href="{{url_for('auth.login_page')}}" class="btn btn-warning fw-bold px-4 text-dark">Login</a>
                 <a href="/admin/help" class="btn btn-primary fw-bold px-4">Help</a>
               </div>
             </div>
@@ -112,12 +80,6 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="mt-auto py-4 bg-primary text-white">
-    <div class="container text-center">
-      <p class="mb-0">© <span id="year"></span> The University of Western Australia - Learning Outcome Builder</p>
-    </div>
-  </footer>
 
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -126,5 +88,4 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
-</body>
-</html>
+{% endblock %}
