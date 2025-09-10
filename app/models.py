@@ -50,7 +50,7 @@ class LearningOutcome(db.Model):
     assessment = db.Column(db.String(255), nullable=True)
     position = db.Column(db.Integer, nullable=False, default=0)
 
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    #created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    #updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     unit = db.relationship("Unit", back_populates="learning_outcomes",foreign_keys=[unit_id],)

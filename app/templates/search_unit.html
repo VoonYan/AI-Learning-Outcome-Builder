@@ -54,20 +54,10 @@
     <!-- Unit Search Section -->
     <div class="bg-warning text-dark text-center py-4">
         <h3 class="fw-bold">Unit Search</h3>
-        <p class="mb-0">Please enter unit details or upload a file here.</p>
+        <p class="mb-0">Please enter unit details.</p>
     </div>
 
     <div class="container my-5 text-center d-flex justify-content-center gap-3">
-
-        <!-- CSV/Excel Upload Form (POST) -->
-        
-        <form method="post" action="{{ url_for('main.search_unit') }}" enctype="multipart/form-data" class="d-inline">
-            <label for="csvUpload" class="btn btn-warning text-primary rounded-circle fw-bold d-flex align-items-center justify-content-center"
-                style="width:50px;height:50px; cursor:pointer;">
-                +
-            </label>
-            <input type="file" id="csvUpload" name="upload_file" class="d-none" accept=".csv,.xlsx" onchange="this.form.submit()">
-        </form>
         
 
         <!-- Normal Search Form (GET) -->

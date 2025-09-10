@@ -8,6 +8,7 @@ from sqlalchemy import case, update
 import csv
 import pandas as pd
 from io import TextIOWrapper
+from sqlalchemy.exc import IntegrityError
 
 
 main = Blueprint('main', __name__)
@@ -116,169 +117,39 @@ def ai_evaluate():
 @main.route('/search_unit', methods=['GET', 'POST'])
 @login_required
 def search_unit():
-    if request.method == "POST":
-        file = request.files.get("upload_file")
-        if not file:
-            flash("No file uploaded", "danger")
-            return redirect(url_for("main.search_unit"))
+    if request.method == "GET":
 
-        filename = file.filename.lower()
-        defaults_applied = False
-        duplicates = []
+        #normal search
+        query = request.args.get("query", "").strip()
+        filter_type = request.args.get("filter", "name")
+        sort_by = request.args.get("sort", "unitcode")  # default sorting
 
-        def safe_int(value, default):
-            try:
-                return int(value)
-            except (ValueError, TypeError):
-                defaults_applied = True
-                return default
+        results = []
 
-        try:
-            rows = []
-
-            # --- Read file ---
-            if filename.endswith(".csv"):
-                stream = TextIOWrapper(file.stream, encoding="utf-8")
-                reader = csv.reader(stream)
-                rows = list(reader)
-            elif filename.endswith(".xlsx"):
-                df = pd.read_excel(file, header=None, engine="openpyxl")
-                rows = df.values.tolist()
+        if query:
+            if filter_type == "code":
+                results = Unit.query.filter(Unit.unitcode.ilike(f"%{query}%")).all()
             else:
-                flash("Unsupported file format. Upload CSV or Excel.", "danger")
-                return redirect(url_for("main.search_unit"))
-
-            # --- Detect headers ---
-            first_row = rows[0]
-            header_keywords = ["unitcode", "unitname", "level", "creditpoints", "description"]
-            if any(str(cell).lower() in header_keywords for cell in first_row):
-                # File has headers
-                if filename.endswith(".csv"):
-                    stream.seek(0)
-                    reader = csv.DictReader(stream)
-                    rows = list(reader)
-                else:
-                    df = pd.read_excel(file, engine="openpyxl")
-                    rows = df.to_dict(orient="records")
-            else:
-                # No headers → smart parser
-                formatted_rows = []
-                for row in rows:
-                    row = [str(cell).strip() if cell not in [None, ""] else None for cell in row]
-                    unitcode = unitname = level = creditpoints = description = None
-
-                    if len(row) >= 5:
-                        unitcode, unitname, level, creditpoints, description = row[:5]
-                    elif len(row) == 4:
-                        unitcode, unitname, level, creditpoints = row
-                    elif len(row) == 3:
-                        unitcode, unitname, level = row
-                    elif len(row) == 2:
-                        unitcode, unitname = row
-                    elif len(row) == 1:
-                        unitcode = row[0]
-
-                    # Smart auto-detection: if unitname is numeric
-                    if unitname and str(unitname).isdigit():
-                        description = creditpoints
-                        creditpoints = level
-                        level = unitname
-                        unitname = None
-
-                    formatted_rows.append({
-                        "unitcode": unitcode,
-                        "unitname": unitname,
-                        "level": level,
-                        "creditpoints": creditpoints,
-                        "description": description
-                    })
-                rows = formatted_rows
-
-            # --- Process rows ---
-            for row in rows:
-                unit_code = row.get("unitcode")
-                unit_name = row.get("unitname")
-                level = row.get("level")
-                credit_points = row.get("creditpoints")
-                description = row.get("description")
-
-                # Apply defaults and safe conversions
-                if not unit_name or (isinstance(unit_name, float) and pd.isna(unit_name)):
-                    unit_name = "default name"
-                    defaults_applied = True
-
-                level = safe_int(level, 1)
-                credit_points = safe_int(credit_points, 6)
-
-                if not description or (isinstance(description, float) and pd.isna(description)):
-                    # If description missing, try last column text
-                    if isinstance(row.get("creditpoints"), str):
-                        description = row.get("creditpoints")
-                    else:
-                        description = "no description"
-                    defaults_applied = True
-
-                if unit_code:
-                    existing = Unit.query.filter_by(unitcode=unit_code).first()
-                    if existing:
-                        duplicates.append(unit_code)
-                    else:
-                        new_unit = Unit(
-                            unitcode=unit_code,
-                            unitname=str(unit_name),
-                            level=int(level),
-                            creditpoints=int(credit_points),
-                            description=str(description)
-                        )
-                        db.session.add(new_unit)
-
-            db.session.commit()
-
-            # Flash success messages
-            msg = "Units added successfully from file."
-            if defaults_applied:
-                msg += " Missing fields were filled with default values."
-            flash(msg, "success")
-
-            if duplicates:
-                flash("The following units already exist and were skipped: " + ", ".join(duplicates), "warning")
-
-        except Exception as e:
-            flash(f"Error processing file: {str(e)}", "danger")
-
-        return redirect(url_for("main.search_unit"))
-
-    #normal search
-    query = request.args.get("query", "").strip()
-    filter_type = request.args.get("filter", "name")
-    sort_by = request.args.get("sort", "unitcode")  # default sorting
-
-    results = []
-
-    if query:
-        if filter_type == "code":
-            results = Unit.query.filter(Unit.unitcode.ilike(f"%{query}%")).all()
+                results = Unit.query.filter(Unit.unitname.ilike(f"%{query}%")).all()
         else:
-            results = Unit.query.filter(Unit.unitname.ilike(f"%{query}%")).all()
-    else:
-        # Empty query → fetch all units
-        results = Unit.query.all()
+            # Empty query → fetch all units
+            results = Unit.query.all()
 
-        # Sorting
-        if sort_by == "unitcode":
-            results.sort(key=lambda u: u.unitcode)
-        elif sort_by == "unitlevel":
-            results.sort(key=lambda u: u.level)
+            # Sorting
+            if sort_by == "unitcode":
+                results.sort(key=lambda u: u.unitcode)
+            elif sort_by == "unitlevel":
+                results.sort(key=lambda u: u.level)
 
-    return render_template(
-        'search_unit.html',
-        title='Unit Search',
-        username=current_user.username,
-        results=results,
-        query=query,
-        filter_type=filter_type,
-        sort_by=sort_by
-    )
+        return render_template(
+            'search_unit.html',
+            title='Unit Search',
+            username=current_user.username,
+            results=results,
+            query=query,
+            filter_type=filter_type,
+            sort_by=sort_by
+        )
 
 
 @main.route('/view', methods=['GET', 'POST'])
@@ -306,6 +177,36 @@ def view():
         return redirect(url_for("main.view", code=unit.unitcode))
 
     return render_template("view.html", title="Unit Details", unit=unit)
+
+
+
+@main.route('/unit/<string:code>/edit_unit', methods=['GET', 'POST'])
+@login_required
+def edit_unit(code):
+    unit = Unit.query.filter_by(unitcode=code).first_or_404()
+
+    if request.method == "POST":
+        # update fields
+        unit.unitcode = request.form["unitcode"].strip().upper()   # normalize to uppercase if needed
+        unit.unitname = request.form["unitname"].strip()
+        unit.level = int(request.form["level"])
+        unit.creditpoints = int(request.form["creditpoints"])
+        unit.description = request.form["description"].strip()
+
+        try:
+            db.session.commit()
+            flash("Unit updated successfully!", "success")
+            # redirect using the (possibly new) unitcode
+            return redirect(url_for("main.view", code=unit.unitcode))
+
+        except IntegrityError:
+            db.session.rollback()
+            flash("That unit code already exists. Please choose a different one.", "danger")
+            # re-render the form with user’s input
+            return render_template("edit_unit.html", unit=unit)
+
+    return render_template("edit_unit.html", unit=unit)
+
 
 
 @main.route('/new_unit', methods = ['GET', 'POST'])
