@@ -1,17 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ title }} - AI Builder</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
-</head>
-<body class="bg-image">
-    <div class="container-fluid d-flex justify-content-center align-items-center title-container" id="ai-builder-title">
-        <h2>AI Builder Login Page</h2>
-    </div>
-    {% block content %}
-    <div class="container-fluid d-flex flex-grow justify-content-center align-items-center login-container">
-        <div class="card shadow p-3 text-white login-box">
+{% extends "base_main.html" %}
+
+{% block title %}Main Dashboard{% endblock %}
+{% block banner_subtitle %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid d-flex flex-grow justify-content-center align-items-center">
+        <div class="card shadow p-3 text-white bg-primary">
             {% with messages = get_flashed_messages(category_filter=["error"])%}
             {% if messages%}
             {% for message in messages%}
@@ -58,14 +52,8 @@
                     </div>
                 </div>
             </form>
-            <p>Already have an account? <a href="{{url_for('auth.login_page')}}">Log In Here</a></p>
+            <p>Already have an account? <a class="text-white" href="{{url_for('auth.login_page')}}">Log In Here</a></p>
         </div>
     </div>
-    {% endblock %}
+{% endblock %}
 
-    <div class="container-fluid d-flex justify-content-center align-items-center footer-container" id="ai-builder-title">
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
