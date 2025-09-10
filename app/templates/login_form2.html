@@ -1,66 +1,59 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ title }} - AI Builder</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
-</head>
-<body class="bg-image">
-    <div class="container-fluid d-flex justify-content-center align-items-center title-container" id="ai-builder-title">
-        <h2>AI Builder Login Page</h2>
-    </div>
-    {% block content %}
-    <div class="container-fluid d-flex flex-grow justify-content-center align-items-center login-container">
-        <div class="card shadow p-3 text-white login-box">
+{% extends "base_main.html" %}
 
-            {% with messages = get_flashed_messages(category_filter=["error"])%}
-            {% if messages%}
-            {% for message in messages%}
-            <div class="alert alert-danger" role="alert">{{message}}</div>
-            {%endfor%}
-            {%endif%}
-            {%endwith%}
+{% block title %}Login - AI Builder{% endblock %}
 
-            {% with messages = get_flashed_messages(category_filter=["success"])%}
-            {% if messages%}
-            {% for message in messages%}
-            <div class="alert alert-success" role="alert">{{message}}</div>
-            {%endfor%}
-            {%endif%}
-            {%endwith%}
+{% block banner_subtitle %}
+  <div class="text-center w-100">
+    <h2 class="text-white mb-0">AI Builder Login</h2>
+  </div>
+{% endblock %}
 
-            <h3 class="mb-3 text-center">Sign In</h3><n> 
-            <form action="{{ url_for('auth.login_page') }}" method="post" novalidate>
-                {{ form.hidden_tag() }}
-                <div>
-                    <div class="mb-3">
-                        {{ form.username.label(class="form-label") }}
-                        {{ form.username(class="form-control", size=32) }}
-                    </div>
 
-                    <div class="mb-3">
-                        {{ form.password.label(class="form-label") }}
-                        {{ form.password(class="form-control", size=32) }}
-                    </div>
+{% block content %}
+<div class="container-fluid d-flex justify-content-center align-items-center login-container">
+  <div class="card shadow p-3 text-white login-box">
 
-                    <div class="form-check mb-3">
-                        {{ form.remember_me(class="form-check-input") }}
-                        {{ form.remember_me.label(class="form-check-label") }}
-                    </div>
+    {% with messages = get_flashed_messages(category_filter=["error"]) %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-                    <div class="mb-2 d-flex justify-content-center">
-                        {{ form.submit(class="btn btn-warning") }}
-                    </div>
-                </div>
-            </form>
-            <p>Don't have an account? <a href="{{url_for('auth.signup_page')}}">Signup Here</a></p>
+    {% with messages = get_flashed_messages(category_filter=["success"]) %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-success" role="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h3 class="mb-3 text-center">Sign In</h3>
+    <form action="{{ url_for('auth.login_page') }}" method="post" novalidate>
+      {{ form.hidden_tag() }}
+      <div>
+        <div class="mb-3">
+          {{ form.username.label(class="form-label") }}
+          {{ form.username(class="form-control", size=32) }}
         </div>
-    </div>
-    {% endblock %}
 
-    <div class="container-fluid d-flex justify-content-center align-items-center footer-container" id="ai-builder-title">
-    </div>
+        <div class="mb-3">
+          {{ form.password.label(class="form-label") }}
+          {{ form.password(class="form-control", size=32) }}
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+        <div class="form-check mb-3">
+          {{ form.remember_me(class="form-check-input") }}
+          {{ form.remember_me.label(class="form-check-label") }}
+        </div>
+
+        <div class="mb-2 d-flex justify-content-center">
+          {{ form.submit(class="btn btn-warning") }}
+        </div>
+      </div>
+    </form>
+    <p>Don't have an account? <a href="{{ url_for('auth.signup_page') }}">Signup Here</a></p>
+  </div>
+</div>
+{% endblock %}
