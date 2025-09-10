@@ -23,7 +23,7 @@ def login_page():
             return redirect("/login_page")
         else:
             login_user(userDB, remember=True)
-            return redirect("/main-page")
+            return redirect("/main_page")
 
 
 @auth.route('/signup_page', methods = ['GET', 'POST'])
@@ -48,8 +48,7 @@ def signup_page():
             flash("Account Created", 'success')
             return redirect("/login_page")
 
-@auth.route('/logout')
-def logout():
-    logout_user()  # this clears the session
-    flash("You have been logged out.", "success")
-    return redirect(url_for('main.home'))
+@auth.route('/Logout')
+def Logout():
+    logout_user()
+    return redirect("/main_page")
