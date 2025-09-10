@@ -7,7 +7,6 @@ import google.genai as genai
 from google.genai import types
 
 
-
 def build_prompt(level: int, unit_name: str, credit_points: int, outcomes: List[str],
                  config) -> str:
     """
@@ -82,11 +81,11 @@ def build_prompt(level: int, unit_name: str, credit_points: int, outcomes: List[
 
     outcomes_block = "\n".join(formatted_outcomes) if formatted_outcomes else "'(no outcomes provided)'"
 
-    # Build the complete system rules
+    # Build the complete system rules with structured format
     system_rules = (
-            "You are a Learning Outcome Evaluation tool for Units in a University "
-            "you must follow the following rules and respond with a specific format.\n\n"
-            "RULE-- Every Learning Outcome must adhere to Bloom's Taxonomy. The best verbs for each class of Bloom's Taxonomy are as such:\n"
+            "You are a Learning Outcome Evaluation tool for Units in a University. "
+            "You must follow the following rules and respond with a SPECIFIC FORMAT.\n\n"
+            "RULE-- Every Learning Outcome must adhere to Bloom's Taxonomy. The best verbs for each class of Bloom's Taxonomy are:\n"
             + BLOOMS_VERBS
             + "RULE-- Units have 6 levels and they should ONLY focus on specific Bloom's classes:\n"
             + LEVEL_RULES
@@ -94,15 +93,24 @@ def build_prompt(level: int, unit_name: str, credit_points: int, outcomes: List[
             + COUNT_RULES
             + "RULE-- The following words and phrases should never be used in Learning Outcomes:\n"
             + BANNED_PHRASES
-            + "\n\nSplit with tag 'LO Analysis'\n"
-              f"FORMAT-- Check all Learning Outcomes are in the {lo_level} Level.\n\n"
-              "FORMAT-- In one sentence per Learning Outcome ending with tag '</LO>':\n"
-              "    if the learning outcome is good then say so and move on,\n"
-              "    otherwise suggest improvements on the following Learning Outcomes for a\n"
-              f"        Level {level} Unit called {unit_name} worth {credit_points} points:\n\n"
+            + "\n\n**CRITICAL OUTPUT FORMAT INSTRUCTIONS**\n"
+              "You MUST structure your response EXACTLY as follows:\n\n"
+              "**LO Analysis**\n\n"
+              f"Check all Learning Outcomes are appropriate for {lo_level} Level (Level {level}).\n"
+              "For EACH learning outcome, write ONE paragraph in this EXACT format:\n"
+              "'[outcome text exactly as provided]' - STATUS:[GOOD/NEEDS_REVISION/COULD_IMPROVE] - [Your evaluation in one or two sentences. "
+              "If STATUS is NEEDS_REVISION or COULD_IMPROVE, end with: SUGGESTION: '[your specific suggested revision]']\n\n"
+              "Status definitions:\n"
+              "- Use STATUS:GOOD when the outcome is appropriate for the level and needs no changes\n"
+              "- Use STATUS:NEEDS_REVISION when the outcome is at the wrong Bloom's level or has serious issues\n"
+              "- Use STATUS:COULD_IMPROVE when the outcome is acceptable but could be strengthened\n\n"
+              f"Learning Outcomes to evaluate for Level {level} Unit called {unit_name} worth {credit_points} points:\n\n"
               f"{outcomes_block}\n\n"
-              "Split with tag 'SUMMARY'\n"
-              "FORMAT-- In one or two sentences conclude with an overall evaluation on all Learning Outcomes and if the user is missing any for the unit.\n"
+              "**SUMMARY**\n\n"
+              "In one or two sentences, provide an overall evaluation of all Learning Outcomes, "
+              f"noting if the quantity is appropriate for a {credit_points}-point unit "
+              f"(should have {config[f'{credit_points} Points'][0]} to {config[f'{credit_points} Points'][1]} outcomes) "
+              "and if they align with the expected Bloom's level.\n"
     )
 
     return system_rules
@@ -124,26 +132,27 @@ def run_eval(level, unit_name, credit_points, outcomes_text):
     """
     # Load configuration from JSON file
     config = config_manager.getCurrentParams()
-   
+
     model_name = config["selected_model"]
     if config["API_key"] == 'environ':
-        api_key = os.getenv("GOOGLE_API_KEY") 
+        api_key = os.getenv("GOOGLE_API_KEY")
     else:
         api_key = config["API_key"]
 
     if not api_key:
-        return "❌ ERROR: Missing API key. Set GOOGLE_API_KEY in your environment or put it in AIConfig.json."
+        return "⌠ERROR: Missing API key. Set GOOGLE_API_KEY in your environment or put it in AIConfig.json."
 
     try:
         level = int(level)
         credit_points = int(credit_points)
     except Exception:
-        return "❌ ERROR: Level and Credit Points must be integers."
+        return "⌠ERROR: Level and Credit Points must be integers."
 
     outcomes = outcomes_text.splitlines()
     prompt = build_prompt(level, unit_name, credit_points, outcomes, config)
-    
-    # configure SDK 
+    # print(prompt)
+
+    # configure SDK
     client = genai.Client(api_key=api_key)
 
     resp = client.models.generate_content(
@@ -157,6 +166,6 @@ def run_eval(level, unit_name, credit_points, outcomes_text):
     try:
         return getattr(resp, "text", "") or "⚠️ No text returned."
     except Exception as e:
-        #genai will raise APIException child Exceptions so we can except that specifically
+        # genai will raise APIException child Exceptions so we can except that specifically
         # but it will also return a large exception object we dont want to print all of it so we should probably do some error checkign here rather than returining just e
-        return f"❌ ERROR during generation: {e}. Try again in 1 minute."
+        return f"⌠ERROR during generation: {e}. Try again in 1 minute."

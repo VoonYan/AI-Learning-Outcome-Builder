@@ -15,12 +15,12 @@
   {%endwith%}
   <div class="row g-4 align-items-start">
 
-  <!-- LEFT: Bloom’s quick guide -->
+  <!-- LEFT: Bloom's quick guide -->
     <aside class="col-12 col-lg-3">
       <div class="card bg-primary text-white rounded-4 text-center p-4 border-0">
         <div class="fs-5 fw-semibold">Learning Outcomes<br>Information Set</div>
         <p class="small mt-2 mb-3 text-white-50">
-          Bloom’s Taxonomy helps write measurable outcomes
+          Bloom's Taxonomy helps write measurable outcomes
           (Knowledge → Comprehension → Application → Analysis → Synthesis → Evaluation).
         </p>
         <a class="btn btn-light btn-sm fw-semibold" target="_blank"
@@ -29,7 +29,6 @@
         </a>
       </div>
     </aside>
-
 
   <!-- Table -->
     <section class="col-12 col-lg-6">
@@ -43,100 +42,132 @@
                 {% endfor %}
               </tr>
             </thead>
-       <tbody id="lo-tbody">
-      {% for lo in outcomes %}
-      <tr data-id="{{ lo.id }}">
-        <td class="text-center loPos">{{ loop.index }}</td>
-        <td class="loDesc"><div contenteditable oninput="autoSave()">{{ lo.description }}</div></td>
-        <td class="loAss"><div contenteditable oninput="autoSave()">{{ lo.assessment or '' }}</div></td>
-        <td class="text-center">
-            <button type="submit" class="btn btn-danger rounded-circle btn-sm" onclick="deleteOutcome('{{lo.id}}')">&minus;</button>
-        </td>
-        <td class="text-center">
-  <i class="bi bi-arrows-move drag-handle" title="Drag to reorder"></i>
-
-</td>
-      </tr>
-      {% else %}
-      <tr><td colspan="5" class="text-center text-muted py-4">No outcomes yet.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
-
+            <tbody id="lo-tbody">
+              {% for lo in outcomes %}
+              <tr data-id="{{ lo.id }}">
+                <td class="text-center loPos">{{ loop.index }}</td>
+                <td class="loDesc"><div contenteditable oninput="autoSave()">{{ lo.description }}</div></td>
+                <td class="loAss"><div contenteditable oninput="autoSave()">{{ lo.assessment or '' }}</div></td>
+                <td class="text-center">
+                    <button type="submit" class="btn btn-danger rounded-circle btn-sm" onclick="deleteOutcome('{{lo.id}}')">&minus;</button>
+                </td>
+                <td class="text-center">
+                  <i class="bi bi-arrows-move drag-handle" title="Drag to reorder" style="cursor: move;"></i>
+                </td>
+              </tr>
+              {% else %}
+              <tr><td colspan="5" class="text-center text-muted py-4">No outcomes yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
 
-
     <!-- RIGHT: evaluation panel -->
-   <aside class="col-12 col-lg-3">
-      <div class="card bg-light rounded-4 p-4">
-        <h5 class="card-title text-primary text-center mb-3">Evaluation Section</h5>
-        <div id="evaluationPanel" class="small text-muted">
-          Run an AI evaluation to get feedback on the outcomes. Results will appear here.
+    <aside class="col-12 col-lg-3">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white">
+                <h6 class="mb-1">
+                    <i class="bi bi-clipboard-check me-2"></i>
+                    Evaluation Results
+                </h6>
+            </div>
+            <div class="card-body overflow-auto" style="max-height: 500px;" id="evaluationPanel">
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-robot fs-3 mb-2 d-block"></i>
+                    <small>Run an AI evaluation to get feedback</small>
+                </div>
+            </div>
         </div>
-      </div>
     </aside>
   </div>
 
   <!-- Buttons -->
   <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
- 
-
     <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button" onclick="addBlankOutcome()">Add Outcome</button>
     <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">Evaluate</button>
-
-<a class="btn btn-primary rounded-pill px-5 py-3 fw-semibold"
-   href="{{ url_for('main.lo_export_csv', unit_id=unit.id) }}">Export</a>
-
+    <a class="btn btn-primary rounded-pill px-5 py-3 fw-semibold"
+       href="{{ url_for('main.lo_export_csv', unit_id=unit.id) }}">Export</a>
   </div>
 </div>
 
-
- <!-- SortableJS (CDN) -->
+<!-- SortableJS (CDN) -->
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
 <script>
+  // Global variables for the page
   const UNIT_ID = JSON.parse('{{ (unit.id if unit else None) | tojson }}');
   const LO_REORDER_URL = "{{ url_for('main.lo_reorder', unit_id=unit.id) }}";
+  const LO_SAVE_URL = "{{ url_for('main.lo_save', unit_id=unit.id) }}";
   const AI_EVALUATE_URL = "{{ url_for('main.ai_evaluate', unit_id=unit.id) }}";
 
+  // Add blank outcome function
   function addBlankOutcome(){
     autoSave();
-    fetch("{{ url_for('main.lo_add', unit_id=unit.id) }}", {method: "POST", "body": "Add LO"})
-          .then((response)=>{         
-            if(response.ok){
-              window.location.href = window.location.href;
-            }
+    fetch("{{ url_for('main.lo_add', unit_id=unit.id) }}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({action: "add"})
     })
+    .then((response) => {
+      if(response.ok){
+        window.location.href = window.location.href;
+      } else {
+        console.error('Failed to add outcome');
+      }
+    })
+    .catch(err => console.error('Error adding outcome:', err));
   }
 
+  // Delete outcome function
   function deleteOutcome(lo_id){
+    if (!confirm('Are you sure you want to delete this learning outcome?')) {
+      return;
+    }
+
     autoSave();
-        fetch("{{ url_for('main.lo_delete', unit_id=unit.id, lo_id=-1) }}".replace("-1", lo_id), {method: "DELETE", "body": "Delete LO"})
-          .then((response)=>{         
-            if(response.ok){
-              window.location.href = window.location.href;
-            }
+    fetch("{{ url_for('main.lo_delete', unit_id=unit.id, lo_id=-1) }}".replace("-1", lo_id), {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      }
     })
+    .then((response) => {
+      if(response.ok){
+        window.location.href = window.location.href;
+      } else {
+        console.error('Failed to delete outcome');
+      }
+    })
+    .catch(err => console.error('Error deleting outcome:', err));
   }
 
+  // Auto-save with debouncing
   let saveTimeout;
 
   function autoSave() {
     clearTimeout(saveTimeout); // reset debounce timer
     saveTimeout = setTimeout(() => {
       const loDict = {};
-      const rows = document.getElementById("LOTable").rows;
+      const rows = document.getElementById("LOTable")?.rows;
 
-      for (let i = 1; i < rows.length; i++) {
-        let pos = rows[i].cells[0].textContent.trim();
-        let desc = rows[i].cells[1].textContent.trim();
-        let assessment = rows[i].cells[2].textContent.trim();
-        loDict[pos] = [desc, assessment];
+      if (!rows || rows.length <= 1) {
+        return; // No data to save
       }
 
-      fetch("{{ url_for('main.lo_save', unit_id=unit.id) }}", {
+      for (let i = 1; i < rows.length; i++) {
+        let pos = rows[i].cells[0]?.textContent?.trim();
+        let desc = rows[i].cells[1]?.textContent?.trim() || '';
+        let assessment = rows[i].cells[2]?.textContent?.trim() || '';
+        if (pos) {
+          loDict[pos] = [desc, assessment];
+        }
+      }
+
+      fetch(LO_SAVE_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(loDict)
@@ -145,12 +176,13 @@
         if (!response.ok) {
           console.error("Auto-save failed");
         }
-      });
-    }, 250); // debounce: wait 400ms after last input
+      })
+      .catch(err => console.error('Auto-save error:', err));
+    }, 250); // debounce: wait 250ms after last input
   }
-
 </script>
-<script src="{{ url_for('static', filename='create_lo.js') }}"></script>
 
+<!-- Load the main JavaScript file -->
+<script src="{{ url_for('static', filename='create_lo.js') }}"></script>
 
 {% endblock %}
