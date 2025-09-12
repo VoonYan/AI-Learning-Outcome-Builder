@@ -201,3 +201,15 @@ def AI_reset():
             return jsonify({'status': 'ok'})
         return "Failed To Reset To Default", 500
     
+
+
+
+@main.route('/import-units', methods=['POST'])
+def import_units():
+    # handle file upload
+    pass
+
+@main.route('/export-units')
+def export_units():
+    # handle export
+    pass
