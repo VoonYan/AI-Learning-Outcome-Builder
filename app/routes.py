@@ -366,7 +366,7 @@ def import_units():
         flash(msg, "success")
 
         if duplicates:
-            flash("The following units already exist and were skipped: " + ", ".join(duplicates), "warning")
+            flash(f"{len(duplicates)} units were skipped due to duplication.", "warning")
 
     except Exception as e:
         flash(f"Error processing file: {str(e)}", "danger")
@@ -378,3 +378,11 @@ def import_units():
 def export_units():
     # handle export
     pass
+
+
+
+@main.route('/clear-session')
+def clear_session():
+    session.clear()
+    flash("Session cleared!", "success")
+    return redirect(url_for('main.main_page'))
