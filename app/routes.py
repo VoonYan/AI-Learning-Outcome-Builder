@@ -373,15 +373,31 @@ def import_units():
     return redirect(url_for("main.main_page"))
 
 
+
+
+
+
 @main.route('/export-units')
+@login_required
 def export_units():
-    # handle export
-    pass
+    import csv, io
+    # Filter units by current user if needed 
+    # units = Unit.query.filter_by(user_id=current_user.id).all()
+    units = Unit.query.all()  # Or filter as needed
 
-
-
-@main.route('/clear-session')
-def clear_session():
-    session.clear()
-    flash("Session cleared!", "success")
-    return redirect(url_for('main.main_page'))
+    buf = io.StringIO()
+    writer = csv.writer(buf)
+    writer.writerow(["Unit Code", "Unit Name", "Level", "Credit Points", "Description"])
+    for unit in units:
+        writer.writerow([
+            unit.unitcode,
+            unit.unitname,
+            unit.level,
+            unit.creditpoints,
+            unit.description
+        ])
+    out = buf.getvalue()
+    return (out, 200, {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": 'attachment; filename="all_units.csv"'
+    })
