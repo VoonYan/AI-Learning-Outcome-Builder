@@ -16,9 +16,9 @@ def home():
     return render_template('homepage_purebs.html' )
 
 #guest to explore dashboard
-@main.route('/explore')
-def explore():
-    return render_template('main_page.html')
+#@main.route('/explore')
+#def explore():
+#    return render_template('main_page.html')
 
 @main.route('/dashboard')
 @login_required
@@ -26,7 +26,7 @@ def main_page():
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
 
-@main.route('/guest')
+@main.route('/guest-mainpage')
 def guest():
     return render_template('guest_mainpage.html', title='Guest Page')
 
