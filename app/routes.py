@@ -363,10 +363,9 @@ def import_units():
         msg = "Units added successfully from file."
         if defaults_applied:
             msg += " Missing fields were filled with default values."
-        flash(msg, "success")
-
         if duplicates:
-            flash(f"{len(duplicates)} units were skipped due to duplication.", "warning")
+            msg += f" {len(duplicates)} units were skipped due to duplication."
+        flash(msg, "success")
 
     except Exception as e:
         flash(f"Error processing file: {str(e)}", "danger")
