@@ -30,6 +30,10 @@ def main_page():
 def guest():
     return render_template('guest_mainpage.html', title='Guest Page')
 
+@main.route('/guest')
+def guest():
+    return render_template('guest_mainpage.html', title='Guest Page')
+
 @main.route('/create-lo')
 @login_required
 def create_lo():
