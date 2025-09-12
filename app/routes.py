@@ -208,6 +208,7 @@ def AI_reset():
 @login_required
 def import_units():
     import csv
+    import io
     import pandas as pd
     from io import TextIOWrapper
 
@@ -224,18 +225,26 @@ def import_units():
         try:
             return int(value)
         except (ValueError, TypeError):
-            nonlocal defaults_applied
             defaults_applied = True
             return default
+
 
     try:
         rows = []
 
         # --- Read file ---
+        # if filename.endswith(".csv"):
+
+        #     stream = TextIOWrapper(file.stream, encoding="utf-8")
+        #     reader = csv.reader(stream)
+        #     rows = list(reader)
         if filename.endswith(".csv"):
-            stream = TextIOWrapper(file.stream, encoding="utf-8")
+            file.stream.seek(0)
+            content = file.read().decode("utf-8")
+            stream = io.StringIO(content)
             reader = csv.reader(stream)
             rows = list(reader)
+
         elif filename.endswith(".xlsx"):
             df = pd.read_excel(file, header=None, engine="openpyxl")
             rows = df.values.tolist()
@@ -249,9 +258,30 @@ def import_units():
         if any(str(cell).lower() in header_keywords for cell in first_row):
             # File has headers
             if filename.endswith(".csv"):
+                # stream.seek(0)
+                # reader = csv.DictReader(stream)
+                # rows = list(reader)
                 stream.seek(0)
                 reader = csv.DictReader(stream)
-                rows = list(reader)
+                header_map = {
+                    "code": "unitcode",
+                    "title": "unitname",
+                    "level": "level",
+                    "Assessments": "creditpoints",  # not present, so will be None
+                    "Content": "description"
+                }
+
+                mapped_rows = []
+                for row in reader:  # use reader, not rows
+                    mapped_row = {}
+                    for csv_key, model_key in header_map.items():
+                        mapped_row[model_key] = row.get(csv_key)
+                    # Set creditpoints to 6 if missing or None
+                    if not mapped_row.get("creditpoints"):
+                        mapped_row["creditpoints"] = 6
+                    mapped_rows.append(mapped_row)
+                rows = mapped_rows
+                # rows = list(reader)
             else:
                 df = pd.read_excel(file, engine="openpyxl")
                 rows = df.to_dict(orient="records")
@@ -342,6 +372,8 @@ def import_units():
         flash(f"Error processing file: {str(e)}", "danger")
 
     return redirect(url_for("main.main_page"))
+
+
 @main.route('/export-units')
 def export_units():
     # handle export
