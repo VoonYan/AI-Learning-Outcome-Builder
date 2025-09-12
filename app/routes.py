@@ -26,8 +26,8 @@ def main_page():
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
 
-@main.route('/guest-mainpage')
-def guest():
+@main.route('/guest_mainpage')
+def guest_mainpage():
     return render_template('guest_mainpage.html', title='Guest Page')
 
 
