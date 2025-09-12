@@ -378,9 +378,9 @@ def import_units():
 
 
 
-@main.route('/export-units-and-outcomes')
+@main.route('/export_units')
 @login_required
-def export_units_and_outcomes():
+def export_units():
     import csv, io
 
     buf = io.StringIO()
