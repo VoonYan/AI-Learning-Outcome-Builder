@@ -84,7 +84,7 @@
 
   <!-- Buttons -->
   <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
-    <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button" onclick="addBlankOutcome()">Add Outcome</button>
+    <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold" type="button" id="addBtn" onclick="addBlankOutcome()">Add Outcome</button>
     <button class="btn btn-success rounded-pill px-5 py-3 fw-semibold" type="button" id="saveBtn" onclick="autoSave()">Save</button>
     <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">Evaluate</button>
     <a class="btn btn-primary rounded-pill px-5 py-3 fw-semibold"
@@ -104,7 +104,6 @@
 
   // Add blank outcome function
   function addBlankOutcome(){
-    autoSave();
     fetch("{{ url_for('main.lo_add', unit_id=unit.id) }}", {
       method: "POST",
       headers: {
@@ -121,14 +120,12 @@
     })
     .catch(err => console.error('Error adding outcome:', err));
   }
-
   // Delete outcome function
   function deleteOutcome(lo_id){
     if (!confirm('Are you sure you want to delete this learning outcome?')) {
       return;
     }
 
-    autoSave();
     fetch("{{ url_for('main.lo_delete', unit_id=unit.id, lo_id=-1) }}".replace("-1", lo_id), {
       method: "DELETE",
       headers: {
@@ -145,46 +142,52 @@
     .catch(err => console.error('Error deleting outcome:', err));
   }
 
-  // Auto-save with debouncing
-  let saveTimeout;
+//Save request function
+let saveTimeout;
 
-  function autoSave() {
-    clearTimeout(saveTimeout); // reset debounce timer
-    saveTimeout = setTimeout(() => {
-      const loDict = {};
-      const rows = document.getElementById("LOTable")?.rows;
+// Function that actually sends the data to the server
+function sendSaveRequest() {
+  const loDict = {};
+  const rows = document.getElementById("LOTable")?.rows;
 
-      if (!rows || rows.length <= 1) {
-        return; // No data to save
-      }
+  if (!rows || rows.length <= 1) return;
 
-      for (let i = 1; i < rows.length; i++) {
-        let pos = rows[i].cells[0]?.textContent?.trim();
-        let desc = rows[i].cells[1]?.textContent?.trim() || '';
-        let assessment = rows[i].cells[2]?.textContent?.trim() || '';
-        if (pos) {
-          loDict[pos] = [desc, assessment];
-        }
-      }
-
-      fetch(LO_SAVE_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loDict)
-      })
-      .then(response => {
-        if (!response.ok) {
-          console.error("Auto-save failed");
-        }
-      })
-      .catch(err => console.error('Auto-save error:', err));
-    }, 500); // debounce: wait 500ms after last input
+  for (let i = 1; i < rows.length; i++) {
+    let pos = rows[i].cells[0]?.textContent?.trim();
+    let desc = rows[i].cells[1]?.textContent?.trim() || '';
+    let assessment = rows[i].cells[2]?.textContent?.trim() || '';
+    if (pos) {
+      loDict[pos] = [desc, assessment];
+    }
   }
 
-  document.getElementById("saveBtn").addEventListener("click", function() {
-    autoSave();
-    alert("Your edits have been saved successfully!")
+  fetch(LO_SAVE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(loDict)
   })
+  .then(response => {
+    if (!response.ok) console.error("Save failed");
+  })
+  .catch(err => console.error('Save error:', err));
+}
+
+// Debounced autosave while typing
+function autoSave() {
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => sendSaveRequest(), 750);
+}
+
+// Manual save button
+document.getElementById("saveBtn").addEventListener("click", function() {
+  sendSaveRequest();
+  alert("Your edits have been saved successfully!");
+});
+
+// Save immediately on blur (click off)
+document.querySelectorAll('#LOTable [contenteditable]').forEach(div => {
+  div.addEventListener('blur', () => sendSaveRequest());
+});
 </script>
 
 <!-- Load the main JavaScript file -->
