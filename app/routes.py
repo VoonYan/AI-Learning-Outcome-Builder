@@ -125,7 +125,7 @@ def new_unit():
         if not form.validate():
             return render_template('new_unit_form.html', title=f'Create New Unit', username=current_user.username, form=form)
         data = request.form
-        newUnit = Unit(unitcode=data["unitcode"], unitname=data["unitname"], level=data["level"], creditpoints=data["creditpoints"], description=data["description"])
+        newUnit = Unit(unitcode=data["unitcode"], unitname=data["unitname"], level=data["level"], creditpoints=data["creditpoints"], description=data["description"],user_id=current_user.id)
         db.session.add(newUnit)
         db.session.commit()
         flash("Unit Created", 'success')
@@ -353,7 +353,8 @@ def import_units():
                         unitname=str(unit_name),
                         level=int(level),
                         creditpoints=int(credit_points),
-                        description=str(description)
+                        description=str(description),
+                        user_id=current_user.id
                     )
                     db.session.add(new_unit)
 
@@ -389,7 +390,7 @@ def export_units_and_outcomes():
         "Outcome Description", "Assessment", "Outcome Position"
     ])
 
-    units = Unit.query.all()  # If you add user_id, filter here
+    units = Unit.query.filter_by(user_id=current_user.id).all()
 
     for unit in units:
         for lo in unit.learning_outcomes:
