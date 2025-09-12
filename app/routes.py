@@ -26,10 +26,20 @@ def main_page():
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
 
-@main.route('/guest_mainpage')
+@main.route('/guest-mainpage')
 def guest_mainpage():
-    return render_template('guest_mainpage.html', title='Guest Page')
+    unit_id = request.args.get("unit_id", type=int)
+    unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
+    headings = ["#", "Learning Outcome", "Assessment", "Delete", "Reorder"]
+    outcomes = []  # guest starts fresh or empty
+    return render_template('guest_mainpage.html', title=f'Guest Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
 
+
+@main.route("/guest/search-unit", methods=["GET"])
+def search_unit_guest():
+    query = request.args.get("query", "")
+    results = []  # implement a query to DB (read-only)
+    return render_template("search_unit_guest.html", results=results)
 
 @main.route('/create-lo')
 @login_required
