@@ -30,7 +30,7 @@ Hello {{ username }}. Please select from one of the following:
         {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
         <p>Click the buttons below to import or export the outcomes</p>
         <div class="d-flex flex-column gap-2">
-            <!-- Import Button (styled like search/import) -->
+            <!-- Import Button  -->
             <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
                 <label for="importFile" class="btn mt-3 btn-warning">
                     Import

@@ -233,11 +233,6 @@ def import_units():
         rows = []
 
         # --- Read file ---
-        # if filename.endswith(".csv"):
-
-        #     stream = TextIOWrapper(file.stream, encoding="utf-8")
-        #     reader = csv.reader(stream)
-        #     rows = list(reader)
         if filename.endswith(".csv"):
             file.stream.seek(0)
             content = file.read().decode("utf-8")
@@ -258,9 +253,6 @@ def import_units():
         if any(str(cell).lower() in header_keywords for cell in first_row):
             # File has headers
             if filename.endswith(".csv"):
-                # stream.seek(0)
-                # reader = csv.DictReader(stream)
-                # rows = list(reader)
                 stream.seek(0)
                 reader = csv.DictReader(stream)
                 header_map = {
@@ -281,7 +273,6 @@ def import_units():
                         mapped_row["creditpoints"] = 6
                     mapped_rows.append(mapped_row)
                 rows = mapped_rows
-                # rows = list(reader)
             else:
                 df = pd.read_excel(file, engine="openpyxl")
                 rows = df.to_dict(orient="records")
