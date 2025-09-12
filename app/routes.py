@@ -205,10 +205,143 @@ def AI_reset():
 
 
 @main.route('/import-units', methods=['POST'])
+@login_required
 def import_units():
-    # handle file upload
-    pass
+    import csv
+    import pandas as pd
+    from io import TextIOWrapper
 
+    file = request.files.get("import_file")
+    if not file:
+        flash("No file uploaded", "danger")
+        return redirect(url_for("main.main_page"))
+
+    filename = file.filename.lower()
+    defaults_applied = False
+    duplicates = []
+
+    def safe_int(value, default):
+        try:
+            return int(value)
+        except (ValueError, TypeError):
+            nonlocal defaults_applied
+            defaults_applied = True
+            return default
+
+    try:
+        rows = []
+
+        # --- Read file ---
+        if filename.endswith(".csv"):
+            stream = TextIOWrapper(file.stream, encoding="utf-8")
+            reader = csv.reader(stream)
+            rows = list(reader)
+        elif filename.endswith(".xlsx"):
+            df = pd.read_excel(file, header=None, engine="openpyxl")
+            rows = df.values.tolist()
+        else:
+            flash("Unsupported file format. Upload CSV or Excel.", "danger")
+            return redirect(url_for("main.main_page"))
+
+        # --- Detect headers ---
+        first_row = rows[0]
+        header_keywords = ["unitcode", "unitname", "level", "creditpoints", "description"]
+        if any(str(cell).lower() in header_keywords for cell in first_row):
+            # File has headers
+            if filename.endswith(".csv"):
+                stream.seek(0)
+                reader = csv.DictReader(stream)
+                rows = list(reader)
+            else:
+                df = pd.read_excel(file, engine="openpyxl")
+                rows = df.to_dict(orient="records")
+        else:
+            # No headers → smart parser
+            formatted_rows = []
+            for row in rows:
+                row = [str(cell).strip() if cell not in [None, ""] else None for cell in row]
+                unitcode = unitname = level = creditpoints = description = None
+
+                if len(row) >= 5:
+                    unitcode, unitname, level, creditpoints, description = row[:5]
+                elif len(row) == 4:
+                    unitcode, unitname, level, creditpoints = row
+                elif len(row) == 3:
+                    unitcode, unitname, level = row
+                elif len(row) == 2:
+                    unitcode, unitname = row
+                elif len(row) == 1:
+                    unitcode = row[0]
+
+                # Smart auto-detection: if unitname is numeric
+                if unitname and str(unitname).isdigit():
+                    description = creditpoints
+                    creditpoints = level
+                    level = unitname
+                    unitname = None
+
+                formatted_rows.append({
+                    "unitcode": unitcode,
+                    "unitname": unitname,
+                    "level": level,
+                    "creditpoints": creditpoints,
+                    "description": description
+                })
+            rows = formatted_rows
+
+        # --- Process rows ---
+        for row in rows:
+            unit_code = row.get("unitcode")
+            unit_name = row.get("unitname")
+            level = row.get("level")
+            credit_points = row.get("creditpoints")
+            description = row.get("description")
+
+            # Apply defaults and safe conversions
+            if not unit_name or (isinstance(unit_name, float) and pd.isna(unit_name)):
+                unit_name = "default name"
+                defaults_applied = True
+
+            level = safe_int(level, 1)
+            credit_points = safe_int(credit_points, 6)
+
+            if not description or (isinstance(description, float) and pd.isna(description)):
+                # If description missing, try last column text
+                if isinstance(row.get("creditpoints"), str):
+                    description = row.get("creditpoints")
+                else:
+                    description = "no description"
+                defaults_applied = True
+
+            if unit_code:
+                existing = Unit.query.filter_by(unitcode=unit_code).first()
+                if existing:
+                    duplicates.append(unit_code)
+                else:
+                    new_unit = Unit(
+                        unitcode=unit_code,
+                        unitname=str(unit_name),
+                        level=int(level),
+                        creditpoints=int(credit_points),
+                        description=str(description)
+                    )
+                    db.session.add(new_unit)
+
+        db.session.commit()
+
+        # Flash success messages
+        msg = "Units added successfully from file."
+        if defaults_applied:
+            msg += " Missing fields were filled with default values."
+        flash(msg, "success")
+
+        if duplicates:
+            flash("The following units already exist and were skipped: " + ", ".join(duplicates), "warning")
+
+    except Exception as e:
+        flash(f"Error processing file: {str(e)}", "danger")
+
+    return redirect(url_for("main.main_page"))
 @main.route('/export-units')
 def export_units():
     # handle export
