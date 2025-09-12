@@ -377,27 +377,34 @@ def import_units():
 
 
 
-@main.route('/export-units')
+@main.route('/export-units-and-outcomes')
 @login_required
-def export_units():
+def export_units_and_outcomes():
     import csv, io
-    # Filter units by current user if needed 
-    # units = Unit.query.filter_by(user_id=current_user.id).all()
-    units = Unit.query.all()  # Or filter as needed
 
     buf = io.StringIO()
     writer = csv.writer(buf)
-    writer.writerow(["Unit Code", "Unit Name", "Level", "Credit Points", "Description"])
+    writer.writerow([
+        "Unit Code", "Unit Name", "Level", "Credit Points", "Unit Description",
+        "Outcome Description", "Assessment", "Outcome Position"
+    ])
+
+    units = Unit.query.all()  # If you add user_id, filter here
+
     for unit in units:
-        writer.writerow([
-            unit.unitcode,
-            unit.unitname,
-            unit.level,
-            unit.creditpoints,
-            unit.description
-        ])
+        for lo in unit.learning_outcomes:
+            writer.writerow([
+                unit.unitcode,
+                unit.unitname,
+                unit.level,
+                unit.creditpoints,
+                unit.description,
+                lo.description,
+                lo.assessment or "",
+                lo.position
+            ])
     out = buf.getvalue()
     return (out, 200, {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": 'attachment; filename="all_units.csv"'
+        "Content-Disposition": 'attachment; filename="units_and_outcomes.csv"'
     })
