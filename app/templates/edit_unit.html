@@ -1,0 +1,75 @@
+{% extends "base_main.html" %}
+
+{% block title %}Main Dashboard{% endblock %}
+{% block banner_subtitle %}
+<div class="bg-warning text-dark text-center py-4">
+    <h3 class="fw-bold">Edit Unit Details</h3>
+    <p class="mb-0">Edit information about the selected unit.</p>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="card shadow-lg rounded-3 border-0">
+        <div class="card-body p-4">
+            <h2 class="fw-bold text-primary mb-4">Edit Unit: {{ unit.unitname }}</h2>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+            <div>
+                <div class="mb-3">
+                    {{ form.unitcode.label(class="form-label") }}
+                    {{ form.unitcode(class="form-control", size=32) }}
+                    {% for error in form.unitcode.errors %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                    {%endfor%}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.unitname.label(class="form-label") }}
+                    {{ form.unitname(class="form-control", size=32) }}
+                    {% for error in form.unitname.errors %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                    {%endfor%}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.level.label(class="form-label") }}
+                    {{ form.level(class="form-select", id='levelSelect')}}
+                <script>
+                    document.getElementById('levelSelect').value = "{{unit.level}}";
+                </script>
+                </div>
+
+                <div class="mb-3">
+                    {{ form.creditpoints.label(class="form-label")}}
+                    {{ form.creditpoints(class="form-select", id='pointSelect')}}
+                <script>
+                    document.getElementById('pointSelect').value = "{{unit.creditpoints}}";
+                </script>
+                </div>
+
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control", size=32)}}
+                </div>
+
+                <div class="mb-2 d-flex">
+                    {{ form.submit(class="btn btn-warning me-2") }}
+                    <a href="{{ url_for('main.view', unit_id=unit.id) }}" class="btn btn-secondary me-2">Cancel</a>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

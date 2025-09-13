@@ -23,6 +23,10 @@ class User(UserMixin, db.Model):
     userType = db.Column(db.Enum(UserType), nullable=False)  
     password_hash = db.Column("password_hash", db.String(256), nullable=False)
 
+    @property
+    def role(self):
+        return self.userType
+
 class Unit(db.Model):
     __tablename__ = "unit"
     id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +35,7 @@ class Unit(db.Model):
     level = db.Column(db.Integer, nullable=False)
     creditpoints = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(512), nullable=True)
+    creatorid = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE", name='fk_unit_creatorid'), nullable=False)
 
     learning_outcomes = db.relationship(
         "LearningOutcome",
@@ -38,6 +43,7 @@ class Unit(db.Model):
         cascade="all, delete-orphan",
         order_by="LearningOutcome.position.asc()"
     )
+
 
 
 class LearningOutcome(db.Model):
@@ -49,8 +55,7 @@ class LearningOutcome(db.Model):
     assessment = db.Column(db.String(255), nullable=True)
     position = db.Column(db.Integer, nullable=False, default=0)
 
-    #why is this here? and is not valid
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    #created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    #updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     unit = db.relationship("Unit", back_populates="learning_outcomes",foreign_keys=[unit_id],)

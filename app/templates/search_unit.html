@@ -1,102 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Outcome Builder</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</head>
-<body>
+{% extends "base_main.html" %}
 
-    <!-- Header -->
+{% block title %}Main Dashboard{% endblock %}
+{% block banner_subtitle %}
+<div class="text-dark text-center py-4">
+    <h3 class="fw-bold">Unit Search</h3>
+    <p class="mb-0">Please enter unit details or upload a file here.</p>
+</div>
+{% endblock %}
 
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
-        <div class="container-fluid">
-            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">
-                            <img src="images/uwa-logo.png" style="max-width: 75%;" alt="UWA Logo">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="mx-auto order-0">
-                <a class="navbar-brand mx-auto fs-2" href="#">AI Learning Outcome Builder</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link fs-4" href="#">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-4" href="#">Home</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{% block content %}
+<div class="container my-5">
 
-    <!-- Unit Search Section -->
-    <div class="bg-warning text-dark text-center py-4">
-        <h3 class="fw-bold">Unit Search</h3>
-        <p class="mb-0">Please enter unit details or upload a file here.</p>
-    </div>
-
-    <!-- Search Box -->
-    <div class="container my-5 text-center">
-        <div class="input-group input-group-lg mb-4 mx-auto rounded-pill border border-dark overflow-hidden"
-     style="max-width: 600px; width: 100%;">
-            <button class="btn btn-warning text-primary rounded-circle fw-bold" style="width:50px;height:50px;">+</button>
-            
-            <!-- Search Input -->
-            <input type="text" class="form-control border-0" placeholder="Search">
-            
-            <!-- Smaller Filter Dropdown 
-            <select class="form-select form-select-sm border-0 w-auto flex-shrink-0 px-2">
-                <option value="name" selected>By Name</option>
-                <option value="code">By Code</option>
-            </select>-->
-
-            <!-- Compact Filter Dropdown -->
-            <select id="filterSelect" 
-                    class="form-select form-select-sm border-0 bg-light text-dark rounded-pill px-2"
-                    style="width: 150px; flex: 0 0 auto; font-size: 0.95rem; font-weight: normal;">
-                <option value="name">By Unit Name</option>
-                <option value="code">By Unit Code</option>
+    <div class="container my-5 text-center d-flex justify-content-center gap-3">
+        
+        
+        <!-- Normal Search Form (GET) -->
+        <form method="get" action="{{ url_for('main.search_unit') }}" class="d-inline" style="max-width: 600px; width: 100%;">
+            <div class="input-group input-group-lg mb-4 mx-auto rounded-pill border border-dark overflow-hidden">
+                <input type="text" name="query" class="form-control border-0" placeholder="Search" value="{{ query }}">
+                
+                <select name="filter" class="form-select form-select-sm border-0 bg-light text-dark rounded-pill px-2"
+                style="width: 150px; flex: 0 0 auto; font-size: 0.95rem;">
+                <option value="name" {% if filter_type=='name' %}selected{% endif %}>By Unit Name</option>
+                <option value="code" {% if filter_type=='code' %}selected{% endif %}>By Unit Code</option>
             </select>
         </div>
-    </div>
-
-
+        
         <div class="d-flex justify-content-center gap-3">
-            <button class="btn btn-warning text-primary fw-bold px-4" style="width:180px;" id="viewBtn">View Results</button>
-        </div> 
-    </div>
-
-    </div>
-
-
-    <!-- Results Section -->
-    <div id="resultsSection" class="container pt-4 d-none">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0">RESULTS</h4>
-            <select class="form-select w-auto">
-                <option value="unitcode" selected>Sort by Unit Code</option>
-                <option value="unitlevel">Sort by Unit Level</option>
-            </select>
+            <button type="submit" class="btn btn-warning text-primary fw-bold px-4" style="width:180px;">View Results</button>
         </div>
-        <ul class="list-unstyled" id="resultsList" style="max-height:300px; overflow-y:auto;"></ul>
+    </form>
+    
+    
+</div>
+
+
+<!-- Results Section -->
+{% if results %}
+<div class="container pt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">
+            {% if query %}
+            RESULTS
+            {% else %}
+            Showing all units
+            {% endif %}
+        </h4>
+        <select class="form-select w-auto" onchange="location.href=this.value;">
+            <option value="?query={{ query }}&filter={{ filter_type }}&sort=unitcode" {% if sort_by=='unitcode' %}selected{% endif %}>Sort by Unit Code</option>
+            <option value="?query={{ query }}&filter={{ filter_type }}&sort=unitlevel" {% if sort_by=='unitlevel' %}selected{% endif %}>Sort by Unit Level</option>
+        </select>
     </div>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/search_unit.js') }}"></script>
+    <ul class="list-unstyled" style="max-height:300px; overflow-y:auto;">
+        {% for unit in results %}
+        <li class="mb-3 p-3 border rounded bg-light">
+            <a href="{{ url_for('main.view', unit_id=unit.id) }}"
+            class="fw-bold text-dark text-decoration-none link-hover">
+            {{ unit.unitname }} [{{ unit.unitcode }}]
+        </a>
+        <br>
+        Credit points: {{ unit.creditpoints }} | Level: {{ unit.level }}<br>
+        Description: {{ unit.description or "No description available" }}
+    </li>
+    {% endfor %}
+</ul>
+</div>
+{% elif query %}
+<p class="text-center text-muted">No results found for "{{ query }}"</p>
+{% endif %}
+
+<!-- JS for hover effect -->
+<script>
+    document.querySelectorAll('.link-hover').forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            link.style.color = 'blue';
+            link.style.textDecoration = 'underline';
+        });
+        link.addEventListener('mouseleave', () => {
+            link.style.color = 'black';
+            link.style.textDecoration = 'none';
+        });
+    });
+    </script>
+</div>
+{% endblock %}
 
 
-</body>
-</html>

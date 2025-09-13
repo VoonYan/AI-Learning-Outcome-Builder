@@ -1,8 +1,11 @@
 {% extends "base_main.html" %}
 
 {% block title %}Main Dashboard{% endblock %}
-{% block banner_title %}Main Dashboard{% endblock %}
-{% block banner_subtitle %}Hello {{ username }}. Please select from one of the following:{% endblock %}
+{% block banner_subtitle %}
+<div class="text-center">
+Hello {{ username }}. Please select from one of the following:
+</div>
+{% endblock %}
 
 {% block content %}
     {% with messages = get_flashed_messages(category_filter=["success"])%}
@@ -24,27 +27,37 @@
             <div class="col d-flex ">
                 <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
                     <h1 class="mb-3"><strong>Edit Units</strong></h1>
+                    {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
                     <p>Click the buttons below to edit or create new outcomes</p>
-<form action="{{ url_for('main.create_lo', unit_id=1) }}" method="get" class="mt-3"> <!-- temp unit_id -->
-  <button class="btn btn-warning">Learning Outcome Editor</button>
-</form>
-                                
+                    <a class="btn mt-3 btn-warning" href="{{url_for('main.create_lo')}}">Learning Outcome Editor</a>
+                    {% else %}
+                    <p>This feature isn't available on your account</p>
+                    {% endif %}
+
                 </div>
             </div>
 
             <div class="col d-flex">
                 <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
                     <h1 class="mb-3"><strong>New Units</strong></h1>
+                    {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
                     <p>Click on the button below to create new units.</p>
                     <a class="btn mt-3 btn-warning" href="{{url_for('main.new_unit')}}">New Unit</a>
+                    {% else %}
+                    <p>This feature isn't available on your account</p>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="col d-flex">
                 <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
                     <h1 class="mb-3"><strong>Admin Tools</strong></h1>
+                    {% if current_user.is_authenticated and current_user.role.value == "admin" %}
                     <p>Click on the button below to access admin tools.</p>
-                    <button class="btn mt-3 btn-warning ">Admin Tools</button>
+                    <a class="btn mt-3 btn-warning" href="{{url_for('main.admin')}}">Admin Tools</a>
+                    {% else %}
+                    <p>This feature isn't available on your account</p>
+                    {% endif %}
                 </div>
             </div>
         </div>

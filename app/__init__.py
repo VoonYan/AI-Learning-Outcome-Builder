@@ -13,6 +13,11 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login_page'
 config_manager = ConfigManager('app/AIConfig.json')
 
+@login_manager.user_loader
+def load_user(user_id):
+    from .models import User
+    return User.query.get(int(user_id))
+
 def create_app(config=DevelopmentConfig):
     flaskApp = Flask(__name__)
     flaskApp.config.from_object(config)
