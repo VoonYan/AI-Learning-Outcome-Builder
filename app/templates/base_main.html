@@ -7,48 +7,66 @@
           crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 
 </head>
-<body class="overflow-x-hidden">
-    <!-- Top banner -->
+<body class="overflow-x-hidden min-vh-100">
+    <!--Top banner-->
 <div class="container-fluid d-flex flex-column vh-100 p-0">
-    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
-        <div class="container-fluid">
-            <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item active">
-                        <img src="{{ url_for('static', filename='images/logo-uwacrest-white.svg') }}" 
-                            alt="UWA Logo" style="max-height:50px;">
-                    </li>
-                </ul>
-            </div>
-            <div class="mx-auto order-0">
-                <a class="navbar-brand mx-auto fs-2" href="#">AI Learning Outcome Builder</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".dual-collapse2">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link fs-4" href="#">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fs-4" href="#">Home</a>
-                    </li>
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid px-3 px-lg-4">
+        <a class="navbar-brand d-flex align-items-center gap-3" href="/">
+        <img src="{{ url_for('static', filename='images/logo-uwacrest-white.svg') }}" 
+            alt="UWA Logo" class="img-fluid">
+        <span class="fw-bold fs-5">Learning Outcome Builder</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav" aria-controls="navbarNav" 
+                aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.main_page') }}">
+                <i class="bi bi-house me-1"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.logout') }}">
+                <i class="bi bi-box-arrow-right me-1"></i> Logout
+                </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.login_page') }}">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('auth.signup_page') }}">Sign Up</a>
+            </li>
+            {% endif %}
+        </ul>
         </div>
+    </div>
     </nav>
 
-    <div class="d-flex justify-content-center align-items-center bg-warning p-2">
+    <!--Page content-->
+    <div class="bg-warning p-2">
         <h3 class="text-white">{% block banner_subtitle %}{% endblock %}</h3>
     </div>
 
     <div class="d-flex flex-grow-1 flex-basis-0 p-0">
         {% block content %}{% endblock %}
     </div>
+
+    <!--Footer-->
+    <footer class="mt-auto py-4 bg-primary text-white">
+    <div class="container text-center">
+      <p class="mb-0">© <span id="year"></span> The University of Western Australia - Learning Outcome Builder</p>
+    </div>
+    </footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
