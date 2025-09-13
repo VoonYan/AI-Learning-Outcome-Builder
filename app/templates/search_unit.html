@@ -9,78 +9,80 @@
 {% endblock %}
 
 {% block content %}
+<div class="container my-5">
 
     <div class="container my-5 text-center d-flex justify-content-center gap-3">
         
-
+        
         <!-- Normal Search Form (GET) -->
         <form method="get" action="{{ url_for('main.search_unit') }}" class="d-inline" style="max-width: 600px; width: 100%;">
             <div class="input-group input-group-lg mb-4 mx-auto rounded-pill border border-dark overflow-hidden">
                 <input type="text" name="query" class="form-control border-0" placeholder="Search" value="{{ query }}">
                 
                 <select name="filter" class="form-select form-select-sm border-0 bg-light text-dark rounded-pill px-2"
-                        style="width: 150px; flex: 0 0 auto; font-size: 0.95rem;">
-                    <option value="name" {% if filter_type=='name' %}selected{% endif %}>By Unit Name</option>
-                    <option value="code" {% if filter_type=='code' %}selected{% endif %}>By Unit Code</option>
-                </select>
-            </div>
-
-            <div class="d-flex justify-content-center gap-3">
-                <button type="submit" class="btn btn-warning text-primary fw-bold px-4" style="width:180px;">View Results</button>
-            </div>
-        </form>
-
-
-    </div>
-
-
-    <!-- Results Section -->
-    {% if results %}
-    <div class="container pt-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0">
-                {% if query %}
-                    RESULTS
-                {% else %}
-                    Showing all units
-                {% endif %}
-            </h4>
-            <select class="form-select w-auto" onchange="location.href=this.value;">
-                <option value="?query={{ query }}&filter={{ filter_type }}&sort=unitcode" {% if sort_by=='unitcode' %}selected{% endif %}>Sort by Unit Code</option>
-                <option value="?query={{ query }}&filter={{ filter_type }}&sort=unitlevel" {% if sort_by=='unitlevel' %}selected{% endif %}>Sort by Unit Level</option>
+                style="width: 150px; flex: 0 0 auto; font-size: 0.95rem;">
+                <option value="name" {% if filter_type=='name' %}selected{% endif %}>By Unit Name</option>
+                <option value="code" {% if filter_type=='code' %}selected{% endif %}>By Unit Code</option>
             </select>
         </div>
-        <ul class="list-unstyled" style="max-height:300px; overflow-y:auto;">
-            {% for unit in results %}
-            <li class="mb-3 p-3 border rounded bg-light">
-                <a href="{{ url_for('main.view', unit_id=unit.id) }}"
-                   class="fw-bold text-dark text-decoration-none link-hover">
-                    {{ unit.unitname }} [{{ unit.unitcode }}]
-                </a>
-                <br>
-                Credit points: {{ unit.creditpoints }} | Level: {{ unit.level }}<br>
-                Description: {{ unit.description or "No description available" }}
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% elif query %}
-    <p class="text-center text-muted">No results found for "{{ query }}"</p>
-    {% endif %}
+        
+        <div class="d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-warning text-primary fw-bold px-4" style="width:180px;">View Results</button>
+        </div>
+    </form>
+    
+    
+</div>
 
-    <!-- JS for hover effect -->
-    <script>
-        document.querySelectorAll('.link-hover').forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                link.style.color = 'blue';
-                link.style.textDecoration = 'underline';
-            });
-            link.addEventListener('mouseleave', () => {
-                link.style.color = 'black';
-                link.style.textDecoration = 'none';
-            });
+
+<!-- Results Section -->
+{% if results %}
+<div class="container pt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">
+            {% if query %}
+            RESULTS
+            {% else %}
+            Showing all units
+            {% endif %}
+        </h4>
+        <select class="form-select w-auto" onchange="location.href=this.value;">
+            <option value="?query={{ query }}&filter={{ filter_type }}&sort=unitcode" {% if sort_by=='unitcode' %}selected{% endif %}>Sort by Unit Code</option>
+            <option value="?query={{ query }}&filter={{ filter_type }}&sort=unitlevel" {% if sort_by=='unitlevel' %}selected{% endif %}>Sort by Unit Level</option>
+        </select>
+    </div>
+    <ul class="list-unstyled" style="max-height:300px; overflow-y:auto;">
+        {% for unit in results %}
+        <li class="mb-3 p-3 border rounded bg-light">
+            <a href="{{ url_for('main.view', unit_id=unit.id) }}"
+            class="fw-bold text-dark text-decoration-none link-hover">
+            {{ unit.unitname }} [{{ unit.unitcode }}]
+        </a>
+        <br>
+        Credit points: {{ unit.creditpoints }} | Level: {{ unit.level }}<br>
+        Description: {{ unit.description or "No description available" }}
+    </li>
+    {% endfor %}
+</ul>
+</div>
+{% elif query %}
+<p class="text-center text-muted">No results found for "{{ query }}"</p>
+{% endif %}
+
+<!-- JS for hover effect -->
+<script>
+    document.querySelectorAll('.link-hover').forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            link.style.color = 'blue';
+            link.style.textDecoration = 'underline';
         });
+        link.addEventListener('mouseleave', () => {
+            link.style.color = 'black';
+            link.style.textDecoration = 'none';
+        });
+    });
     </script>
+</div>
 {% endblock %}
 
 
