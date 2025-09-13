@@ -160,6 +160,8 @@ def view(unit_id):
 def edit_unit(unit_id):
     unit = Unit.query.filter_by(id=unit_id).first_or_404()
     form = EditUnitForm()
+    if current_user.userType != UserType.ADMIN or unit.creatorid != current_user.id:
+        abort(401)
     if request.method == "GET":
         form.unitcode.data = unit.unitcode
         form.unitname.data = unit.unitname
