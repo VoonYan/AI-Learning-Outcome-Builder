@@ -100,7 +100,7 @@
         <ul class="list-unstyled" style="max-height:300px; overflow-y:auto;">
             {% for unit in results %}
             <li class="mb-3 p-3 border rounded bg-light">
-                <a href="{{ url_for('main.view', code=unit.unitcode) }}"
+                <a href="{{ url_for('main.view', unit_id=unit.id) }}"
                    class="fw-bold text-dark text-decoration-none link-hover">
                     {{ unit.unitname }} [{{ unit.unitcode }}]
                 </a>

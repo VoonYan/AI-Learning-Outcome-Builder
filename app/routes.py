@@ -1,6 +1,6 @@
-from flask import render_template, redirect, url_for, flash, request, session, Blueprint, jsonify
+from flask import render_template, redirect, url_for, flash, request, session, Blueprint, jsonify, abort
 from flask_login import current_user, login_required
-from .forms import NewUnitForm, AdminForm
+from .forms import NewUnitForm, AdminForm, EditUnitForm
 from . import db
 from .models import db, Unit, LearningOutcome, UserType
 from . import create_app, config_manager
@@ -152,62 +152,51 @@ def search_unit():
         )
 
 
-@main.route('/view', methods=['GET', 'POST'])
+@main.route('/view/<int:unit_id>', methods=['GET'])
 @login_required
-def view():
-    unit_code = request.args.get("code")
-    if not unit_code:
-        abort(404)
+def view(unit_id):
+    if request.method == "GET":
+        unit = Unit.query.filter_by(id=unit_id).first()
+        if not unit:
+            abort(404)
 
-    unit = Unit.query.filter_by(unitcode=unit_code).first()
-    if not unit:
-        abort(404)
+        return render_template("view.html", title="Unit Details", unit=unit, UserType=UserType)
+
+@main.route('/unit/<int:unit_id>/edit_unit', methods=['GET', 'POST'])
+@login_required
+def edit_unit(unit_id):
+    unit = Unit.query.filter_by(id=unit_id).first_or_404()
+    form = EditUnitForm()
+    if request.method == "GET":
+        form.unitcode.data = unit.unitcode
+        form.unitname.data = unit.unitname
+        form.level.data = unit.level
+        form.creditpoints.data = unit.creditpoints
+        form.description.data = unit.description
+        return render_template("edit_unit.html", unit=unit, form=form)
 
     if request.method == "POST":
-        #only if user is admin or unit creator
-        if not (current_user.userType == UserType.ADMIN or current_user.id == unit.creator_id):
-            abort(403)  # Forbidden
-        # update unit from form data
-        unit.unitname = request.form.get("unitname")
-        unit.creditpoints = request.form.get("creditpoints")  # optional if editable
-        unit.description = request.form.get("description")
-        # add more fields as needed
-        db.session.commit()
-        flash("Unit updated successfully", "success")
-        return redirect(url_for("main.view", code=unit.unitcode))
+        data = request.form
 
-    return render_template("view.html", title="Unit Details", unit=unit)
-
-
-
-@main.route('/unit/<string:code>/edit_unit', methods=['GET', 'POST'])
-@login_required
-def edit_unit(code):
-    unit = Unit.query.filter_by(unitcode=code).first_or_404()
-
-    if request.method == "POST":
-        # update fields
-        unit.unitcode = request.form["unitcode"].strip().upper()   # normalize to uppercase if needed
-        unit.unitname = request.form["unitname"].strip()
-        unit.level = int(request.form["level"])
-        unit.creditpoints = int(request.form["creditpoints"])
-        unit.description = request.form["description"].strip()
-
-        try:
-            db.session.commit()
-            flash("Unit updated successfully!", "success")
-            # redirect using the (possibly new) unitcode
-            return redirect(url_for("main.view", code=unit.unitcode))
-
-        except IntegrityError:
-            db.session.rollback()
+        # check unique constraint first
+        unitcodeCheck = Unit.query.filter_by(unitcode=data["unitcode"].strip().upper()).first()
+        if unitcodeCheck != None and unitcodeCheck.id != unit.id:
             flash("That unit code already exists. Please choose a different one.", "danger")
             # re-render the form with user’s input
-            return render_template("edit_unit.html", unit=unit)
+            # that would be difficult with this implementation and not a priority at the moment.
+            return render_template("edit_unit.html", unit=unit, form=form)
 
-    return render_template("edit_unit.html", unit=unit)
+        # update fields
+        unit.unitcode = data["unitcode"].strip().upper()   # normalize to uppercase if needed
+        unit.unitname = data["unitname"].strip()
+        unit.level = int(data["level"])
+        unit.creditpoints = int(data["creditpoints"])
+        unit.description = data["description"].strip()
 
-
+        db.session.commit()
+        flash("Unit updated successfully!", "success")
+        # redirect using the (possibly new) unitcode
+        return redirect(url_for("main.view", unit_id=unit.id))
 
 @main.route('/new_unit', methods = ['GET', 'POST'])
 @login_required
@@ -220,7 +209,14 @@ def new_unit():
         if not form.validate():
             return render_template('new_unit_form.html', title=f'Create New Unit', username=current_user.username, form=form)
         data = request.form
-        newUnit = Unit(unitcode=data["unitcode"], unitname=data["unitname"], level=data["level"], creditpoints=data["creditpoints"], description=data["description"])
+        newUnit = Unit(
+            unitcode=data["unitcode"], 
+            unitname=data["unitname"], 
+            level=data["level"], 
+            creditpoints=data["creditpoints"], 
+            description=data["description"],
+            creatorid = current_user.id
+            )
         db.session.add(newUnit)
         db.session.commit()
         flash("Unit Created", 'success')

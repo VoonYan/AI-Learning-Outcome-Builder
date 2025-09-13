@@ -31,6 +31,7 @@ class Unit(db.Model):
     level = db.Column(db.Integer, nullable=False)
     creditpoints = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(512), nullable=True)
+    creatorid = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE", name='fk_unit_creatorid'), nullable=False)
 
     learning_outcomes = db.relationship(
         "LearningOutcome",

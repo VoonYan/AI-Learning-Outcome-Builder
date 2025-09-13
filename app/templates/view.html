@@ -81,11 +81,11 @@
                 <li>No learning outcomes defined for this unit.</li>
                 {% endfor %}
             </ul>
-            
+            {% if current_user.userType == UserType.ADMIN or current_user.id == unit.creatorid %}
             <!-- Edit buttons -->
             <div class="mt-3">
                 <!-- Edit Unit button -->
-                <a href="{{ url_for('main.edit_unit', code=unit.unitcode) }}" 
+                <a href="{{ url_for('main.edit_unit', unit_id=unit.id) }}" 
                 class="btn btn-warning text-primary fw-bold me-2">
                 Edit Unit
                 </a>
@@ -96,7 +96,7 @@
                 Edit Learning Outcomes
                 </a>
             </div>
-
+            {% endif %}
         </div>
     </div>
 </div>

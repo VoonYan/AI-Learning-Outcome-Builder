@@ -61,30 +61,51 @@
         <div class="card-body p-4">
             <h2 class="fw-bold text-primary mb-4">Edit Unit: {{ unit.unitname }}</h2>
             <form method="POST">
+                {{ form.hidden_tag() }}
+            <div>
                 <div class="mb-3">
-                    <label class="form-label">Unit Code</label>
-                    <input type="text" name="unitcode" class="form-control" value="{{ unit.unitcode }}" required>
+                    {{ form.unitcode.label(class="form-label") }}
+                    {{ form.unitcode(class="form-control", size=32) }}
+                    {% for error in form.unitcode.errors %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                    {%endfor%}
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Unit Name</label>
-                    <input type="text" name="unitname" class="form-control" value="{{ unit.unitname }}" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Level</label>
-                    <input type="number" name="level" class="form-control" value="{{ unit.level }}" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Credit Points</label>
-                    <input type="number" name="creditpoints" class="form-control" value="{{ unit.creditpoints }}" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Description</label>
-                    <textarea name="description" class="form-control">{{ unit.description }}</textarea>
-                </div>
-                <button type="submit" class="btn btn-success">Save</button>
-                <a href="{{ url_for('main.view', code=unit.unitcode) }}" class="btn btn-secondary">Cancel</a>
-            </form>
 
+                <div class="mb-3">
+                    {{ form.unitname.label(class="form-label") }}
+                    {{ form.unitname(class="form-control", size=32) }}
+                    {% for error in form.unitname.errors %}
+                    <div class="alert alert-danger" role="alert">{{error}}</div>
+                    {%endfor%}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.level.label(class="form-label") }}
+                    {{ form.level(class="form-select", id='levelSelect')}}
+                <script>
+                    document.getElementById('levelSelect').value = "{{unit.level}}";
+                </script>
+                </div>
+
+                <div class="mb-3">
+                    {{ form.creditpoints.label(class="form-label")}}
+                    {{ form.creditpoints(class="form-select", id='pointSelect')}}
+                <script>
+                    document.getElementById('pointSelect').value = "{{unit.creditpoints}}";
+                </script>
+                </div>
+
+                <div class="mb-3">
+                    {{ form.description.label(class="form-label") }}
+                    {{ form.description(class="form-control", size=32)}}
+                </div>
+
+                <div class="mb-2 d-flex">
+                    {{ form.submit(class="btn btn-warning me-2") }}
+                    <a href="{{ url_for('main.view', unit_id=unit.id) }}" class="btn btn-secondary me-2">Cancel</a>
+                </div>
+            </div>
+            </form>
         </div>
     </div>
 </div>

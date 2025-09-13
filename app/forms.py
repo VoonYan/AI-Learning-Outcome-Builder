@@ -24,6 +24,14 @@ class NewUnitForm(FlaskForm):
     description = TextAreaField('Unit Description')
     submit = SubmitField('Create Unit')
 
+class EditUnitForm(FlaskForm):
+    unitcode = StringField('Unit Code', validators=[DataRequired()])
+    unitname = StringField('Unit Name', validators=[DataRequired()])
+    level = SelectField('Level', choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5'), (6, '6'),])
+    creditpoints = SelectField('Credit Points', choices=[(6, '6'),(12, '12'), (24, '24')])
+    description = TextAreaField('Unit Description')
+    submit = SubmitField('Save')
+
 class AdminForm(FlaskForm):
     currConfig = config_manager.getCurrentParams()
     modelPairs = []
