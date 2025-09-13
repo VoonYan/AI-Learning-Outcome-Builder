@@ -21,9 +21,9 @@
           <div class="card h-100 border border-2 border-warning shadow-sm">
             <div class="card-body text-center d-flex flex-column">
               <h2 class="card-title h4 text-primary mb-3">Guest Area</h2>
-              <p class="card-text flex-grow-1">As a guest user, you can use our AI Learning Outcome Builder with a guest account.</p>
+              <p class="card-text flex-grow-1">Browse and explore unit outcomes without needing to log in.</p>
               <div>
-                <a href="{{ url_for('main.main_page') }}" class="btn btn-warning fw-bold px-4 text-dark">Login</a>
+                <a href="/explore" class="btn btn-warning fw-bold px-4 text-dark">Explore</a>
               </div>
             </div>
           </div>
@@ -35,7 +35,7 @@
               <h2 class="card-title h4 text-primary mb-3">Unit Coordinator Area</h2>
               <p class="card-text flex-grow-1">For UWA Unit Coordinators to manage units, edit outcomes, approve changes, and oversee alignment with university standards.</p>
               <div class="d-flex justify-content-center gap-2">
-                <a href="{{ url_for('main.main_page') }}" class="btn btn-warning fw-bold px-4 text-dark">Login</a>
+                <a href="/coordinator/login" class="btn btn-warning fw-bold px-4 text-dark">Login</a>
                 <a href="/coordinator/help" class="btn btn-primary fw-bold px-4">Help</a>
               </div>
             </div>

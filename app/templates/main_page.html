@@ -29,7 +29,7 @@ Hello {{ username }}. Please select from one of the following:
                     <h1 class="mb-3"><strong>Edit Units</strong></h1>
                     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
                     <p>Click the buttons below to edit or create new outcomes</p>
-                    <a class="btn mt-3 btn-warning" href="{{url_for('main.create_lo')}}">Learning Outcome Editor</a>
+                    <a class="btn mt-3 btn-warning" href="">Learning Outcome Editor</a>
                     {% else %}
                     <p>This feature isn't available on your account</p>
                     {% endif %}
