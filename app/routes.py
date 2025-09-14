@@ -17,13 +17,15 @@ import random
 main = Blueprint('main', __name__)
 
 
-
-@main.route('/main_page')
-@main.route('/')
+@main.route('/home')
+@main.route('/home_page')
 def home(): 
     return render_template('homepage_purebs.html' )
 
-@main.route('/main-page')
+
+@main.route('/dashboard')
+@main.route('/main_page')
+@main.route('/')
 @login_required
 def main_page(): 
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
@@ -31,10 +33,12 @@ def main_page():
 
 @main.route('/create_lo/<int:unit_id>')
 @login_required
-def create_lo(unit_id):
-    unit = Unit.query.get_or_404(unit_id)
-    outcomes = unit.learning_outcomes
-    #why are we parsing headings here?
+def create_lo():
+    if current_user.role not in [UserType.ADMIN, UserType.UC]:
+        abort(401)
+    unit_id = request.args.get("unit_id", type=int)
+    unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
+    outcomes = unit.learning_outcomes if unit else []
     headings = ['#', 'Learning Outcome', 'Assessment', 'Delete', 'Reorder']
     return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
 
@@ -121,6 +125,7 @@ def lo_save(unit_id):
 
 #we need a button to export all of the units, and im assuming this is for one specific unit, perhaps a general function with single unit option is best here 
 @main.get("/lo_api/export.csv/<int:unit_id>")
+@login_required
 def lo_export_csv(unit_id):
     unit = Unit.query.get_or_404(unit_id)
     rows = unit.learning_outcomes
@@ -138,6 +143,7 @@ def lo_export_csv(unit_id):
 
 
 @main.post("/lo_api/evaluate/<int:unit_id>")
+@login_required
 def ai_evaluate(unit_id):
     unit = Unit.query.get_or_404(unit_id)
     rows = unit.learning_outcomes
@@ -152,7 +158,6 @@ def ai_evaluate(unit_id):
         return jsonify({"ok": False, "error": str(e)}), 500
 
 @main.route('/search_unit', methods=['GET', 'POST'])
-@login_required
 def search_unit():
     if request.method == "GET":
 
@@ -181,7 +186,7 @@ def search_unit():
         return render_template(
             'search_unit.html',
             title='Unit Search',
-            username=current_user.username,
+            username=current_user.username if not current_user.is_anonymous else 'Guest',
             results=results,
             query=query,
             filter_type=filter_type,
@@ -190,7 +195,6 @@ def search_unit():
 
 
 @main.route('/view/<int:unit_id>', methods=['GET'])
-@login_required
 def view(unit_id):
     if request.method == "GET":
         unit = Unit.query.filter_by(id=unit_id).first()
@@ -240,6 +244,10 @@ def edit_unit(unit_id):
 @main.route('/new_unit', methods = ['GET', 'POST'])
 @login_required
 def new_unit():
+    if current_user.role not in [UserType.ADMIN, UserType.UC]:
+        flash("You do not have permission to access that page.", "danger")
+        return redirect(url_for("main.home")) 
+    
     form = NewUnitForm()
     if request.method == 'GET':
         return render_template('new_unit_form.html', title=f'Create New Unit', username=current_user.username, form=form)
@@ -296,7 +304,8 @@ def updateAIParams(data):
 @login_required
 def admin():
     if current_user.userType != UserType.ADMIN:
-        return "Unauthorised", 401
+        flash("You do not have permission to access that page.", "danger")
+        return redirect(url_for("main.home")) 
     form = AdminForm()
     if request.method == 'GET':
         #this creates the config for jinja based on the config since config needs lists but jinja needs strings, this could be done in jina with many more lines 
