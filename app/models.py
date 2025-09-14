@@ -34,12 +34,10 @@ class Unit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     unitcode = db.Column(db.String(8), unique=True, nullable=False)  
     unitname = db.Column(db.String(64), nullable=False)  
-    level = db.Column(db.Integer, nullable=False)
-    creditpoints = db.Column(db.Integer, nullable=False)
+    level = db.Column(db.Integer, nullable=False, default=1)
+    creditpoints = db.Column(db.Integer, nullable=False, default=6)
     description = db.Column(db.String(512), nullable=True)
     creatorid = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE", name='fk_unit_creatorid'), nullable=False)
-
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False) 
 
     learning_outcomes = db.relationship(
         "LearningOutcome",

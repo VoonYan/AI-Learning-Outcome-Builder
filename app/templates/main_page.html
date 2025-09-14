@@ -33,12 +33,13 @@ Hello {{ username }}. Please select from one of the following:
             <!-- Import Button  -->
             <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
                 <label for="importFile" class="btn mt-3 btn-warning">
-                    Import
+                    Import Units From CSV or XLSX
                 </label>
-                <input type="file" id="importFile" name="import_file" class="d-none" accept=".csv,.xlsx" onchange="this.form.submit()">
+                <input type="file" id="importFile" name="import_file" class="d-none" accept=".csv,.xlsx,.xls" onchange="this.form.submit()">
             </form>
             <!-- Export Button -->
-            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_units') }}">Export</a>
+            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_my_units') }}">Export My Units</a>
+            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_all_units') }}">Export All Units</a>
         </div>
         {% else %}
         <p>This feature isn't available on your account</p>
