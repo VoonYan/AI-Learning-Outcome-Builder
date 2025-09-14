@@ -12,6 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from .ai_evaluate import run_eval
 import os
 import json
+import random
 
 main = Blueprint('main', __name__)
 
@@ -48,11 +49,30 @@ def lo_delete(unit_id, lo_id):
     flash("Outcome deleted", "success")
     return jsonify({"ok": True})
 
+
+def returnLOOpener(level):
+    currentConfig = config_manager.getCurrentParams()
+    LEVEL_NAME = {
+        1: currentConfig["Level 1"],
+        2: currentConfig["Level 2"],
+        3: currentConfig["Level 3"],
+        4: currentConfig["Level 4"],
+        5: currentConfig["Level 5"],
+        6: currentConfig["Level 6"]
+    }
+    loLevel = LEVEL_NAME[level].upper()
+    wordlist = currentConfig[loLevel]
+    keyWord = random.choice(wordlist)
+    keyWord += '... '
+    return keyWord
+
+
 @main.post("/lo_api/add/<int:unit_id>")
 @login_required
 def lo_add(unit_id):
+    unit = Unit.query.filter_by(id=unit_id).first()
     existing_los = LearningOutcome.query.filter_by(unit_id=unit_id).all()
-    blank_lo = LearningOutcome(unit_id=unit_id, position=len(existing_los)+1, description="")
+    blank_lo = LearningOutcome(unit_id=unit_id, position=len(existing_los)+1, description=returnLOOpener(unit.level))
     db.session.add(blank_lo)
     db.session.commit()
     flash("Outcome Added and Saved", "success")
@@ -90,13 +110,11 @@ def lo_reorder(unit_id):
 def lo_save(unit_id):
     loList = LearningOutcome.query.filter_by(unit_id=unit_id).all()
     newLoDict = json.loads(request.data)
-    print(newLoDict)
-    for lo in loList:
-        newLOData = newLoDict[str(lo.position)]
+    # assume the order we recieve them is the order they are intended to be in
+    for lo, newLOData in zip(loList, newLoDict.values()):
         lo.description = newLOData[0]
         lo.assessment = newLOData[1]
         db.session.add(lo)
-    
     db.session.commit()
     return jsonify({'status': 'ok'})
 
