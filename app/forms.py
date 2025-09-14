@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField, TextAreaField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, EqualTo, Regexp
 from . import config_manager
 
 class LoginForm(FlaskForm):
@@ -24,6 +24,14 @@ class NewUnitForm(FlaskForm):
     description = TextAreaField('Unit Description')
     submit = SubmitField('Create Unit')
 
+class EditUnitForm(FlaskForm):
+    unitcode = StringField('Unit Code', validators=[DataRequired()])
+    unitname = StringField('Unit Name', validators=[DataRequired()])
+    level = SelectField('Level', choices=[(1, '1'), (2, '2'), (3, '3'), (4, '4'), (5, '5'), (6, '6'),])
+    creditpoints = SelectField('Credit Points', choices=[(6, '6'),(12, '12'), (24, '24')])
+    description = TextAreaField('Unit Description')
+    submit = SubmitField('Save')
+
 class AdminForm(FlaskForm):
     currConfig = config_manager.getCurrentParams()
     modelPairs = []
@@ -46,7 +54,7 @@ class AdminForm(FlaskForm):
     level4 =  StringField('Level 4', validators=[DataRequired()], id="level4Tax")
     level5 =  StringField('Level 5', validators=[DataRequired()], id="level5Tax")
     level6 =  StringField('Level 6', validators=[DataRequired()], id="level6Tax")
-    cp6 =  StringField('6 Credit Points', validators=[DataRequired()], id="cp6Num")
-    cp12 =  StringField('12 Credit Points', validators=[DataRequired()], id="cp12Num")
-    cp24 =  StringField('24 Credit Points', validators=[DataRequired()], id="cp24Num")
+    cp6 =  StringField('6 Credit Points', validators=[DataRequired(), Regexp(r'^\d{1,2}-\d{1,2}$', message='Must use format [number]-[number]')], id="cp6Num")
+    cp12 =  StringField('12 Credit Points', validators=[DataRequired(), Regexp(r'^\d{1,2}-\d{1,2}$', message='Must use format [number]-[number]')], id="cp12Num")
+    cp24 =  StringField('24 Credit Points', validators=[DataRequired(), Regexp(r'^\d{1,2}-\d{1,2}$', message='Must use format [number]-[number]')], id="cp24Num")
 

@@ -37,6 +37,7 @@ class Unit(db.Model):
     level = db.Column(db.Integer, nullable=False)
     creditpoints = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(512), nullable=True)
+    creatorid = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE", name='fk_unit_creatorid'), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False) 
 
@@ -48,6 +49,7 @@ class Unit(db.Model):
     )
 
 
+
 class LearningOutcome(db.Model):
     __tablename__ = "learning_outcomes"
 
@@ -57,7 +59,7 @@ class LearningOutcome(db.Model):
     assessment = db.Column(db.String(255), nullable=True)
     position = db.Column(db.Integer, nullable=False, default=0)
 
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    #created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    #updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     unit = db.relationship("Unit", back_populates="learning_outcomes",foreign_keys=[unit_id],)
