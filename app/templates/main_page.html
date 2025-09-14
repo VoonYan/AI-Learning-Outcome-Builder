@@ -8,10 +8,18 @@ Hello {{ username }}. Please select from one of the following:
 {% endblock %}
 
 {% block content %}
+<div class="container-fluid m-3">
     {% with messages = get_flashed_messages(category_filter=["success"])%}
     {% if messages%}
     {% for message in messages%}
     <div class="alert alert-success" role="alert">{{message}}</div>
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
+    {% with messages = get_flashed_messages(category_filter=["error"])%}
+    {% if messages%}
+    {% for message in messages%}
+    <div class="alert alert-danger" role="alert">{{message}}</div>
     {%endfor%}
     {%endif%}
     {%endwith%}
@@ -68,4 +76,5 @@ Hello {{ username }}. Please select from one of the following:
     </div>
     {% endif %}
     </div>
+</div>
 {% endblock %}
