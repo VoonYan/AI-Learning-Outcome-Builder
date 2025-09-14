@@ -144,7 +144,7 @@
                 {% for error in form.cp6.errors %}
                         <div class="alert alert-danger" role="alert">{{error}}</div>
                 {%endfor%}
-                <div class="form-text">Range of learning outcomes</div>
+                <div class="form-text">Range of learning outcomes. Must use format of [num]-[num] e.g. 3-6</div>
               </div>
               <div class="col-md-4">
                 {{form.cp12.label(class="form-label")}}
@@ -152,7 +152,7 @@
                 {% for error in form.cp12.errors %}
                         <div class="alert alert-danger" role="alert">{{error}}</div>
                 {%endfor%}
-                <div class="form-text">Range of learning outcomes</div>
+                <div class="form-text">Range of learning outcomes. Must use format of [num]-[num] e.g. 5-9</div>
               </div>
               <div class="col-md-4">
                 {{form.cp24.label(class="form-label")}}
@@ -160,7 +160,7 @@
                 {% for error in form.cp24.errors %}
                         <div class="alert alert-danger" role="alert">{{error}}</div>
                 {%endfor%}
-                <div class="form-text">Range of learning outcomes</div>
+                <div class="form-text">Range of learning outcomes. Must use format of [num]-[num] e.g. 8-12</div>
               </div>
             </div>
           </div>
