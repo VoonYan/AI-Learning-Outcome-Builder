@@ -152,7 +152,7 @@ def view(unit_id):
         unit = Unit.query.filter_by(id=unit_id).first()
         if not unit:
             abort(404)
-
+        print(unit.unitname)
         return render_template("view.html", title="Unit Details", unit=unit, UserType=UserType)
 
 @main.route('/unit/<int:unit_id>/edit_unit', methods=['GET', 'POST'])
