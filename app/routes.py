@@ -122,7 +122,6 @@ def lo_save(unit_id):
 #we need a button to export all of the units, and im assuming this is for one specific unit, perhaps a general function with single unit option is best here 
 @main.get("/lo_api/export.csv/<int:unit_id>")
 def lo_export_csv(unit_id):
-    unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get_or_404(unit_id)
     rows = unit.learning_outcomes
     import csv, io
