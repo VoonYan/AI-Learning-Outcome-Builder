@@ -196,7 +196,7 @@ def view(unit_id):
         unit = Unit.query.filter_by(id=unit_id).first()
         if not unit:
             abort(404)
-
+        print(unit.unitname)
         return render_template("view.html", title="Unit Details", unit=unit, UserType=UserType)
 
 @main.route('/unit/<int:unit_id>/edit_unit', methods=['GET', 'POST'])
@@ -314,6 +314,9 @@ def admin():
         return render_template('admin_page_template.html', form=form, config=loadconfig, getattr=getattr)
 
     if request.method == 'POST':
+        if not form.validate():
+            flash("Failed To Validate Form.", 'error')
+            return redirect('admin')
         updateAIParams(request.form)
         flash("Settings Successfully Updated.", 'success')
         return redirect('admin')
