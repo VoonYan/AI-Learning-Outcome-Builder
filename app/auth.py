@@ -51,4 +51,4 @@ def signup_page():
 @auth.route('/logout')
 def logout():
     logout_user()
-    return redirect("/base")
+    return redirect("/home")
