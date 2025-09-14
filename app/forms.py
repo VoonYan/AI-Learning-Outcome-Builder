@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField, TextAreaField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, EqualTo, Regexp
 from . import config_manager
 
 class LoginForm(FlaskForm):
@@ -54,7 +54,7 @@ class AdminForm(FlaskForm):
     level4 =  StringField('Level 4', validators=[DataRequired()], id="level4Tax")
     level5 =  StringField('Level 5', validators=[DataRequired()], id="level5Tax")
     level6 =  StringField('Level 6', validators=[DataRequired()], id="level6Tax")
-    cp6 =  StringField('6 Credit Points', validators=[DataRequired()], id="cp6Num")
-    cp12 =  StringField('12 Credit Points', validators=[DataRequired()], id="cp12Num")
-    cp24 =  StringField('24 Credit Points', validators=[DataRequired()], id="cp24Num")
+    cp6 =  StringField('6 Credit Points', validators=[DataRequired(), Regexp(r'^\d{1,2}-\d{1,2}$', message='Must use format [number]-[number]')], id="cp6Num")
+    cp12 =  StringField('12 Credit Points', validators=[DataRequired(), Regexp(r'^\d{1,2}-\d{1,2}$', message='Must use format [number]-[number]')], id="cp12Num")
+    cp24 =  StringField('24 Credit Points', validators=[DataRequired(), Regexp(r'^\d{1,2}-\d{1,2}$', message='Must use format [number]-[number]')], id="cp24Num")
 

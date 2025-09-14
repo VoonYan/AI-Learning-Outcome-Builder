@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function undoChanges() {
     if (confirm('Are you sure you want to undo all your current changes?')) {
         const form = document.getElementById('adminSettingsForm');
-        if (form) form.reset();
+        window.location.reload();
     }
 }
 
