@@ -270,6 +270,9 @@ def admin():
         return render_template('admin_page_template.html', form=form, config=loadconfig, getattr=getattr)
 
     if request.method == 'POST':
+        if not form.validate():
+            flash("Failed To Validate Form.", 'error')
+            return redirect('admin')
         updateAIParams(request.form)
         flash("Settings Successfully Updated.", 'success')
         return redirect('admin')

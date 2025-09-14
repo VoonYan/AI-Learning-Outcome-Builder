@@ -24,6 +24,15 @@
       {%endfor%}
       {%endif%}
       {%endwith%}
+      {% with messages = get_flashed_messages(category_filter=["error"])%}
+      {% if messages%}
+      {% for message in messages%}
+      <div id="successMessage" class="alert alert-danger" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>{{message}}
+      </div>      
+      {%endfor%}
+      {%endif%}
+      {%endwith%}
 
       <form id="adminSettingsForm" action="{{ url_for('main.admin') }}" method="POST">
       {{ form.hidden_tag() }}
@@ -132,16 +141,25 @@
               <div class="col-md-4">
                 {{form.cp6.label(class="form-label")}}
                 {{form.cp6(class="form-control", placeholder="3-6", value=config['6 Points'])}}
+                {% for error in form.cp6.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                {%endfor%}
                 <div class="form-text">Range of learning outcomes</div>
               </div>
               <div class="col-md-4">
                 {{form.cp12.label(class="form-label")}}
                 {{form.cp12(class="form-control", placeholder="5-9", value=config['12 Points'])}}
+                {% for error in form.cp12.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                {%endfor%}
                 <div class="form-text">Range of learning outcomes</div>
               </div>
               <div class="col-md-4">
                 {{form.cp24.label(class="form-label")}}
                 {{form.cp24(class="form-control", placeholder="8-12", value=config['24 Points'])}}
+                {% for error in form.cp24.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                {%endfor%}
                 <div class="form-text">Range of learning outcomes</div>
               </div>
             </div>
