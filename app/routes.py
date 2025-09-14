@@ -245,9 +245,8 @@ def edit_unit(unit_id):
 @login_required
 def new_unit():
     if current_user.role not in [UserType.ADMIN, UserType.UC]:
-        flash("You do not have permission to access that page.", "danger")
-        return redirect(url_for("main.home")) 
-    
+        abort(401)
+
     form = NewUnitForm()
     if request.method == 'GET':
         return render_template('new_unit_form.html', title=f'Create New Unit', username=current_user.username, form=form)
@@ -268,6 +267,21 @@ def new_unit():
         db.session.commit()
         flash("Unit Created", 'success')
         return redirect("/main_page")
+    
+
+@main.route('/delete_unit/<int:unit_id>', methods = ['DELETE'])
+@login_required
+def delete_unit(unit_id):
+    unit = Unit.query.filter_by(id=unit_id).first_or_404()
+    if current_user.userType != UserType.ADMIN and unit.creatorid != current_user.id:
+        abort(401)
+
+    if request.method == 'DELETE':
+        db.session.delete(unit)
+        db.session.commit()
+        flash("Unit Deleted", 'success')
+        return jsonify({"ok": True})
+
 
 #small helper functions
 def listToStringByComma(List):

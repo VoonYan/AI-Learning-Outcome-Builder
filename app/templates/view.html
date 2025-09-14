@@ -55,14 +55,32 @@
 
                 <!-- Edit Learning Outcomes button -->
                 <a href="{{ url_for('main.create_lo', unit_id=unit.id) }}" 
-                class="btn btn-warning text-primary fw-bold">
+                class="btn btn-warning text-primary fw-bold me-2">
                 Edit Learning Outcomes
                 </a>
+
+                <!-- Delete Unit-->
+                <button onclick="deleteUnit()" 
+                class="btn btn-danger text-white fw-bold me-2">
+                Delete Unit
+                </button>
             </div>
             {% endif %}
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/view.js') }}"></script>
+    <script>
+        function deleteUnit(){
+        if (confirm('Are you sure you want to delete this unit?')) {
+            fetch("{{ url_for('main.delete_unit', unit_id=unit.id) }}", {
+                method: "DELETE",
+                body: "DELETE",
+            }).then((response) => {
+                if (response.ok) {
+                    window.location.href = "{{ url_for('main.main_page') }}";
+                }
+            });
+        }}
+    </script>
 </div>
 {% endblock %}
