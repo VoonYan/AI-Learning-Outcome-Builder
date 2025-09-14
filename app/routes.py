@@ -33,7 +33,7 @@ def main_page():
 
 @main.route('/create_lo/<int:unit_id>')
 @login_required
-def create_lo():
+def create_lo(unit_id):
     if current_user.role not in [UserType.ADMIN, UserType.UC]:
         abort(401)
     unit_id = request.args.get("unit_id", type=int)
