@@ -58,7 +58,8 @@ Hello {{ username }}. Please select from one of the following:
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
     <div class="col d-flex ">
         <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
-        <h1 class="mb-3"><strong>Import / Export</strong></h1>
+        <h1 class="mb-3"><strong>Data Management</strong></h1>
+        <p>Import/export units in bulk, making data management easier.</p>
         <div class="d-flex gap-2">
             <!-- Import Button  -->
             <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
@@ -71,6 +72,7 @@ Hello {{ username }}. Please select from one of the following:
             <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_my_units') }}">Export My Units</a>
             <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_all_units') }}">Export All Units</a>
         </div>
+    </div>
     </div>
     {% endif %}
 
