@@ -23,6 +23,8 @@ class User(UserMixin, db.Model):
     userType = db.Column(db.Enum(UserType), nullable=False)  
     password_hash = db.Column("password_hash", db.String(256), nullable=False)
 
+    units = db.relationship("Unit", backref="owner", lazy=True)  
+
     @property
     def role(self):
         return self.userType
@@ -32,8 +34,8 @@ class Unit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     unitcode = db.Column(db.String(8), unique=True, nullable=False)  
     unitname = db.Column(db.String(64), nullable=False)  
-    level = db.Column(db.Integer, nullable=False)
-    creditpoints = db.Column(db.Integer, nullable=False)
+    level = db.Column(db.Integer, nullable=False, default=1)
+    creditpoints = db.Column(db.Integer, nullable=False, default=6)
     description = db.Column(db.String(512), nullable=True)
     creatorid = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE", name='fk_unit_creatorid'), nullable=False)
 

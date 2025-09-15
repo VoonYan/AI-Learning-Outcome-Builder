@@ -23,10 +23,9 @@ Hello {{ username }}. Please select from one of the following:
     {%endfor%}
     {%endif%}
     {%endwith%}
-    <div class="grid row g-3 text-center flex-grow-1 p-3
-        {% if current_user.is_authenticated and current_user.role.value == 'admin' %}
-            row-cols-2
-        {% elif current_user.is_authenticated and current_user.role.value == 'unit_coordinator' %}
+    <div class="d-flex flex-column p-0 h-100">
+    <div class="row g-3 flex-grow-1 h-100
+        {% if current_user.is_authenticated and current_user.role.value in ['admin','unit_coordinator'] %}
             row-cols-2
         {% else %}
             row-cols-1
@@ -56,12 +55,23 @@ Hello {{ username }}. Please select from one of the following:
 
     <!-- Add data-->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
-    <div class="col d-flex">
-        <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
-        <h2 class="mb-2"><strong>Data Management</strong></h2>
-        <p class="mb-3">Add files from your computer to make creating and editing learning outcomes easier.</p>
-        <a class="btn mt-2 btn-warning" href="">Reports</a>
+    <div class="col d-flex ">
+        <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
+        <h1 class="mb-3"><strong>Data Management</strong></h1>
+        <p>Import/export units in bulk, making data management easier.</p>
+        <div class="d-flex gap-2">
+            <!-- Import Button  -->
+            <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
+                <label for="importFile" class="btn mt-3 btn-warning">
+                    Import Units From CSV or XLSX
+                </label>
+                <input type="file" id="importFile" name="import_file" class="d-none" accept=".csv,.xlsx,.xls" onchange="this.form.submit()">
+            </form>
+            <!-- Export Button -->
+            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_my_units') }}">Export My Units</a>
+            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_all_units') }}">Export All Units</a>
         </div>
+    </div>
     </div>
     {% endif %}
 
@@ -76,5 +86,6 @@ Hello {{ username }}. Please select from one of the following:
     </div>
     {% endif %}
     </div>
+</div>
 </div>
 {% endblock %}
