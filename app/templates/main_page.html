@@ -56,12 +56,10 @@ Hello {{ username }}. Please select from one of the following:
 
     <!-- Add data-->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
-     <div class="col d-flex ">
-    <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
+    <div class="col d-flex ">
+        <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
         <h1 class="mb-3"><strong>Import / Export</strong></h1>
-        {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
-        <p>Click the buttons below to import or export the outcomes</p>
-        <div class="d-flex flex-column gap-2">
+        <div class="d-flex gap-2">
             <!-- Import Button  -->
             <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
                 <label for="importFile" class="btn mt-3 btn-warning">
@@ -73,11 +71,7 @@ Hello {{ username }}. Please select from one of the following:
             <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_my_units') }}">Export My Units</a>
             <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_all_units') }}">Export All Units</a>
         </div>
-        {% else %}
-        <p>This feature isn't available on your account</p>
-        {% endif %}
     </div>
-</div>
     {% endif %}
 
     <!-- Admin Tools-->
