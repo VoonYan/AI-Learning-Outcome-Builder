@@ -36,8 +36,7 @@ def main_page():
 def create_lo(unit_id):
     if current_user.role not in [UserType.ADMIN, UserType.UC]:
         abort(401)
-    unit_id = request.args.get("unit_id", type=int)
-    unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
+    unit = Unit.query.get_or_404(unit_id)
     outcomes = unit.learning_outcomes if unit else []
     headings = ['#', 'Learning Outcome', 'Assessment', 'Delete', 'Reorder']
     return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
