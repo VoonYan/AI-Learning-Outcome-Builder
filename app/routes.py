@@ -7,7 +7,7 @@ from . import create_app, config_manager
 from sqlalchemy import case, update
 import csv
 import pandas as pd
-from io import TextIOWrapper
+import io
 from sqlalchemy.exc import IntegrityError
 from .ai_evaluate import run_eval
 import os
@@ -255,6 +255,10 @@ def new_unit():
         if not form.validate():
             return render_template('new_unit_form.html', title=f'Create New Unit', username=current_user.username, form=form)
         data = request.form
+        unitcodeCheck = db.session.query(Unit).filter_by(unitcode=data["unitcode"]).first()
+        if unitcodeCheck != None:
+            flash("Unit already Exists", 'error')
+            return redirect("/new_unit")
         newUnit = Unit(
             unitcode=data["unitcode"], 
             unitname=data["unitname"], 
@@ -395,3 +399,159 @@ def bloom_guide():
     }
 
     return render_template('bloom_guide.html', config=config, config_json=json.dumps(config_json))
+    
+
+# Expected Formatting for import export
+# this should realistically be handled by the config manager, or something like it but its not completable at the moment
+expectedIOFormatting = {
+    #implemented
+    'code' :        'code',
+    'title':        'title',
+    'level':        'level',
+    'Outcomes':     'Outcomes',
+
+    #not included in the dataset at the moment
+    'CreditPoints': 'CreditPoints', 
+
+    #unimplemented
+    'Assessments':  'Assessments',
+    'Faculty':      'Faculty',
+    'ROE':          'ROE',
+    'UnitType':     'UnitType',
+    'Curriculum':   'Curriculum',
+    'Content':      'Content',
+
+    #delimiters 
+    'loDelimiter' : '|*|',
+    'loAssessmentDelimiter': '|',
+}
+
+@main.route('/import-units', methods=['POST'])
+@login_required
+def import_units():
+    # open file
+    file = request.files.get("import_file")
+    if not file:
+        flash("No file uploaded", "danger")
+        return redirect(url_for("main.main_page"))
+
+    # check file extension
+    if file.filename.endswith('xlsx') or file.filename.endswith('xls'):
+        df = pd.read_excel(file)
+        pass
+    elif file.filename.endswith('csv'):
+        df = pd.read_csv(file)
+        pass
+    else:
+        flash('File type not supported', 'error')
+        return redirect(url_for("main.main_page"))
+    # process data
+    unitcount =0
+    hasDuplicates = False
+    dupCount = 0
+    hasLacksUnitCode = False
+    codeCount = 0
+    for _, newUnit in df.iterrows():
+        # checks
+        if pd.isna(newUnit[expectedIOFormatting['code']]):
+            hasLacksUnitCode = True
+            codeCount += 1
+            continue
+        # db.session shouldnt be typically used but here we are checking our local session so its needed
+        unitcodeCheck = db.session.query(Unit).filter_by(unitcode=str(newUnit[expectedIOFormatting['code']]).strip()).first()
+        if unitcodeCheck != None:
+            hasDuplicates = True
+            dupCount += 1
+            continue
+
+        #create unit
+        dbUnit = Unit(
+            unitcode= str(newUnit[expectedIOFormatting['code']]).strip(), 
+            unitname= newUnit[expectedIOFormatting['title']], 
+            level= newUnit[expectedIOFormatting['level']], 
+            #creditpoints is not provided by the dataset
+            #creditpoints = 
+            description= newUnit[expectedIOFormatting['Content']],
+            creatorid = current_user.id
+            )
+        db.session.add(dbUnit)
+        db.session.flush()
+        unitcount+=1
+        
+        loPos = 1
+        for lo in str(newUnit.Outcomes).split(expectedIOFormatting['loDelimiter']):
+            lo = lo.split(expectedIOFormatting['loAssessmentDelimiter'])[0]
+
+            if lo == '':
+                continue
+
+            dbLO = LearningOutcome(
+                unit_id= dbUnit.id, 
+                position= loPos, 
+                description= lo
+            )
+            db.session.add(dbLO)
+            loPos+=1
+    db.session.commit()
+
+    msg = f"{unitcount} units added successfully from file. "
+    if hasLacksUnitCode:
+        msg += f"{codeCount} units lacked a unitcode and were skipped. "
+    if hasDuplicates:
+        msg += f"{dupCount} units were duplicates and were skipped. "
+    print(unitcount)
+    flash(msg, "success")
+    return redirect(url_for("main.main_page"))
+
+def createCSVofLOs(userID=-1):
+    if userID != -1:
+        units = Unit.query.filter_by(creatorid=current_user.id).all()
+    else:
+        units = Unit.query.all()
+    
+    df = pd.DataFrame(
+        columns=[
+            expectedIOFormatting["code"], 
+            expectedIOFormatting["title"], 
+            expectedIOFormatting["level"], 
+            expectedIOFormatting["CreditPoints"], 
+            expectedIOFormatting["Content"],
+            expectedIOFormatting["Outcomes"]
+        ])
+    
+    for unit in units:
+        loString = ''
+        for lo in unit.learning_outcomes:
+            loString += lo.description + expectedIOFormatting["loAssessmentDelimiter"] + expectedIOFormatting["loDelimiter"]
+        #create df row by row
+        df.loc[unit.id] = [
+            unit.unitcode,
+            unit.unitname,
+            unit.level,
+            unit.creditpoints,
+            unit.description,
+            loString
+        ]
+    buf = io.StringIO()
+    df.to_csv(buf)
+    return buf.getvalue()
+
+
+@main.route('/export_my_units')
+@login_required
+def export_my_units():
+    out = createCSVofLOs(current_user.id)
+    return (out, 200, {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": 'attachment; filename="units_and_outcomes.csv"'
+    })
+
+
+@main.route('/export_all_units')
+@login_required
+def export_all_units():
+    out = createCSVofLOs()
+    return (out, 200, {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": 'attachment; filename="units_and_outcomes.csv"'
+    })
