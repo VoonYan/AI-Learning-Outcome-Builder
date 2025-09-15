@@ -435,15 +435,31 @@ def import_units():
         return redirect(url_for("main.main_page"))
 
     # check file extension
-    if file.filename.endswith('xlsx') or file.filename.endswith('xls'):
-        df = pd.read_excel(file)
-        pass
-    elif file.filename.endswith('csv'):
-        df = pd.read_csv(file)
-        pass
-    else:
-        flash('File type not supported', 'error')
+    try:
+        if file.filename.endswith(('xlsx', 'xls')):
+            df = pd.read_excel(file)
+        elif file.filename.endswith('csv'):
+            df = pd.read_csv(file)
+        else:
+            flash('File type not supported', 'danger')
+            return redirect(url_for("main.main_page"))
+    except Exception as e:
+        flash(f"Failed to read file: {str(e)}", "danger")
         return redirect(url_for("main.main_page"))
+
+    # Validate headers
+    expected_headers = [
+        expectedIOFormatting["code"],
+        expectedIOFormatting["title"],
+        expectedIOFormatting["level"],
+        expectedIOFormatting["Content"],
+        expectedIOFormatting["Outcomes"]
+    ]
+    missing_headers = [h for h in expected_headers if h not in df.columns]
+    if missing_headers:
+        flash(f"File headers do not match expected format. Missing: {', '.join(missing_headers)}. Please try again.", "danger")
+        return redirect(url_for("main.main_page"))
+    
     # process data
     unitcount =0
     hasDuplicates = False
