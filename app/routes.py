@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request, session, Blueprint, jsonify, abort
+from flask import render_template, redirect, url_for, flash, request, session, Blueprint, jsonify, current_app, abort
 from flask_login import current_user, login_required
 from .forms import NewUnitForm, AdminForm, EditUnitForm
 from . import db
@@ -9,6 +9,10 @@ import csv
 import pandas as pd
 from io import TextIOWrapper
 from sqlalchemy.exc import IntegrityError
+from .ai_evaluate import run_eval
+import os
+import json
+import random
 
 main = Blueprint('main', __name__)
 
@@ -27,33 +31,60 @@ def main_page():
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
 
-@main.route('/create-lo')
+@main.route('/create_lo/<int:unit_id>')
 @login_required
-def create_lo():
+def create_lo(unit_id):
     if current_user.role not in [UserType.ADMIN, UserType.UC]:
-        flash("You do not have permission to access that page.", "danger")
-        return redirect(url_for("main.home")) 
+        abort(401)
     unit_id = request.args.get("unit_id", type=int)
     unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
     outcomes = unit.learning_outcomes if unit else []
     headings = ['#', 'Learning Outcome', 'Assessment', 'Delete', 'Reorder']
     return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
 
+#all of this should be moved to some new api file
 
-@main.post("/lo/<int:lo_id>/delete")
+@main.delete("/lo_api/delete/<int:unit_id>/<int:lo_id>")
 @login_required
-def lo_delete(lo_id):
+def lo_delete(unit_id, lo_id):
     lo = LearningOutcome.query.get_or_404(lo_id)
-    unit_id = lo.unit_id
     db.session.delete(lo)
     db.session.commit()
     flash("Outcome deleted", "success")
-    return redirect(url_for("main.create_lo", unit_id=unit_id))
+    return jsonify({"ok": True})
 
 
-@main.post("/lo/reorder")
+def returnLOOpener(level):
+    currentConfig = config_manager.getCurrentParams()
+    LEVEL_NAME = {
+        1: currentConfig["Level 1"],
+        2: currentConfig["Level 2"],
+        3: currentConfig["Level 3"],
+        4: currentConfig["Level 4"],
+        5: currentConfig["Level 5"],
+        6: currentConfig["Level 6"]
+    }
+    loLevel = LEVEL_NAME[level].upper()
+    wordlist = currentConfig[loLevel]
+    keyWord = random.choice(wordlist)
+    keyWord += '... '
+    return keyWord
+
+
+@main.post("/lo_api/add/<int:unit_id>")
 @login_required
-def lo_reorder():
+def lo_add(unit_id):
+    unit = Unit.query.filter_by(id=unit_id).first()
+    existing_los = LearningOutcome.query.filter_by(unit_id=unit_id).all()
+    blank_lo = LearningOutcome(unit_id=unit_id, position=len(existing_los)+1, description=returnLOOpener(unit.level))
+    db.session.add(blank_lo)
+    db.session.commit()
+    flash("Outcome Added and Saved", "success")
+    return jsonify({"ok": True})
+
+@main.post("/lo_api/reorder/<int:unit_id>")
+@login_required
+def lo_reorder(unit_id):
     data = request.get_json(force=True)
     order = data.get("order", [])
     unit_id = data.get("unit_id")
@@ -78,18 +109,24 @@ def lo_reorder():
     return jsonify({"ok": True})
 
 
-@main.post("/lo/save")
+@main.post("/lo_api/save/<int:unit_id>")
 @login_required
-def lo_save():
-    unit_id = request.form.get("unit_id", type=int)
-    flash("Outcomes saved.", "success")
-    return redirect(url_for("main.create_lo", unit_id=unit_id))
+def lo_save(unit_id):
+    loList = LearningOutcome.query.filter_by(unit_id=unit_id).all()
+    newLoDict = json.loads(request.data)
+    # assume the order we recieve them is the order they are intended to be in
+    for lo, newLOData in zip(loList, newLoDict.values()):
+        lo.description = newLOData[0]
+        lo.assessment = newLOData[1]
+        db.session.add(lo)
+    db.session.commit()
+    return jsonify({'status': 'ok'})
 
 
-@main.get("/lo/export.csv")
+#we need a button to export all of the units, and im assuming this is for one specific unit, perhaps a general function with single unit option is best here 
+@main.get("/lo_api/export.csv/<int:unit_id>")
 @login_required
-def lo_export_csv():
-    unit_id = request.args.get("unit_id", type=int)
+def lo_export_csv(unit_id):
     unit = Unit.query.get_or_404(unit_id)
     rows = unit.learning_outcomes
     import csv, io
@@ -105,16 +142,20 @@ def lo_export_csv():
     })
 
 
-@main.post("/lo/evaluate")
+@main.post("/lo_api/evaluate/<int:unit_id>")
 @login_required
-def ai_evaluate():
-    unit_id = request.args.get("unit_id", type=int)
-    unit = Unit.query.get(unit_id) if unit_id else Unit.query.first()
-    rows = unit.learning_outcomes if unit else []
-    # For now, just echo simple HTML; later hook up the real AI
-    items = "".join(f"<li>{lo.description} — {lo.assessment or ''}</li>" for lo in rows)
-    return f"<ul class='mb-0'>{items or '<li>No outcomes</li>'}</ul>"
+def ai_evaluate(unit_id):
+    unit = Unit.query.get_or_404(unit_id)
+    rows = unit.learning_outcomes
+    outcomes_text = "\n".join(lo.description for lo in rows)
+    try:
+        result = run_eval(
+            unit.level, unit.unitname, unit.creditpoints, outcomes_text
+        )
 
+        return jsonify({"ok": True, "html": result})
+    except Exception as e:
+        return jsonify({"ok": False, "error": str(e)}), 500
 
 @main.route('/search_unit', methods=['GET', 'POST'])
 def search_unit():
@@ -167,7 +208,7 @@ def view(unit_id):
 def edit_unit(unit_id):
     unit = Unit.query.filter_by(id=unit_id).first_or_404()
     form = EditUnitForm()
-    if current_user.userType != UserType.ADMIN or unit.creatorid != current_user.id:
+    if current_user.userType != UserType.ADMIN and unit.creatorid != current_user.id:
         abort(401)
     if request.method == "GET":
         form.unitcode.data = unit.unitcode
@@ -204,9 +245,8 @@ def edit_unit(unit_id):
 @login_required
 def new_unit():
     if current_user.role not in [UserType.ADMIN, UserType.UC]:
-        flash("You do not have permission to access that page.", "danger")
-        return redirect(url_for("main.home")) 
-    
+        abort(401)
+
     form = NewUnitForm()
     if request.method == 'GET':
         return render_template('new_unit_form.html', title=f'Create New Unit', username=current_user.username, form=form)
@@ -227,6 +267,21 @@ def new_unit():
         db.session.commit()
         flash("Unit Created", 'success')
         return redirect("/main_page")
+    
+
+@main.route('/delete_unit/<int:unit_id>', methods = ['DELETE'])
+@login_required
+def delete_unit(unit_id):
+    unit = Unit.query.filter_by(id=unit_id).first_or_404()
+    if current_user.userType != UserType.ADMIN and unit.creatorid != current_user.id:
+        abort(401)
+
+    if request.method == 'DELETE':
+        db.session.delete(unit)
+        db.session.commit()
+        flash("Unit Deleted", 'success')
+        return jsonify({"ok": True})
+
 
 #small helper functions
 def listToStringByComma(List):
@@ -301,4 +356,42 @@ def AI_reset():
             flash("Settings Successfully Reset to Default.", 'success')
             return jsonify({'status': 'ok'})
         return "Failed To Reset To Default", 500
-    
+
+
+@main.route('/bloom-guide')
+def bloom_guide():
+    """
+    Display the Bloom's Taxonomy guide page with current configuration
+    """
+    # Get current AI configuration parameters
+    config = config_manager.getCurrentParams()
+
+    # Process the credit points data to make it template-friendly
+    config['6_Points_Min'] = config['6 Points'][0]
+    config['6_Points_Max'] = config['6 Points'][1]
+    config['12_Points_Min'] = config['12 Points'][0]
+    config['12_Points_Max'] = config['12 Points'][1]
+    config['24_Points_Min'] = config['24 Points'][0]
+    config['24_Points_Max'] = config['24 Points'][1]
+
+    # Convert lists to JSON strings for JavaScript
+    config_json = {
+        'KNOWLEDGE': config['KNOWLEDGE'],
+        'COMPREHENSION': config['COMPREHENSION'],
+        'APPLICATION': config['APPLICATION'],
+        'ANALYSIS': config['ANALYSIS'],
+        'SYNTHESIS': config['SYNTHESIS'],
+        'EVALUATION': config['EVALUATION'],
+        'BANNED': config['BANNED'],
+        'Level 1': config['Level 1'],
+        'Level 2': config['Level 2'],
+        'Level 3': config['Level 3'],
+        'Level 4': config['Level 4'],
+        'Level 5': config['Level 5'],
+        'Level 6': config['Level 6'],
+        '6 Points': config['6 Points'],
+        '12 Points': config['12 Points'],
+        '24 Points': config['24 Points']
+    }
+
+    return render_template('bloom_guide.html', config=config, config_json=json.dumps(config_json))
