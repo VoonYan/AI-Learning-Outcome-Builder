@@ -10,32 +10,27 @@ Hello {{ username }}. Please select from one of the following:
 
 {% block content %}
 <div class="container-fluid m-3">
-    {% with messages = get_flashed_messages(category_filter=["success"])%}
-    {% if messages%}
-    {% for message in messages%}
-    <div class="alert alert-success" role="alert">{{message}}</div>
-    {%endfor%}
-    {%endif%}
-    {%endwith%}
-    {% with messages = get_flashed_messages(category_filter=["error"])%}
-    {% if messages%}
-    {% for message in messages%}
-    <div class="alert alert-danger" role="alert">{{message}}</div>
-    {%endfor%}
-    {%endif%}
-    {%endwith%}
+    <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(category_filter=["success"]) %}
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-success" role="alert">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
 
-    <div class="d-flex flex-column p-0 h-100">
-    <div class="row g-3 flex-grow-1 h-100
-        {% if current_user.is_authenticated and current_user.role.value in ['admin','unit_coordinator'] %}
-            row-cols-2
-        {% else %}
-            row-cols-1
-        {% endif %}
-    ">
+  {% with messages = get_flashed_messages(category_filter=["error"]) %}
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-danger" role="alert">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+    <div class="row g-4">
 
     <!-- Unit Search -->
-    <div class="col d-flex">
+    <div class="col-12 col-lg-6 d-flex">
         <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
         <h2 class="mb-2"><strong>Unit Search</strong></h2>
         <p class="mb-3">Search units by name or code.</p>
@@ -45,7 +40,7 @@ Hello {{ username }}. Please select from one of the following:
 
     <!-- New Units-->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
-    <div class="col d-flex">
+    <div class="col-12 col-lg-6 d-flex">
         <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
         <h2 class="mb-2"><strong>New Units</strong></h2>
         <p class="mb-3">Create a new unit.</p>
@@ -57,15 +52,15 @@ Hello {{ username }}. Please select from one of the following:
 
     <!-- Add data-->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
-    <div class="col d-flex ">
+    <div class="col-12 col-lg-6 d-flex">
         <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
-        <h1 class="mb-3"><strong>Data Management</strong></h1>
-        <p>Import/export units in bulk, making data management easier.</p>
+        <h2 class="mb-2"><strong>Data Management</strong></h2>
+        <p>Import or Export units as a file (CSV or XLSX).</p>
         <div class="d-flex gap-2">
             <!-- Import Button  -->
             <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
                 <label for="importFile" class="btn mt-3 btn-warning">
-                    Import Units From CSV or XLSX
+                    Import from File
                 </label>
                 <input type="file" id="importFile" name="import_file" class="d-none" accept=".csv,.xlsx,.xls" onchange="this.form.submit()">
             </form>
@@ -79,7 +74,7 @@ Hello {{ username }}. Please select from one of the following:
 
     <!-- Admin Tools-->
     {% if current_user.is_authenticated and current_user.role.value == "admin" %}
-    <div class="col d-flex">
+    <div class="col-12 col-lg-6 d-flex">
         <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
         <h2 class="mb-2"><strong>Admin Tools</strong></h2>
         <p class="mb-3">Access administrative functions.</p>
@@ -87,7 +82,6 @@ Hello {{ username }}. Please select from one of the following:
         </div>
     </div>
     {% endif %}
-    </div>
-</div>
+    
 </div>
 {% endblock %}
