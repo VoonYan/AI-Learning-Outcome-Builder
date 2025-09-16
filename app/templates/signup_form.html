@@ -1,7 +1,8 @@
 {% extends "base_main.html" %}
 
-{% block title %}Main Dashboard{% endblock %}
-{% block banner_subtitle %}{% endblock %}
+{% block title %}Sign Up{% endblock %}
+{% block banner_title %}Sign Up{% endblock %}
+{% block banner_subtitle %}Create an Account{% endblock %}
 
 {% block content %}
     <div class="container-fluid d-flex flex-grow justify-content-center align-items-center">
@@ -13,7 +14,7 @@
             {%endfor%}
             {%endif%}
             {%endwith%}
-            <h3 class="mb-3 text-center">Sign In</h3><n> 
+            <h3 class="mb-3 text-center">Sign Up</h3><n> 
             <form action="{{ url_for('auth.signup_page') }}" method="post" novalidate>
                 {{ form.hidden_tag() }}
                 <div>

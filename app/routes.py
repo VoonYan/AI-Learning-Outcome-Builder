@@ -27,7 +27,7 @@ def auto_route():
 @main.route('/home')
 @main.route('/home_page')
 def home(): 
-    return render_template('homepage_purebs.html' )
+    return render_template('homepage.html' )
 
 
 @main.route('/dashboard')
@@ -366,6 +366,10 @@ def AI_reset():
             return jsonify({'status': 'ok'})
         return "Failed To Reset To Default", 500
 
+@main.route('/help')
+def help_page():
+    return render_template('help_page.html')
+
 
 @main.route('/bloom-guide')
 def bloom_guide():
@@ -383,6 +387,7 @@ def bloom_guide():
     config['24_Points_Min'] = config['24 Points'][0]
     config['24_Points_Max'] = config['24 Points'][1]
 
+    #this is a json to begin with????
     # Convert lists to JSON strings for JavaScript
     config_json = {
         'KNOWLEDGE': config['KNOWLEDGE'],

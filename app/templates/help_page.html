@@ -1,0 +1,608 @@
+{% extends "base_main.html" %}
+
+{% block title %}AI Learning Outcome Builder Help{% endblock %}
+{% block banner_title %}<i class="bi bi-question-circle-fill me-2"></i>Help & Documentation{% endblock %}
+{% block banner_subtitle %}
+  <div class="text-center">
+    Everything you need to know about using the Learning Outcome Builder
+  </div>
+{% endblock %}
+
+{% block content %}
+
+<!-- Main Content -->
+<main class="flex-grow-1">
+    <div class="container my-4">
+        <div class="row">
+
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3 mb-4">
+                <div class="card border-warning help-nav">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary mb-3">Quick Navigation</h5>
+                        <nav class="nav nav-pills flex-column">
+                            <a class="nav-link" href="#getting-started">Getting Started</a>
+                            <a class="nav-link" href="#user-roles">User Roles</a>
+                            <a class="nav-link" href="#units">Managing Units</a>
+                            <a class="nav-link" href="#learning-outcomes">Learning Outcomes</a>
+                            <a class="nav-link" href="#blooms">Bloom's Taxonomy</a>
+                            <a class="nav-link" href="#ai-evaluation">AI Evaluation</a>
+                            <a class="nav-link" href="#import-export">Import/Export</a>
+                            <a class="nav-link" href="#admin">Admin Tools</a>
+                            <a class="nav-link" href="#troubleshooting">Troubleshooting</a>
+                            <a class="nav-link" href="#faq">FAQ</a>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Help Content -->
+            <div class="col-lg-9">
+
+                <!-- Getting Started -->
+                <section id="getting-started" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-rocket-takeoff me-2"></i>Getting Started</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>Welcome to the UWA Learning Outcome Builder!</h5>
+                            <p>This tool helps create, manage, and evaluate learning outcomes for university units using AI-powered assistance and Bloom's Taxonomy framework.</p>
+
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>First Time Users:</strong> Start by determining your role (Guest, Unit Coordinator, or Admin) and follow the appropriate workflow below.
+                            </div>
+
+                            <h6 class="mt-4">Quick Start Guide:</h6>
+                            <ol>
+                                <li><strong>Guests:</strong> Click "Explore" to search and view existing units</li>
+                                <li><strong>Unit Coordinators:</strong> Login and navigate to "New Unit" to create your first unit</li>
+                                <li><strong>Admins:</strong> Login and access "Admin Tools" to configure system settings</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- User Roles -->
+                <section id="user-roles" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-people-fill me-2"></i>User Roles & Permissions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <div class="card h-100 feature-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-warning"><i class="bi bi-person me-2"></i>Guest</h5>
+                                            <ul class="small">
+                                                <li>Search units by name or code</li>
+                                                <li>View unit details</li>
+                                                <li>View learning outcomes</li>
+                                                <li>No login required</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card h-100 feature-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-info"><i class="bi bi-person-badge me-2"></i>Unit Coordinator</h5>
+                                            <ul class="small">
+                                                <li>All Guest permissions</li>
+                                                <li>Create new units</li>
+                                                <li>Edit own units</li>
+                                                <li>Manage learning outcomes</li>
+                                                <li>Use AI evaluation</li>
+                                                <li>Import/Export units</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card h-100 feature-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-danger"><i class="bi bi-shield-lock me-2"></i>Admin</h5>
+                                            <ul class="small">
+                                                <li>All Coordinator permissions</li>
+                                                <li>Edit any unit</li>
+                                                <li>Configure AI settings</li>
+                                                <li>Manage Bloom's taxonomy</li>
+                                                <li>Set system parameters</li>
+                                                <li>Delete any unit</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Managing Units -->
+                <section id="units" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-journal-text me-2"></i>Managing Units</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>Creating a New Unit</h5>
+                            <ol>
+                                <li>Navigate to Dashboard → "New Unit"</li>
+                                <li>Fill in the required fields:
+                                    <ul>
+                                        <li><strong>Unit Code:</strong> Unique identifier (e.g., CITS3200)</li>
+                                        <li><strong>Unit Name:</strong> Full name of the unit</li>
+                                        <li><strong>Level:</strong> Academic level (1-6)</li>
+                                        <li><strong>Credit Points:</strong> 6, 12, or 24 points</li>
+                                        <li><strong>Description:</strong> Brief overview of the unit</li>
+                                    </ul>
+                                </li>
+                                <li>Click "Create Unit"</li>
+                            </ol>
+
+                            <h5 class="mt-4">Editing a Unit</h5>
+                            <ol>
+                                <li>Search for your unit using the search function</li>
+                                <li>Click on the unit name to view details</li>
+                                <li>Click "Edit Unit" button</li>
+                                <li>Modify the necessary fields</li>
+                                <li>Click "Save" to update</li>
+                            </ol>
+
+                            <div class="alert alert-warning mt-3">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                <strong>Note:</strong> You can only edit units you created unless you're an Admin.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Learning Outcomes -->
+                <section id="learning-outcomes" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-list-check me-2"></i>Managing Learning Outcomes</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>Adding Learning Outcomes</h5>
+                            <ol>
+                                <li>Navigate to your unit's detail page</li>
+                                <li>Click "Edit Learning Outcomes"</li>
+                                <li>Click "Add Outcome" to create a new blank outcome</li>
+                                <li>The system will suggest an appropriate starting verb based on unit level</li>
+                                <li>Complete the outcome description</li>
+                                <li>Optionally add assessment methods</li>
+                            </ol>
+
+                            <h5 class="mt-4">Editing & Reordering</h5>
+                            <ul>
+                                <li><strong>Edit inline:</strong> Click directly on the text to edit</li>
+                                <li><strong>Auto-save:</strong> Changes save automatically after 750ms</li>
+                                <li><strong>Reorder:</strong> Drag the move icon (⋮⋮) to rearrange outcomes</li>
+                                <li><strong>Delete:</strong> Click the red minus button to remove an outcome</li>
+                            </ul>
+
+                            <h5 class="mt-4">Best Practices</h5>
+                            <div class="bg-light p-3 rounded">
+                                <ul class="mb-0">
+                                    <li>Start each outcome with an action verb from Bloom's Taxonomy</li>
+                                    <li>Be specific and measurable</li>
+                                    <li>Align complexity with unit level</li>
+                                    <li>Include 3-6 outcomes for 6CP units, 6-9 for 12CP, 8-12 for 24CP</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bloom's Taxonomy -->
+                <section id="blooms" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-mortarboard-fill me-2"></i>Bloom's Taxonomy Guide</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>The system uses Bloom's Taxonomy to ensure learning outcomes match appropriate cognitive levels:</p>
+
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Unit Level</th>
+                                        <th>Bloom's Category</th>
+                                        <th>Example Verbs</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-primary">Level 1</span></td>
+                                        <td>Knowledge</td>
+                                        <td>List, Define, Identify, Name, State</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-primary">Level 2</span></td>
+                                        <td>Comprehension</td>
+                                        <td>Explain, Describe, Discuss, Summarise</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-primary">Level 3</span></td>
+                                        <td>Application</td>
+                                        <td>Apply, Demonstrate, Use, Implement</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-primary">Level 4</span></td>
+                                        <td>Analysis</td>
+                                        <td>Analyse, Compare, Examine, Investigate</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-primary">Level 5</span></td>
+                                        <td>Synthesis</td>
+                                        <td>Create, Design, Develop, Formulate</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-primary">Level 6</span></td>
+                                        <td>Evaluation</td>
+                                        <td>Evaluate, Assess, Critique, Judge</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <a href="{{ url_for('main.bloom_guide') }}" class="btn btn-warning text-dark mt-3"  target="_blank>
+                                <i class="bi bi-book me-2"></i>View Complete Bloom's Guide
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI Evaluation -->
+                <section id="ai-evaluation" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-robot me-2"></i>AI Evaluation Feature</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>How AI Evaluation Works</h5>
+                            <p>The AI evaluation feature uses Google's Gemma AI to analyse your learning outcomes against best practices:</p>
+
+                            <ol>
+                                <li>Navigate to the Learning Outcomes editor</li>
+                                <li>Enter your outcomes</li>
+                                <li>Click the "Evaluate" button</li>
+                                <li>Review the AI feedback in the right panel</li>
+                            </ol>
+
+                            <h5 class="mt-4">What the AI Checks:</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="bg-light p-3 rounded">
+                                        <h6 class="text-success"><i class="bi bi-check-circle me-2"></i>Good Outcomes</h6>
+                                        <ul class="small mb-0">
+                                            <li>Appropriate Bloom's level</li>
+                                            <li>Clear action verbs</li>
+                                            <li>Measurable objectives</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="bg-light p-3 rounded">
+                                        <h6 class="text-warning"><i class="bi bi-exclamation-triangle me-2"></i>Issues Detected</h6>
+                                        <ul class="small mb-0">
+                                            <li>Wrong cognitive level</li>
+                                            <li>Vague language</li>
+                                            <li>Banned words used</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-info mt-3">
+                                <i class="bi bi-lightbulb me-2"></i>
+                                <strong>Tip:</strong> The AI provides specific suggestions for improving each outcome.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Import/Export -->
+                <section id="import-export" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-arrow-down-up me-2"></i>Import/Export Features</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>Importing Units</h5>
+                            <p>Bulk import units from CSV or Excel files:</p>
+                            <ol>
+                                <li>Prepare your file with required columns:
+                                    <div class="code-example mt-2 mb-2">
+                                        code | title | level | Content | Outcomes
+                                    </div>
+                                </li>
+                                <li>Separate multiple outcomes with |*|</li>
+                                <li>Click "Import Units From CSV or XLSX"</li>
+                                <li>Select your file</li>
+                                <li>Review import results</li>
+                            </ol>
+
+                            <h5 class="mt-4">Exporting Units</h5>
+                            <ul>
+                                <li><strong>Export My Units:</strong> Downloads all units you created</li>
+                                <li><strong>Export All Units:</strong> Downloads entire unit database (Admin only)</li>
+                                <li><strong>Export Single Unit:</strong> From the LO editor, click "Export"</li>
+                            </ul>
+
+                            <div class="alert alert-secondary">
+                                <strong>File Format Example:</strong>
+                                <div class="code-example">
+                                    code,title,level,Content,Outcomes<br>
+                                    CITS3200,Professional Computing,3,Unit description,Outcome 1|*|Outcome 2|*|Outcome 3
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Admin Tools -->
+                <section id="admin" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-gear-fill me-2"></i>Admin Configuration</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>Admin Settings Overview</h5>
+                            <p>Admins can configure:</p>
+
+                            <div class="accordion" id="adminAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#aiConfig">
+                                            AI Configuration
+                                        </button>
+                                    </h2>
+                                    <div id="aiConfig" class="accordion-collapse collapse" data-bs-parent="#adminAccordion">
+                                        <div class="accordion-body">
+                                            <ul>
+                                                <li><strong>AI Model:</strong> Select Gemini model variant</li>
+                                                <li><strong>API Key:</strong> Set Google AI API key</li>
+                                                <li>Use 'environ' to use server environment variable</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bloomsConfig">
+                                            Bloom's Taxonomy Words
+                                        </button>
+                                    </h2>
+                                    <div id="bloomsConfig" class="accordion-collapse collapse" data-bs-parent="#adminAccordion">
+                                        <div class="accordion-body">
+                                            <p>Customise action verbs for each Bloom's level:</p>
+                                            <ul>
+                                                <li>Add/remove verbs for each category</li>
+                                                <li>Separate verbs with commas</li>
+                                                <li>These verbs are used for validation and suggestions</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mappingConfig">
+                                            Level Mappings
+                                        </button>
+                                    </h2>
+                                    <div id="mappingConfig" class="accordion-collapse collapse" data-bs-parent="#adminAccordion">
+                                        <div class="accordion-body">
+                                            <ul>
+                                                <li>Map unit levels (1-6) to Bloom's categories</li>
+                                                <li>Set outcome count ranges for credit points</li>
+                                                <li>Format: "min-max" (e.g., "3-6")</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-danger mt-3">
+                                <i class="bi bi-exclamation-octagon me-2"></i>
+                                <strong>Warning:</strong> Changes to admin settings affect all users system-wide.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Troubleshooting -->
+                <section id="troubleshooting" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-wrench me-2"></i>Troubleshooting</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>Common Issues & Solutions</h5>
+
+                            <div class="mb-3">
+                                <h6 class="text-danger">AI Evaluation Not Working</h6>
+                                <ul>
+                                    <li>Check API key is correctly set in Admin settings</li>
+                                    <li>Ensure you have internet connectivity</li>
+                                    <li>Try again after 1 minute (rate limiting)</li>
+                                    <li>Contact admin if using 'environ' setting</li>
+                                </ul>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6 class="text-danger">Can't Edit/Delete Unit</h6>
+                                <ul>
+                                    <li>Verify you're logged in</li>
+                                    <li>Check you created the unit (or are Admin)</li>
+                                    <li>Refresh the page and try again</li>
+                                </ul>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6 class="text-danger">Import Failed</h6>
+                                <ul>
+                                    <li>Verify file format (CSV or XLSX)</li>
+                                    <li>Check column headers match exactly</li>
+                                    <li>Ensure unit codes are unique</li>
+                                    <li>Remove any special characters from unit codes</li>
+                                </ul>
+                            </div>
+
+                            <div class="mb-3">
+                                <h6 class="text-danger">Changes Not Saving</h6>
+                                <ul>
+                                    <li>Wait for auto-save (750ms after typing stops)</li>
+                                    <li>Click "Save" button manually</li>
+                                    <li>Check for browser console errors</li>
+                                    <li>Ensure stable internet connection</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ -->
+                <section id="faq" class="help-section mb-5">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0"><i class="bi bi-patch-question-fill me-2"></i>Frequently Asked Questions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="faqAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                            How many learning outcomes should my unit have?
+                                        </button>
+                                    </h2>
+                                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            It depends on credit points:
+                                            <ul>
+                                                <li>6 credit points: 3-6 outcomes</li>
+                                                <li>12 credit points: 6-9 outcomes</li>
+                                                <li>24 credit points: 8-12 outcomes</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                            Can I recover deleted units or outcomes?
+                                        </button>
+                                    </h2>
+                                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            No, deletions are permanent. Always export a backup before making major changes.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                            Why are some words "banned" in learning outcomes?
+                                        </button>
+                                    </h2>
+                                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Words like "understand," "know," and "appreciate" are too vague to measure. Learning outcomes must use specific, observable action verbs that can be assessed.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                            Can multiple coordinators work on the same unit?
+                                        </button>
+                                    </h2>
+                                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Currently, only the unit creator and admins can edit a unit. For collaboration, export and share files, or request admin assistance.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                                            Is the AI evaluation mandatory?
+                                        </button>
+                                    </h2>
+                                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            No, AI evaluation is optional but recommended. It provides helpful suggestions to improve outcome quality and alignment with standards.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact Support -->
+                <section class="mb-5">
+                    <div class="card border-warning">
+                        <div class="card-body text-center">
+                            <h4 class="card-title text-primary">Still Need Help?</h4>
+                            <p class="card-text">If you can't find the answer you're looking for, please contact your system administrator or IT support.</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="" class="btn btn-warning text-dark">
+                                    <i class="bi bi-envelope me-2"></i>Email Support
+                                </a>
+                                <a href="javascript:history.back()" class="btn btn-primary">
+                                    <i class="bi bi-house me-2"></i>Back
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+    // Highlight active section in navigation
+    window.addEventListener('scroll', () => {
+        let current = '';
+        const sections = document.querySelectorAll('.help-section');
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (window.pageYOffset >= (sectionTop - 100)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        document.querySelectorAll('.help-nav .nav-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').slice(1) === current) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
+{% endblock %}

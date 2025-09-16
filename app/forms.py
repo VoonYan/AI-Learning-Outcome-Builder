@@ -13,7 +13,7 @@ class SignupForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirmpassword = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password', message='Passwords must match')])
-    usertype = SelectField('User Type', choices=[('unit_coordinator', 'Unit Coordinator'), ('guest', 'Guest'), ('admin', 'Admin')])
+    usertype = SelectField('User Type', choices=[('unit_coordinator', 'Unit Coordinator'), ('admin', 'Admin')])
     submit = SubmitField('Sign Up')
 
 class NewUnitForm(FlaskForm):
