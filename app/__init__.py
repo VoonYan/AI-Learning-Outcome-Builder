@@ -13,6 +13,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login_page'
 config_manager = ConfigManager('app/AIConfig.json')
 
+
 @login_manager.user_loader
 def load_user(user_id):
     from .models import User
@@ -37,6 +38,13 @@ def create_app(config=DevelopmentConfig):
          with flaskApp.app_context():
             db.create_all()
             db.session.commit()
+            
+    @flaskApp.after_request
+    def add_header(response):
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        return response
 
             
 

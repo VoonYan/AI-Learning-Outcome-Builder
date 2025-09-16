@@ -44,7 +44,7 @@
                 <li>No learning outcomes defined for this unit.</li>
                 {% endfor %}
             </ul>
-            {% if not current_user.is_anonymous or current_user.userType == UserType.ADMIN or current_user.id == unit.creatorid %}
+            {% if not current_user.is_anonymous and (current_user.role == UserType.ADMIN or current_user.id == unit.creatorid) %}
             <!-- Edit buttons -->
             <div class="mt-3">
                 <!-- Edit Unit button -->

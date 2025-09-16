@@ -1,0 +1,75 @@
+{% extends "base_main.html" %}
+
+{% block title %}Guest Dashboard{% endblock %}
+{% block banner_subtitle %}
+  <div class="text-center">
+    Explore as a guest – create and evaluate learning outcomes.
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="container-xl my-4">
+  <div class="row g-4">
+
+    <!-- Search Units -->
+    <section class="col-12">
+      <div class="card p-4 border-primary border-2 rounded-4">
+        <h4 class="text-primary">Search Units</h4>
+        <form action="{{ url_for('main.search_unit_guest') }}" method="get" class="d-flex gap-2">
+          <input type="text" name="query" class="form-control" placeholder="Enter unit code or name">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Outcomes Table -->
+    <section class="col-12 col-lg-8">
+      <div class="bg-white rounded-4 p-3 border border-primary border-3">
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle mb-0">
+            <thead class="table-primary text-center">
+              <tr>
+                {% for heading in headings %}
+                  <th>{{ heading }}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody id="lo-tbody">
+              {% for lo in outcomes %}
+              <tr data-id="{{ lo.id }}">
+                <td class="text-center">{{ loop.index }}</td>
+                <td>{{ lo.description }}</td>
+                <td>{{ lo.assessment or '' }}</td>
+              </tr>
+              {% else %}
+              <tr><td colspan="3" class="text-center text-muted py-4">No outcomes yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Evaluation Panel -->
+    <aside class="col-12 col-lg-4">
+      <div class="card bg-light rounded-4 p-4">
+        <h5 class="text-primary mb-3">AI Evaluation</h5>
+        <div id="evaluationPanel" class="small text-muted">
+          Enter outcomes and click “Evaluate” to get AI feedback.
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Buttons -->
+  <div class="d-flex justify-content-center gap-3 mt-4">
+    <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" 
+            type="button" id="evaluateBtn">Evaluate</button>
+  </div>
+</div>
+
+<script>
+  const AI_EVALUATE_URL = "{{ url_for('main.ai_evaluate') }}";
+</script>
+<script src="{{ url_for('static', filename='create_lo.js') }}"></script>
+{% endblock %}
