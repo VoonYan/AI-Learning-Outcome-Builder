@@ -10,75 +10,84 @@ Hello {{ username }}. Please select from one of the following:
 
 
 {% block content %}
-<div class="container my-5">
+<main class="flex-grow-1 d-flex">
+    <div class="container-x1 my-5 flex-grow-1">
 
-  <!-- Flash Messages -->
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-    
-    
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-<!-- Unit Search --> 
-    <div class="col d-flex">
-        <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
-        <h2 class="mb-2"><strong>Unit Search</strong></h2>
-        <p class="mb-3">Search units by name or code.</p>
-        <a class="btn mt-2 btn-warning" href="{{ url_for('main.search_unit') }}">Search Units</a>
+  
+<!-- Dashboard grid -->
+<div class="row g-4">
+
+    <!-- Unit Search -->
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card shadow-lg h-100 text-center p-4">
+        <div class="card-body d-flex flex-column">
+            <h2 class="h3 fw-bold text-primary">Unit Search</h2>
+            <p class="flex-grow-1">Search units by name or code.</p>
+            <a class="btn btn-warning mt-2" href="{{ url_for('main.search_unit') }}">Search Units</a>
+          </div>
         </div>
     </div>
 
-    <!-- New Units-->
+    <!-- New Units -->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
-    <div class="col d-flex">
-        <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
-        <h2 class="mb-2"><strong>New Units</strong></h2>
-        <p class="mb-3">Create a new unit.</p>
-        <a class="btn mt-2 btn-warning" href="{{ url_for('main.new_unit') }}">New Unit</a>
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card shadow-lg h-100 text-center p-4">
+        <div class="card-body d-flex flex-column">
+            <h2 class="h3 fw-bold text-primary">New Units</h2>
+            <p class="flex-grow-1">Create a new unit.</p>
+            <a class="btn btn-warning mt-2" href="{{ url_for('main.new_unit') }}">New Unit</a>
+          </div>
         </div>
+    </div>
     </div>
     {% endif %}
 
-
-    <!-- Add data-->
+    <!-- Data Management -->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
-    <div class="col d-flex ">
-        <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
-        <h1 class="mb-3"><strong>Data Management</strong></h1>
-        <p>Import/export units in bulk, making data management easier.</p>
-        <div class="d-flex gap-2">
-            <!-- Import Button  -->
-            <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
-                <label for="importFile" class="btn mt-3 btn-warning">
-                    Import Units From CSV or XLSX
-                </label>
-                <input type="file" id="importFile" name="import_file" class="d-none" accept=".csv,.xlsx,.xls" onchange="this.form.submit()">
-            </form>
-            <!-- Export Button -->
-            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_my_units') }}">Export My Units</a>
-            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_all_units') }}">Export All Units</a>
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card shadow-lg h-100 text-center p-4">
+        <div class="card-body d-flex flex-column">
+            <h2 class="h3 fw-bold text-primary">Data Management</h2>
+            <p class="flex-grow-1">Import/export units in bulk, making data management easier.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+              <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
+            <label for="importFile" class="btn btn-warning fw-bold text-dark">Import Units</label>
+            <input type="file" id="importFile" name="import_file" class="d-none" accept=".csv,.xlsx,.xls" onchange="this.form.submit()">
+          </form>
+          <a href="{{ url_for('main.export_my_units') }}" class="btn btn-warning fw-bold text-dark">Export Mine</a>
+          <a href="{{ url_for('main.export_all_units') }}" class="btn btn-warning fw-bold text-dark">Export All</a>
         </div>
-    </div>
+      </div>
     </div>
     {% endif %}
 
-    <!-- Admin Tools-->
+    <!-- Admin Tools -->
     {% if current_user.is_authenticated and current_user.role.value == "admin" %}
-    <div class="col d-flex">
-        <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
-        <h2 class="mb-2"><strong>Admin Tools</strong></h2>
-        <p class="mb-3">Access administrative functions.</p>
-        <a class="btn mt-2 btn-warning" href="{{ url_for('main.admin') }}">Admin Tools</a>
-        </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <div class="card shadow-lg h-100 text-center p-4">
+        <div class="card-body d-flex flex-column">
+            <h2 class="h3 fw-bold text-primary">Admin Tools</h2>
+            <p class="flex-grow-1">Access administrative functions.</p>
+            <a class="btn btn-warning mt-2" href="{{ url_for('main.admin') }}">Admin Tools</a>
+          </div>
+      </div>
     </div>
     {% endif %}
+
+
+    
     </div>
 </div>
 </div>
