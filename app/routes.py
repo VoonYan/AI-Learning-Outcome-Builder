@@ -1,6 +1,5 @@
 from flask import render_template, redirect, url_for, flash, request, session, Blueprint, jsonify, current_app, abort
 from flask_login import current_user, login_required
-from flask_login import logout_user
 from .forms import NewUnitForm, AdminForm, EditUnitForm
 from . import db
 from .models import db, Unit, LearningOutcome, UserType
@@ -17,10 +16,6 @@ import random
 
 main = Blueprint('main', __name__)
 
-@main.rout('logout')
-def logout():
-    logout_user()
-    
 
 @main.route('/home')
 @main.route('/home_page')
