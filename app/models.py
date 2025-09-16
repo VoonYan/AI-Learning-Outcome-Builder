@@ -12,7 +12,6 @@ def load_user(id):
 class UserType(enum.Enum):
     ADMIN = "admin"
     UC = "unit_coordinator"
-    GUEST = "guest"
 
 #user class
 class User(UserMixin, db.Model):
