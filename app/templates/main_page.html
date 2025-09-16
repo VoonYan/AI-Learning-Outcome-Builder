@@ -11,21 +11,27 @@ Hello {{ username }}. Please select from one of the following:
 {% block content %}
 <div class="container-fluid m-3">
     <!-- Flash Messages -->
-  {% with messages = get_flashed_messages(category_filter=["success"]) %}
-    {% if messages %}
-      {% for message in messages %}
-      <div class="alert alert-success" role="alert">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+    {% with messages = get_flashed_messages(category_filter=["success"]) %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-  {% with messages = get_flashed_messages(category_filter=["error"]) %}
-    {% if messages %}
-      {% for message in messages %}
-      <div class="alert alert-danger" role="alert">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+    {% with messages = get_flashed_messages(category_filter=["error"]) %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
     <div class="row g-4">
 
@@ -49,24 +55,29 @@ Hello {{ username }}. Please select from one of the following:
     </div>
     {% endif %}
 
-
     <!-- Add data-->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
     <div class="col-12 col-lg-6 d-flex">
-        <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
+        <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3">
         <h2 class="mb-2"><strong>Data Management</strong></h2>
         <p>Import or Export units as a file (CSV or XLSX).</p>
         <div class="d-flex gap-2">
             <!-- Import Button  -->
-            <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
+            <form method="post" action="{{ url_for('main.import_units') }}"
+                  enctype="multipart/form-data" class="d-inline" id="importForm">
                 <label for="importFile" class="btn mt-3 btn-warning">
                     Import from File
                 </label>
-                <input type="file" id="importFile" name="import_file" class="d-none" accept=".csv,.xlsx,.xls" onchange="this.form.submit()">
+                <input type="file" id="importFile" name="import_file" class="d-none"
+                       accept=".csv,.xlsx,.xls">
             </form>
-            <!-- Export Button -->
-            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_my_units') }}">Export My Units</a>
-            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_all_units') }}">Export All Units</a>
+            <!-- Export Buttons -->
+            <button class="btn mt-3 btn-warning" onclick="exportWithLoading('my')" id="exportMyBtn">
+                Export My Units
+            </button>
+            <button class="btn mt-3 btn-warning" onclick="exportWithLoading('all')" id="exportAllBtn">
+                Export All Units
+            </button>
         </div>
     </div>
     </div>
@@ -82,6 +93,297 @@ Hello {{ username }}. Please select from one of the following:
         </div>
     </div>
     {% endif %}
-    
+
 </div>
+
+<!-- Loading Modal with Progress -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-5">
+                <div id="spinnerContainer">
+                    <div class="spinner-border text-warning mb-3" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <h5 id="loadingText">Processing...</h5>
+                <div class="progress mb-3" style="height: 25px;">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                         role="progressbar" style="width: 0%;">
+                        <span id="progressText">0%</span>
+                    </div>
+                </div>
+                <p class="text-muted mb-0" id="loadingSubtext">Please wait while we process your request</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="text-success mb-3">
+                    <i class="bi bi-check-circle-fill" style="font-size: 3rem;"></i>
+                </div>
+                <h5 id="successTitle">Operation Completed!</h5>
+                <p class="text-muted mb-3" id="successMessage">Your operation has been completed successfully.</p>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="text-danger mb-3">
+                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 3rem;"></i>
+                </div>
+                <h5>Operation Failed</h5>
+                <p class="text-muted mb-3" id="errorMessage">An error occurred during the operation.</p>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Global variables
+let loadingModal, successModal, errorModal;
+let progressInterval = null;
+let currentProgress = 0;
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize modals
+    loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
+        backdrop: 'static',
+        keyboard: false
+    });
+    successModal = new bootstrap.Modal(document.getElementById('successModal'));
+    errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
+
+    // Handle file import
+    const importFile = document.getElementById('importFile');
+    const importForm = document.getElementById('importForm');
+
+    if (importFile && importForm) {
+        importFile.addEventListener('change', function() {
+            if (this.files.length > 0) {
+                const fileName = this.files[0].name;
+                const fileSize = (this.files[0].size / 1024).toFixed(2); // KB
+
+                // Update loading modal text
+                document.getElementById('loadingText').textContent = 'Importing Units...';
+                document.getElementById('loadingSubtext').textContent =
+                    `Processing ${fileName} (${fileSize} KB)`;
+
+                // Reset and start progress
+                resetProgress();
+                showLoadingModal();
+                startProgress(85); // Stop at 85% until form actually submits
+
+                // Small delay to show the modal before submit
+                setTimeout(() => {
+                    importForm.submit();
+                }, 100);
+            }
+        });
+    }
+});
+
+// Show loading modal
+function showLoadingModal() {
+    resetProgress();
+    document.getElementById('spinnerContainer').style.display = 'block';
+    loadingModal.show();
+}
+
+// Hide loading modal with cleanup
+function hideLoadingModal() {
+    stopProgress();
+
+    // Force hide the modal
+    const modalElement = document.getElementById('loadingModal');
+    const bsModal = bootstrap.Modal.getInstance(modalElement);
+    if (bsModal) {
+        bsModal.hide();
+    }
+
+    // Clean up backdrop if it exists
+    setTimeout(() => {
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(backdrop => backdrop.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style = '';
+    }, 100);
+}
+
+// Progress bar functions
+function resetProgress() {
+    currentProgress = 0;
+    updateProgressBar(0);
+}
+
+function updateProgressBar(percent) {
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
+    if (progressBar && progressText) {
+        progressBar.style.width = percent + '%';
+        progressBar.setAttribute('aria-valuenow', percent);
+        progressText.textContent = percent + '%';
+    }
+}
+
+function startProgress(maxProgress = 90) {
+    stopProgress(); // Clear any existing interval
+
+    progressInterval = setInterval(() => {
+        if (currentProgress < maxProgress) {
+            // Slow down as we approach the max
+            const increment = Math.max(1, Math.floor((maxProgress - currentProgress) / 10));
+            currentProgress = Math.min(currentProgress + increment, maxProgress);
+            updateProgressBar(currentProgress);
+        }
+    }, 200);
+}
+
+function stopProgress() {
+    if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+    }
+}
+
+function completeProgressAndHide(callback) {
+    stopProgress();
+
+    // Quickly complete to 100%
+    let fastProgress = currentProgress;
+    const fastInterval = setInterval(() => {
+        fastProgress = Math.min(fastProgress + 10, 100);
+        updateProgressBar(fastProgress);
+
+        if (fastProgress >= 100) {
+            clearInterval(fastInterval);
+
+            // Hide spinner when complete
+            const spinner = document.getElementById('spinnerContainer');
+            if (spinner) {
+                spinner.style.display = 'none';
+            }
+
+            // Wait a moment then hide modal
+            setTimeout(() => {
+                hideLoadingModal();
+                if (callback) {
+                    setTimeout(callback, 300);
+                }
+            }, 500);
+        }
+    }, 30);
+}
+
+// Export with loading indicator
+async function exportWithLoading(type) {
+    const url = type === 'my'
+        ? "{{ url_for('main.export_my_units') }}"
+        : "{{ url_for('main.export_all_units') }}";
+
+    const exportTypeText = type === 'my' ? 'Your Units' : 'All Units';
+
+    // Disable buttons to prevent multiple clicks
+    const exportMyBtn = document.getElementById('exportMyBtn');
+    const exportAllBtn = document.getElementById('exportAllBtn');
+    if (exportMyBtn) exportMyBtn.disabled = true;
+    if (exportAllBtn) exportAllBtn.disabled = true;
+
+    // Update loading modal
+    document.getElementById('loadingText').textContent = `Exporting ${exportTypeText}...`;
+    document.getElementById('loadingSubtext').textContent = 'Preparing your download';
+
+    // Show modal and start progress
+    showLoadingModal();
+    startProgress(80);
+
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(`Export failed: ${response.statusText}`);
+        }
+
+        // Update progress for processing
+        document.getElementById('loadingSubtext').textContent = 'Processing data...';
+        currentProgress = 80;
+        startProgress(95);
+
+        // Get filename
+        const disposition = response.headers.get('Content-Disposition');
+        let filename = 'units_export.csv';
+        if (disposition) {
+            const matches = /filename="(.+)"/.exec(disposition);
+            if (matches && matches[1]) {
+                filename = matches[1];
+            }
+        }
+
+        // Get the blob
+        const blob = await response.blob();
+
+        // Update to completion
+        document.getElementById('loadingSubtext').textContent = 'Finalizing download...';
+
+        // Complete progress and hide modal
+        completeProgressAndHide(() => {
+            // Create download link
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+
+            // Cleanup
+            setTimeout(() => {
+                window.URL.revokeObjectURL(downloadUrl);
+                document.body.removeChild(a);
+            }, 100);
+
+            // Show success modal
+            document.getElementById('successTitle').textContent = 'Export Complete!';
+            document.getElementById('successMessage').textContent =
+                `${exportTypeText} have been exported successfully as ${filename}`;
+            successModal.show();
+        });
+
+    } catch (error) {
+        console.error('Export error:', error);
+
+        // Force hide loading modal
+        hideLoadingModal();
+
+        // Show error modal
+        setTimeout(() => {
+            document.getElementById('errorMessage').textContent =
+                `Failed to export units: ${error.message}`;
+            errorModal.show();
+        }, 500);
+
+    } finally {
+        // Re-enable buttons after a delay
+        setTimeout(() => {
+            if (exportMyBtn) exportMyBtn.disabled = false;
+            if (exportAllBtn) exportAllBtn.disabled = false;
+        }, 2000);
+    }
+}
+</script>
+
 {% endblock %}
