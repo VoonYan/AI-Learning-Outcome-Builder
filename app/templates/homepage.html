@@ -24,6 +24,9 @@
               <p class="card-text flex-grow-1">Browse and explore unit outcomes without needing to log in.</p>
               <div>
                 <a class="btn btn-warning px-4 text-dark" href="{{ url_for('main.search_unit') }}">Explore</a>
+                <a href="{{ url_for('main.help_page') }}" class="btn btn-info">
+                  <i class="bi bi-question-circle me-2"></i>Help
+                </a>
               </div>
             </div>
           </div>
@@ -36,7 +39,9 @@
               <p class="card-text flex-grow-1">For UWA Unit Coordinators to manage units, edit outcomes, approve changes, and oversee alignment with university standards.</p>
               <div class="d-flex justify-content-center gap-2">
                 <a href="{{url_for('auth.login_page')}}" class="btn btn-warning px-4 text-dark">Login</a>
-                <a href="/coordinator/help" class="btn btn-primary px-4">Help</a>
+                <a href="{{ url_for('main.help_page') }}" class="btn btn-info">
+                  <i class="bi bi-question-circle me-2"></i>Help
+                </a>
               </div>
             </div>
           </div>
@@ -49,7 +54,9 @@
               <p class="card-text flex-grow-1">Admins can oversee the entire system, manage accounts, configure settings, and maintain platform integrity.</p>
               <div class="d-flex justify-content-center gap-2">
                 <a href="{{url_for('auth.login_page')}}" class="btn btn-warning px-4 text-dark">Login</a>
-                <a href="/admin/help" class="btn btn-primary px-4">Help</a>
+                <a href="{{ url_for('main.help_page') }}" class="btn btn-info">
+                  <i class="bi bi-question-circle me-2"></i>Help
+                </a>
               </div>
             </div>
           </div>

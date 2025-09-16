@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bloom's Taxonomy Guide - Learning Outcome Builder</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Header Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid px-3 px-lg-4">
+      <a class="navbar-brand d-flex align-items-center gap-3" href="/">
+        <img src="/static/images/logo-uwacrest-white.svg" alt="The University of Western Australia logo" class="img-fluid" style="max-width:140px">
+        <span class="fw-bold fs-5">Learning Outcome Builder</span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('main.create_lo', unit_id=1) }}">Back</a> <!-- temp unit_id -->
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="py-4 py-md-5 bg-warning">
+    <div class="container text-center">
+      <h1 class="display-5 fw-bold mb-3 text-primary">
+        <i class="bi bi-mortarboard-fill me-2"></i>
+        Bloom's Taxonomy Guide
+      </h1>
+      <p class="lead text-primary">A framework for writing measurable and effective learning outcomes</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="flex-grow-1">
+    <div class="container my-5">
+
+      <!-- Introduction Card -->
+      <div class="card border border-2 border-warning shadow-sm mb-5">
+        <div class="card-body">
+          <h2 class="card-title h4 text-primary mb-3">What is Bloom's Taxonomy?</h2>
+          <p class="card-text">
+            Bloom's Taxonomy is a hierarchical model that classifies educational learning objectives according to their level of complexity and specificity.
+            Proposed in 1956 by Benjamin Bloom and colleagues, the taxonomy was later revised in 2001. It provides a framework for educators.
+            to design learning outcomes that progress from basic knowledge recall to complex evaluation and creation skills.
+          </p>
+          <p class="card-text mb-0">
+            The six levels build on each other to form a pyramid, with higher-order thinking skills developed on the foundation of lower-level skills.
+            Each level is associated with specific action verbs to help instructors write clear, measurable learning outcomes.
+          </p>
+        </div>
+      </div>
+
+      <!-- Level Mapping Information -->
+      <div class="alert alert-info mb-5" role="alert">
+        <h5 class="alert-heading">
+          <i class="bi bi-info-circle-fill me-2"></i>
+          UWA Unit Level Mapping
+        </h5>
+        <p class="mb-0">At UWA, unit levels are mapped to Bloom's Taxonomy categories to ensure appropriate cognitive demands:</p>
+        <ul class="mb-0 mt-2">
+          <li><strong>Level 1 Units:</strong> Focus on <span id="level1-focus" class="badge bg-primary">Knowledge</span></li>
+          <li><strong>Level 2 Units:</strong> Focus on <span id="level2-focus" class="badge bg-primary">Comprehension</span></li>
+          <li><strong>Level 3 Units:</strong> Focus on <span id="level3-focus" class="badge bg-primary">Application</span></li>
+          <li><strong>Level 4 Units:</strong> Focus on <span id="level4-focus" class="badge bg-primary">Analysis</span></li>
+          <li><strong>Level 5 Units:</strong> Focus on <span id="level5-focus" class="badge bg-primary">Synthesis</span></li>
+          <li><strong>Level 6 Units:</strong> Focus on <span id="level6-focus" class="badge bg-primary">Evaluation</span></li>
+        </ul>
+      </div>
+
+      <!-- Bloom's Levels Cards -->
+      <h3 class="text-primary mb-4">The Six Levels of Bloom's Taxonomy</h3>
+      
+      <div class="row g-4">
+        
+        <!-- 1. Knowledge -->
+        <div class="col-12">
+          <div class="card h-100 border border-2 border-warning shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0">
+                <i class="bi bi-1-circle-fill me-2"></i>
+                Knowledge (Remember)
+              </h4>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Definition:</strong> Recall of facts, basic concepts, and answers. This level involves retrieving relevant knowledge from long-term memory.
+              </p>
+              <p class="card-text">
+                <strong>Example Learning Outcomes:</strong>
+                <ul>
+                  <li>List the key principles of object-oriented programming</li>
+                  <li>Define the term "photosynthesis"</li>
+                  <li>Identify the major bones in the human skeletal system</li>
+                </ul>
+              </p>
+              <div class="alert alert-light border">
+                <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
+                <div id="knowledge-verbs" class="text-primary fw-semibold">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Comprehension -->
+        <div class="col-12">
+          <div class="card h-100 border border-2 border-warning shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0">
+                <i class="bi bi-2-circle-fill me-2"></i>
+                Comprehension (Understand)
+              </h4>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Definition:</strong> Demonstrate understanding of facts and ideas by organizing, comparing, translating, interpreting, and stating main ideas.
+              </p>
+              <p class="card-text">
+                <strong>Example Learning Outcomes:</strong>
+                <ul>
+                  <li>Explain the water cycle in your own words</li>
+                  <li>Compare and contrast mitosis and meiosis</li>
+                  <li>Summarise the main themes of Shakespeare's Hamlet</li>
+                </ul>
+              </p>
+              <div class="alert alert-light border">
+                <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
+                <div id="comprehension-verbs" class="text-primary fw-semibold">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Application -->
+        <div class="col-12">
+          <div class="card h-100 border border-2 border-warning shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0">
+                <i class="bi bi-3-circle-fill me-2"></i>
+                Application (Apply)
+              </h4>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Definition:</strong> Use information in new situations to solve problems using acquired knowledge, facts, techniques and rules.
+              </p>
+              <p class="card-text">
+                <strong>Example Learning Outcomes:</strong>
+                <ul>
+                  <li>Apply Newton's laws to predict the motion of objects</li>
+                  <li>Use statistical methods to analyze research data</li>
+                  <li>Demonstrate proper laboratory safety procedures</li>
+                </ul>
+              </p>
+              <div class="alert alert-light border">
+                <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
+                <div id="application-verbs" class="text-primary fw-semibold">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Analysis -->
+        <div class="col-12">
+          <div class="card h-100 border border-2 border-warning shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0">
+                <i class="bi bi-4-circle-fill me-2"></i>
+                Analysis (Analyze)
+              </h4>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Definition:</strong> Break information into parts to explore understandings and relationships. Distinguish between facts and inferences.
+              </p>
+              <p class="card-text">
+                <strong>Example Learning Outcomes:</strong>
+                <ul>
+                  <li>Analyse the causes of the Global Financial Crisis</li>
+                  <li>Compare different software development methodologies</li>
+                  <li>Examine the reliability of experimental data</li>
+                </ul>
+              </p>
+              <div class="alert alert-light border">
+                <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
+                <div id="analysis-verbs" class="text-primary fw-semibold">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Synthesis -->
+        <div class="col-12">
+          <div class="card h-100 border border-2 border-warning shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0">
+                <i class="bi bi-5-circle-fill me-2"></i>
+                Synthesis (Create)
+              </h4>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Definition:</strong> Compile information in different ways by combining elements in new patterns or proposing alternative solutions.
+              </p>
+              <p class="card-text">
+                <strong>Example Learning Outcomes:</strong>
+                <ul>
+                  <li>Design a sustainable urban planning solution</li>
+                  <li>Develop a marketing strategy for a new product</li>
+                  <li>Create an original research proposal</li>
+                </ul>
+              </p>
+              <div class="alert alert-light border">
+                <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
+                <div id="synthesis-verbs" class="text-primary fw-semibold">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Evaluation -->
+        <div class="col-12">
+          <div class="card h-100 border border-2 border-warning shadow-sm">
+            <div class="card-header bg-primary text-white">
+              <h4 class="mb-0">
+                <i class="bi bi-6-circle-fill me-2"></i>
+                Evaluation (Evaluate)
+              </h4>
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <strong>Definition:</strong> Present and defend opinions by making judgments about information, validity of ideas, or quality of work based on criteria.
+              </p>
+              <p class="card-text">
+                <strong>Example Learning Outcomes:</strong>
+                <ul>
+                  <li>Evaluate the effectiveness of different teaching methodologies</li>
+                  <li>Critique a peer's research methodology</li>
+                  <li>Assess the environmental impact of industrial processes</li>
+                </ul>
+              </p>
+              <div class="alert alert-light border">
+                <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
+                <div id="evaluation-verbs" class="text-primary fw-semibold">
+                  <!-- Will be populated by JavaScript -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banned Words Section -->
+      <div class="card border border-2 border-danger shadow-sm mt-5">
+        <div class="card-header bg-danger text-white">
+          <h4 class="mb-0">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Words to Avoid in Learning Outcomes
+          </h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">
+            These words are too vague or unmeasurable and should not be used when writing learning outcomes:
+          </p>
+          <div class="alert alert-light border-danger">
+            <div id="banned-words" class="text-danger">
+              <!-- Will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Credit Points Guidelines -->
+      <div class="card border border-2 border-warning shadow-sm mt-5">
+        <div class="card-header bg-warning text-dark">
+          <h4 class="mb-0">
+            <i class="bi bi-calculator-fill me-2"></i>
+            Learning Outcomes per Credit Points
+          </h4>
+        </div>
+        <div class="card-body">
+          <p class="card-text">The number of learning outcomes should be proportional to the unit's credit points:</p>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="card bg-light">
+                <div class="card-body text-center">
+                  <h5 class="card-title text-primary">6 Credit Points</h5>
+                  <p class="card-text fw-bold" id="cp6-range">3-6 Learning Outcomes</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-light">
+                <div class="card-body text-center">
+                  <h5 class="card-title text-primary">12 Credit Points</h5>
+                  <p class="card-text fw-bold" id="cp12-range">6-9 Learning Outcomes</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card bg-light">
+                <div class="card-body text-center">
+                  <h5 class="card-title text-primary">24 Credit Points</h5>
+                  <p class="card-text fw-bold" id="cp24-range">8-12 Learning Outcomes</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips Section -->
+      <div class="card border border-2 border-success shadow-sm mt-5">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">
+            <i class="bi bi-lightbulb-fill me-2"></i>
+            Tips for Writing Effective Learning Outcomes
+          </h4>
+        </div>
+        <div class="card-body">
+          <ol>
+            <li class="mb-2"><strong>Use action verbs:</strong> Start each outcome with a measurable action verb from the appropriate Bloom's level.</li>
+            <li class="mb-2"><strong>Be specific:</strong> Clearly state what the student will be able to do after completing the unit.</li>
+            <li class="mb-2"><strong>Make it measurable:</strong> Ensure the outcome can be assessed through assignments, exams, or projects.</li>
+            <li class="mb-2"><strong>Align with unit level:</strong> Match the cognitive complexity to the unit's academic level.</li>
+            <li class="mb-2"><strong>Keep it achievable:</strong> Set realistic expectations for the timeframe and resources available.</li>
+            <li class="mb-2"><strong>Focus on the student:</strong> Write from the student's perspective (e.g., "Students will be able to...").</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Back to Editor Button -->
+      <div class="text-center mt-5">
+        <a href="{{ url_for('main.home', unit_id=1) }}" class="btn btn-warning btn-lg text-dark fw-bold px-5"> <!-- temp unit_id -->
+          <i class="bi bi-arrow-left me-2"></i>
+          Back to Homepage
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto py-4 bg-primary text-white">
+    <div class="container text-center">
+      <p class="mb-0">© <span id="year"></span> The University of Western Australia - Learning Outcome Builder</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script to populate verbs from config -->
+  <script>
+    // Config data passed from Flask backend
+    const config = {{ config_json | safe }};
+
+    // Populate verb lists
+    document.getElementById('knowledge-verbs').textContent = config.KNOWLEDGE.join(', ');
+    document.getElementById('comprehension-verbs').textContent = config.COMPREHENSION.join(', ');
+    document.getElementById('application-verbs').textContent = config.APPLICATION.join(', ');
+    document.getElementById('analysis-verbs').textContent = config.ANALYSIS.join(', ');
+    document.getElementById('synthesis-verbs').textContent = config.SYNTHESIS.join(', ');
+    document.getElementById('evaluation-verbs').textContent = config.EVALUATION.join(', ');
+    document.getElementById('banned-words').textContent = config.BANNED.join(', ');
+
+    // Populate level mappings
+    document.getElementById('level1-focus').textContent = config["Level 1"];
+    document.getElementById('level2-focus').textContent = config["Level 2"];
+    document.getElementById('level3-focus').textContent = config["Level 3"];
+    document.getElementById('level4-focus').textContent = config["Level 4"];
+    document.getElementById('level5-focus').textContent = config["Level 5"];
+    document.getElementById('level6-focus').textContent = config["Level 6"];
+
+    // Populate credit points ranges
+    document.getElementById('cp6-range').textContent = `${config["6 Points"][0]}-${config["6 Points"][1]} Learning Outcomes`;
+    document.getElementById('cp12-range').textContent = `${config["12 Points"][0]}-${config["12 Points"][1]} Learning Outcomes`;
+    document.getElementById('cp24-range').textContent = `${config["24 Points"][0]}-${config["24 Points"][1]} Learning Outcomes`;
+
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
