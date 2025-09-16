@@ -437,12 +437,18 @@ expectedIOFormatting = {
     'loAssessmentDelimiter': '|',
 }
 
+
 @main.route('/import-units', methods=['POST'])
 @login_required
 def import_units():
+    # Check if it's an AJAX request
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
     # open file
     file = request.files.get("import_file")
     if not file:
+        if is_ajax:
+            return jsonify({'success': False, 'message': 'No file uploaded'}), 400
         flash("No file uploaded", "danger")
         return redirect(url_for("main.main_page"))
 
@@ -453,9 +459,13 @@ def import_units():
         elif file.filename.endswith('csv'):
             df = pd.read_csv(file)
         else:
+            if is_ajax:
+                return jsonify({'success': False, 'message': 'File type not supported'}), 400
             flash('File type not supported', 'danger')
             return redirect(url_for("main.main_page"))
     except Exception as e:
+        if is_ajax:
+            return jsonify({'success': False, 'message': f"Failed to read file: {str(e)}"}), 500
         flash(f"Failed to read file: {str(e)}", "danger")
         return redirect(url_for("main.main_page"))
 
@@ -469,15 +479,19 @@ def import_units():
     ]
     missing_headers = [h for h in expected_headers if h not in df.columns]
     if missing_headers:
-        flash(f"File headers do not match expected format. Missing: {', '.join(missing_headers)}. Please try again.", "danger")
+        error_msg = f"File headers do not match expected format. Missing: {', '.join(missing_headers)}. Please try again."
+        if is_ajax:
+            return jsonify({'success': False, 'message': error_msg}), 400
+        flash(error_msg, "danger")
         return redirect(url_for("main.main_page"))
-    
+
     # process data
-    unitcount =0
+    unitcount = 0
     hasDuplicates = False
     dupCount = 0
     hasLacksUnitCode = False
     codeCount = 0
+
     for _, newUnit in df.iterrows():
         # checks
         if pd.isna(newUnit[expectedIOFormatting['code']]):
@@ -485,26 +499,27 @@ def import_units():
             codeCount += 1
             continue
         # db.session shouldnt be typically used but here we are checking our local session so its needed
-        unitcodeCheck = db.session.query(Unit).filter_by(unitcode=str(newUnit[expectedIOFormatting['code']]).strip()).first()
+        unitcodeCheck = db.session.query(Unit).filter_by(
+            unitcode=str(newUnit[expectedIOFormatting['code']]).strip()).first()
         if unitcodeCheck != None:
             hasDuplicates = True
             dupCount += 1
             continue
 
-        #create unit
+        # create unit
         dbUnit = Unit(
-            unitcode= str(newUnit[expectedIOFormatting['code']]).strip(), 
-            unitname= newUnit[expectedIOFormatting['title']], 
-            level= newUnit[expectedIOFormatting['level']], 
-            #creditpoints is not provided by the dataset
-            #creditpoints = 
-            description= newUnit[expectedIOFormatting['Content']],
-            creatorid = current_user.id
-            )
+            unitcode=str(newUnit[expectedIOFormatting['code']]).strip(),
+            unitname=newUnit[expectedIOFormatting['title']],
+            level=newUnit[expectedIOFormatting['level']],
+            # creditpoints is not provided by the dataset
+            # creditpoints =
+            description=newUnit[expectedIOFormatting['Content']],
+            creatorid=current_user.id
+        )
         db.session.add(dbUnit)
         db.session.flush()
-        unitcount+=1
-        
+        unitcount += 1
+
         loPos = 1
         for lo in str(newUnit.Outcomes).split(expectedIOFormatting['loDelimiter']):
             lo = lo.split(expectedIOFormatting['loAssessmentDelimiter'])[0]
@@ -513,12 +528,13 @@ def import_units():
                 continue
 
             dbLO = LearningOutcome(
-                unit_id= dbUnit.id, 
-                position= loPos, 
-                description= lo
+                unit_id=dbUnit.id,
+                position=loPos,
+                description=lo
             )
             db.session.add(dbLO)
-            loPos+=1
+            loPos += 1
+
     db.session.commit()
 
     msg = f"{unitcount} units added successfully from file. "
@@ -526,6 +542,10 @@ def import_units():
         msg += f"{codeCount} units lacked a unitcode and were skipped. "
     if hasDuplicates:
         msg += f"{dupCount} units were duplicates and were skipped. "
+
+    if is_ajax:
+        return jsonify({'success': True, 'message': msg, 'units_added': unitcount})
+
     print(unitcount)
     flash(msg, "success")
     return redirect(url_for("main.main_page"))
@@ -582,3 +602,4 @@ def export_all_units():
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": 'attachment; filename="units_and_outcomes.csv"'
     })
+
