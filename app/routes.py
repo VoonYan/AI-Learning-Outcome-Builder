@@ -206,7 +206,6 @@ def view(unit_id):
         unit = Unit.query.filter_by(id=unit_id).first()
         if not unit:
             abort(404)
-        print(unit.unitname)
         return render_template("view.html", title="Unit Details", unit=unit, UserType=UserType)
 
 @main.route('/unit/<int:unit_id>/edit_unit', methods=['GET', 'POST'])
@@ -502,7 +501,12 @@ def import_units():
         
         loPos = 1
         for lo in str(newUnit.Outcomes).split(expectedIOFormatting['loDelimiter']):
-            lo = lo.split(expectedIOFormatting['loAssessmentDelimiter'])[0]
+            loAsm = lo.split(expectedIOFormatting['loAssessmentDelimiter'])
+            lo = loAsm[0]
+            if len(loAsm) == 2:
+                asm = loAsm[1]
+            else:
+                asm = ''
 
             if lo == '':
                 continue
@@ -510,7 +514,8 @@ def import_units():
             dbLO = LearningOutcome(
                 unit_id= dbUnit.id, 
                 position= loPos, 
-                description= lo
+                description= lo,
+                assessment= asm
             )
             db.session.add(dbLO)
             loPos+=1
@@ -521,7 +526,6 @@ def import_units():
         msg += f"{codeCount} units lacked a unitcode and were skipped. "
     if hasDuplicates:
         msg += f"{dupCount} units were duplicates and were skipped. "
-    print(unitcount)
     flash(msg, "success")
     return redirect(url_for("main.main_page"))
 
@@ -544,7 +548,7 @@ def createCSVofLOs(userID=-1):
     for unit in units:
         loString = ''
         for lo in unit.learning_outcomes:
-            loString += lo.description + expectedIOFormatting["loAssessmentDelimiter"] + expectedIOFormatting["loDelimiter"]
+            loString += lo.description + expectedIOFormatting["loAssessmentDelimiter"] + lo.assessment + expectedIOFormatting["loDelimiter"]
         #create df row by row
         df.loc[unit.id] = [
             unit.unitcode,
