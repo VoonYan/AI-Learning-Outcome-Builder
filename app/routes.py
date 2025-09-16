@@ -17,6 +17,13 @@ import random
 main = Blueprint('main', __name__)
 
 
+@main.route('/')
+def auto_route():
+    if current_user.is_anonymous:
+        return redirect(url_for('main.home'))
+    else:
+        return redirect(url_for('main.main_page'))
+
 @main.route('/home')
 @main.route('/home_page')
 def home(): 
@@ -25,7 +32,6 @@ def home():
 
 @main.route('/dashboard')
 @main.route('/main_page')
-@main.route('/')
 @login_required
 def main_page(): 
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
