@@ -24,6 +24,15 @@
       {%endfor%}
       {%endif%}
       {%endwith%}
+      {% with messages = get_flashed_messages(category_filter=["error"])%}
+      {% if messages%}
+      {% for message in messages%}
+      <div id="successMessage" class="alert alert-danger" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>{{message}}
+      </div>      
+      {%endfor%}
+      {%endif%}
+      {%endwith%}
 
       <form id="adminSettingsForm" action="{{ url_for('main.admin') }}" method="POST">
       {{ form.hidden_tag() }}
@@ -47,7 +56,7 @@
               <div class="col-md-6">
                 {{form.apikey.label(class="form-label")}}
                 {{form.apikey(class="form-control", placeholder="Enter API key...", value=config['API_key'] )}}
-                <div class="form-text">Your secure API key for AI services</div>
+                <div class="form-text">Your secure API key for AI services. Use 'environ' to use server enviroment variable.</div>
               </div>
             </div>
           </div>
@@ -132,17 +141,26 @@
               <div class="col-md-4">
                 {{form.cp6.label(class="form-label")}}
                 {{form.cp6(class="form-control", placeholder="3-6", value=config['6 Points'])}}
-                <div class="form-text">Range of learning outcomes</div>
+                {% for error in form.cp6.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                {%endfor%}
+                <div class="form-text">Range of learning outcomes. Must use format of [num]-[num] e.g. 3-6</div>
               </div>
               <div class="col-md-4">
                 {{form.cp12.label(class="form-label")}}
                 {{form.cp12(class="form-control", placeholder="5-9", value=config['12 Points'])}}
-                <div class="form-text">Range of learning outcomes</div>
+                {% for error in form.cp12.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                {%endfor%}
+                <div class="form-text">Range of learning outcomes. Must use format of [num]-[num] e.g. 5-9</div>
               </div>
               <div class="col-md-4">
                 {{form.cp24.label(class="form-label")}}
                 {{form.cp24(class="form-control", placeholder="8-12", value=config['24 Points'])}}
-                <div class="form-text">Range of learning outcomes</div>
+                {% for error in form.cp24.errors %}
+                        <div class="alert alert-danger" role="alert">{{error}}</div>
+                {%endfor%}
+                <div class="form-text">Range of learning outcomes. Must use format of [num]-[num] e.g. 8-12</div>
               </div>
             </div>
           </div>
@@ -165,5 +183,5 @@
     </div>
   </main>
 
-<script src="{{ url_for('static', filename='js/admin._tools.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin_tools.js') }}"></script>
 {% endblock %}

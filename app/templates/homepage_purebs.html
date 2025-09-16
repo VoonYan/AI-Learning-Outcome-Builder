@@ -23,7 +23,7 @@
               <h2 class="card-title h4 text-primary mb-3">Guest</h2>
               <p class="card-text flex-grow-1">Browse and explore unit outcomes without needing to log in.</p>
               <div>
-                <a class="btn btn-warning px-4 text-dark" href="{{ url_for('main.guest_mainpage') }}">Explore</a>
+                <a class="btn btn-warning px-4 text-dark" href="{{ url_for('main.search_unit') }}">Explore</a>
               </div>
             </div>
           </div>
@@ -81,11 +81,14 @@
   </main>
 
 
+
   <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-  <!-- Tiny script: set current year -->
+  <!-- Tiny script: set current year
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  </script> -->
+
+
 {% endblock %}
