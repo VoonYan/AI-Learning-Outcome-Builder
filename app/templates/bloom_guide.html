@@ -323,10 +323,12 @@
         <i class="bi bi-arrow-left me-2"></i>
         Close Window
       </a>
+      {% if not current_user.is_anonymous %}
       <a href="{{url_for('main.main_page')}}" class="btn btn-warning btn-lg text-dark fw-bold px-5">
         <i class="bi bi-arrow-left me-2"></i>
         Return to Dashboard
       </a>
+      {% endif %}
     </div>
 
   </div>
@@ -338,6 +340,7 @@
   const config = {{ config_json | safe }};
 
   // Populate verb lists
+  //dude, jinja...
   document.getElementById('knowledge-verbs').textContent = config.KNOWLEDGE.join(', ');
   document.getElementById('comprehension-verbs').textContent = config.COMPREHENSION.join(', ');
   document.getElementById('application-verbs').textContent = config.APPLICATION.join(', ');
