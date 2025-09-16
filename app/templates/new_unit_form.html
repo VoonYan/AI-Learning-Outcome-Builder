@@ -1,11 +1,11 @@
 {% extends "base_main.html" %}
 
 {% block title %}Main Dashboard{% endblock %}
+{% block banner_title %}Create a New Unit{% endblock %}
 {% block banner_subtitle %}
-    <div class="container">
-        <h1 class="display-6 fw-bold mb-1 text-black"><i class="bi bi-journal-plus me-2"></i>Create a New Unit</h1>
-        <p class="lead mb-0 text-black">Fill in unit details below to create a new entry</p>
-    </div>
+<div class="text-center">
+Fill in unit details below to create a new entry
+</div>
 {% endblock %}
 
 {% block content %}
@@ -66,7 +66,7 @@
                         </div>
 
                         <div class="text-center">
-                            {{ form.submit(class="btn btn-warning btn-lg text-dark fw-semibold") }}
+                            {{ form.submit(class="btn btn-warning text-dark px-4") }}
                         </div>
                     </form>
                 </div>
