@@ -51,4 +51,5 @@ def signup_page():
 @auth.route('/logout')
 def logout():
     logout_user()
+    flash("Logged out.", "success")
     return redirect("/home")

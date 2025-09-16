@@ -195,7 +195,8 @@ def search_unit():
             results=results,
             query=query,
             filter_type=filter_type,
-            sort_by=sort_by
+            sort_by=sort_by,
+            can_edit=not current_user.is_anonymous 
         )
 
 
