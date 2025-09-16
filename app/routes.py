@@ -17,6 +17,13 @@ import random
 main = Blueprint('main', __name__)
 
 
+@main.route('/')
+def auto_route():
+    if current_user.is_anonymous:
+        return redirect(url_for('main.home'))
+    else:
+        return redirect(url_for('main.main_page'))
+
 @main.route('/home')
 @main.route('/home_page')
 @main.route('/')
@@ -189,7 +196,8 @@ def search_unit():
             results=results,
             query=query,
             filter_type=filter_type,
-            sort_by=sort_by
+            sort_by=sort_by,
+            can_edit=not current_user.is_anonymous 
         )
 
 
