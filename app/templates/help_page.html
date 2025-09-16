@@ -1,69 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Help - Learning Outcome Builder</title>
+{% extends "base_main.html" %}
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+{% block title %}AI Learning Outcome Builder Help{% endblock %}
+{% block banner_title %}<i class="bi bi-question-circle-fill me-2"></i>Help & Documentation{% endblock %}
+{% block banner_subtitle %}
+  <div class="text-center">
+    Everything you need to know about using the Learning Outcome Builder
+  </div>
+{% endblock %}
 
-    <style>
-        .help-nav {
-            position: sticky;
-            top: 20px;
-            max-height: calc(100vh - 40px);
-            overflow-y: auto;
-        }
-        .help-section {
-            scroll-margin-top: 20px;
-        }
-        .feature-card {
-            transition: transform 0.2s;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-        .code-example {
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-radius: 5px;
-            font-family: monospace;
-        }
-    </style>
-</head>
-<body class="d-flex flex-column min-vh-100">
-
-<!-- Navigation Header -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid px-3 px-lg-4">
-        <a class="navbar-brand d-flex align-items-center gap-3" href="/">
-            <img src="/static/images/logo-uwacrest-white.svg" alt="UWA Logo" class="img-fluid" style="max-width:140px">
-            <span class="fw-bold fs-5">Learning Outcome Builder</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/dashboard"><i class="bi bi-house me-1"></i> Dashboard</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<!-- Hero Section -->
-<section class="py-4 bg-warning">
-    <div class="container">
-        <h1 class="display-6 fw-bold mb-1 text-primary">
-            <i class="bi bi-question-circle-fill me-2"></i>Help & Documentation
-        </h1>
-        <p class="lead mb-0 text-primary">Everything you need to know about using the Learning Outcome Builder</p>
-    </div>
-</section>
+{% block content %}
 
 <!-- Main Content -->
 <main class="flex-grow-1">
@@ -303,7 +248,7 @@
                                 </tbody>
                             </table>
 
-                            <a href="{{ url_for('main.bloom_guide2') }}" class="btn btn-warning text-dark mt-3">
+                            <a href="{{ url_for('main.bloom_guide') }}" class="btn btn-warning text-dark mt-3">
                                 <i class="bi bi-book me-2"></i>View Complete Bloom's Guide
                             </a>
                         </div>
@@ -610,11 +555,11 @@
                             <h4 class="card-title text-primary">Still Need Help?</h4>
                             <p class="card-text">If you can't find the answer you're looking for, please contact your system administrator or IT support.</p>
                             <div class="d-flex justify-content-center gap-3">
-                                <a href="mailto:support@uwa.edu.au" class="btn btn-warning text-dark">
+                                <a href="" class="btn btn-warning text-dark">
                                     <i class="bi bi-envelope me-2"></i>Email Support
                                 </a>
-                                <a href="{{ url_for('main.home') }}" class="btn btn-primary">
-                                    <i class="bi bi-house me-2"></i>Back to Dashboard
+                                <a href="javascript:history.back()" class="btn btn-primary">
+                                    <i class="bi bi-house me-2"></i>Back
                                 </a>
                             </div>
                         </div>
@@ -626,20 +571,8 @@
     </div>
 </main>
 
-<!-- Footer -->
-<footer class="mt-auto py-4 bg-primary text-white">
-    <div class="container text-center">
-        <p class="mb-0">© <span id="year"></span> The University of Western Australia - Learning Outcome Builder</p>
-    </div>
-</footer>
-
-<!-- Bootstrap JS Bundle -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // Set current year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -672,6 +605,4 @@
         });
     });
 </script>
-
-</body>
-</html>
+{% endblock %}
