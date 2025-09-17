@@ -55,7 +55,7 @@ Hello {{ username }}. Please select from one of the following:
     </div>
     {% endif %}
 
-    <!-- Add data-->
+    <!-- Data Management -->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
     <div class="col-12 col-lg-6 d-flex">
         <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3">
@@ -72,14 +72,14 @@ Hello {{ username }}. Please select from one of the following:
                        accept=".csv,.xlsx,.xls">
             </form>
             <!-- Export Buttons -->
-            <button class="btn mt-3 btn-warning" onclick="exportWithLoading('my')" id="exportMyBtn">
+            <button class="btn mt-3 btn-warning" id="exportMyBtn">
                 Export My Units
             </button>
-            <button class="btn mt-3 btn-warning" onclick="exportWithLoading('all')" id="exportAllBtn">
+            <button class="btn mt-3 btn-warning" id="exportAllBtn">
                 Export All Units
             </button>
         </div>
-    </div>
+        </div>
     </div>
     {% endif %}
 
@@ -94,11 +94,12 @@ Hello {{ username }}. Please select from one of the following:
     </div>
     {% endif %}
 
+    </div>
 </div>
 
 <!-- Loading Modal with Progress -->
 <div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false"
-     tabindex="-1" aria-hidden="true">
+     tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body text-center py-5">
@@ -110,7 +111,7 @@ Hello {{ username }}. Please select from one of the following:
                 <h5 id="loadingText">Processing...</h5>
                 <div class="progress mb-3" style="height: 25px;">
                     <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
-                         role="progressbar" style="width: 0%;">
+                         role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                         <span id="progressText">0%</span>
                     </div>
                 </div>
@@ -121,7 +122,7 @@ Hello {{ username }}. Please select from one of the following:
 </div>
 
 <!-- Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body text-center py-4">
@@ -137,7 +138,7 @@ Hello {{ username }}. Please select from one of the following:
 </div>
 
 <!-- Error Modal -->
-<div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body text-center py-4">
@@ -152,238 +153,14 @@ Hello {{ username }}. Please select from one of the following:
     </div>
 </div>
 
+<!-- Set URLs for JavaScript to use -->
 <script>
-// Global variables
-let loadingModal, successModal, errorModal;
-let progressInterval = null;
-let currentProgress = 0;
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize modals
-    loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
-        backdrop: 'static',
-        keyboard: false
-    });
-    successModal = new bootstrap.Modal(document.getElementById('successModal'));
-    errorModal = new bootstrap.Modal(document.getElementById('errorModal'));
-
-    // Handle file import
-    const importFile = document.getElementById('importFile');
-    const importForm = document.getElementById('importForm');
-
-    if (importFile && importForm) {
-        importFile.addEventListener('change', function() {
-            if (this.files.length > 0) {
-                const fileName = this.files[0].name;
-                const fileSize = (this.files[0].size / 1024).toFixed(2); // KB
-
-                // Update loading modal text
-                document.getElementById('loadingText').textContent = 'Importing Units...';
-                document.getElementById('loadingSubtext').textContent =
-                    `Processing ${fileName} (${fileSize} KB)`;
-
-                // Reset and start progress
-                resetProgress();
-                showLoadingModal();
-                startProgress(85); // Stop at 85% until form actually submits
-
-                // Small delay to show the modal before submit
-                setTimeout(() => {
-                    importForm.submit();
-                }, 100);
-            }
-        });
-    }
-});
-
-// Show loading modal
-function showLoadingModal() {
-    resetProgress();
-    document.getElementById('spinnerContainer').style.display = 'block';
-    loadingModal.show();
-}
-
-// Hide loading modal with cleanup
-function hideLoadingModal() {
-    stopProgress();
-
-    // Force hide the modal
-    const modalElement = document.getElementById('loadingModal');
-    const bsModal = bootstrap.Modal.getInstance(modalElement);
-    if (bsModal) {
-        bsModal.hide();
-    }
-
-    // Clean up backdrop if it exists
-    setTimeout(() => {
-        const backdrops = document.querySelectorAll('.modal-backdrop');
-        backdrops.forEach(backdrop => backdrop.remove());
-        document.body.classList.remove('modal-open');
-        document.body.style = '';
-    }, 100);
-}
-
-// Progress bar functions
-function resetProgress() {
-    currentProgress = 0;
-    updateProgressBar(0);
-}
-
-function updateProgressBar(percent) {
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-
-    if (progressBar && progressText) {
-        progressBar.style.width = percent + '%';
-        progressBar.setAttribute('aria-valuenow', percent);
-        progressText.textContent = percent + '%';
-    }
-}
-
-function startProgress(maxProgress = 90) {
-    stopProgress(); // Clear any existing interval
-
-    progressInterval = setInterval(() => {
-        if (currentProgress < maxProgress) {
-            // Slow down as we approach the max
-            const increment = Math.max(1, Math.floor((maxProgress - currentProgress) / 10));
-            currentProgress = Math.min(currentProgress + increment, maxProgress);
-            updateProgressBar(currentProgress);
-        }
-    }, 200);
-}
-
-function stopProgress() {
-    if (progressInterval) {
-        clearInterval(progressInterval);
-        progressInterval = null;
-    }
-}
-
-function completeProgressAndHide(callback) {
-    stopProgress();
-
-    // Quickly complete to 100%
-    let fastProgress = currentProgress;
-    const fastInterval = setInterval(() => {
-        fastProgress = Math.min(fastProgress + 10, 100);
-        updateProgressBar(fastProgress);
-
-        if (fastProgress >= 100) {
-            clearInterval(fastInterval);
-
-            // Hide spinner when complete
-            const spinner = document.getElementById('spinnerContainer');
-            if (spinner) {
-                spinner.style.display = 'none';
-            }
-
-            // Wait a moment then hide modal
-            setTimeout(() => {
-                hideLoadingModal();
-                if (callback) {
-                    setTimeout(callback, 300);
-                }
-            }, 500);
-        }
-    }, 30);
-}
-
-// Export with loading indicator
-async function exportWithLoading(type) {
-    const url = type === 'my'
-        ? "{{ url_for('main.export_my_units') }}"
-        : "{{ url_for('main.export_all_units') }}";
-
-    const exportTypeText = type === 'my' ? 'Your Units' : 'All Units';
-
-    // Disable buttons to prevent multiple clicks
-    const exportMyBtn = document.getElementById('exportMyBtn');
-    const exportAllBtn = document.getElementById('exportAllBtn');
-    if (exportMyBtn) exportMyBtn.disabled = true;
-    if (exportAllBtn) exportAllBtn.disabled = true;
-
-    // Update loading modal
-    document.getElementById('loadingText').textContent = `Exporting ${exportTypeText}...`;
-    document.getElementById('loadingSubtext').textContent = 'Preparing your download';
-
-    // Show modal and start progress
-    showLoadingModal();
-    startProgress(80);
-
-    try {
-        const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(`Export failed: ${response.statusText}`);
-        }
-
-        // Update progress for processing
-        document.getElementById('loadingSubtext').textContent = 'Processing data...';
-        currentProgress = 80;
-        startProgress(95);
-
-        // Get filename
-        const disposition = response.headers.get('Content-Disposition');
-        let filename = 'units_export.csv';
-        if (disposition) {
-            const matches = /filename="(.+)"/.exec(disposition);
-            if (matches && matches[1]) {
-                filename = matches[1];
-            }
-        }
-
-        // Get the blob
-        const blob = await response.blob();
-
-        // Update to completion
-        document.getElementById('loadingSubtext').textContent = 'Finalizing download...';
-
-        // Complete progress and hide modal
-        completeProgressAndHide(() => {
-            // Create download link
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-
-            // Cleanup
-            setTimeout(() => {
-                window.URL.revokeObjectURL(downloadUrl);
-                document.body.removeChild(a);
-            }, 100);
-
-            // Show success modal
-            document.getElementById('successTitle').textContent = 'Export Complete!';
-            document.getElementById('successMessage').textContent =
-                `${exportTypeText} have been exported successfully as ${filename}`;
-            successModal.show();
-        });
-
-    } catch (error) {
-        console.error('Export error:', error);
-
-        // Force hide loading modal
-        hideLoadingModal();
-
-        // Show error modal
-        setTimeout(() => {
-            document.getElementById('errorMessage').textContent =
-                `Failed to export units: ${error.message}`;
-            errorModal.show();
-        }, 500);
-
-    } finally {
-        // Re-enable buttons after a delay
-        setTimeout(() => {
-            if (exportMyBtn) exportMyBtn.disabled = false;
-            if (exportAllBtn) exportAllBtn.disabled = false;
-        }, 2000);
-    }
-}
+    // These URLs will be used by the external JavaScript file
+    window.EXPORT_MY_URL = "{{ url_for('main.export_my_units') }}";
+    window.EXPORT_ALL_URL = "{{ url_for('main.export_all_units') }}";
 </script>
+
+<!-- Include the external JavaScript file -->
+<script src="{{ url_for('static', filename='js/data_management.js') }}"></script>
 
 {% endblock %}

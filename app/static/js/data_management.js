@@ -116,7 +116,7 @@ const DataManager = (function() {
             const blob = await response.blob();
 
             // Update to completion
-            updateLoadingModal(`Exporting ${exportTypeText}...`, 'Finalizing download...');
+            updateLoadingModal(`Exporting ${exportTypeText}...`, 'Finalising download...');
 
             // Complete and download
             completeProgressAndHide(() => {
