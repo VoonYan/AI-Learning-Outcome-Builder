@@ -92,7 +92,7 @@ const DataManager = (function() {
         const exportTypeText = type === 'my' ? 'Your Units' : 'All Units';
 
         // Update loading modal
-        updateLoadingModal(`Exporting ${exportTypeText}...`, 'Preparing your download');
+        updateLoadingModal(`Exporting ${exportTypeText}...`, 'Preparing your download, please wait...');
         showLoadingModal();
         startProgress(80);
 
