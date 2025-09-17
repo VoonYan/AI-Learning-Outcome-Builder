@@ -11,21 +11,27 @@ Hello {{ username }}. Please select from one of the following:
 {% block content %}
 <div class="container-fluid m-3">
     <!-- Flash Messages -->
-  {% with messages = get_flashed_messages(category_filter=["success"]) %}
-    {% if messages %}
-      {% for message in messages %}
-      <div class="alert alert-success" role="alert">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+    {% with messages = get_flashed_messages(category_filter=["success"]) %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
-  {% with messages = get_flashed_messages(category_filter=["error"]) %}
-    {% if messages %}
-      {% for message in messages %}
-      <div class="alert alert-danger" role="alert">{{ message }}</div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
+    {% with messages = get_flashed_messages(category_filter=["error"]) %}
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
 
     <div class="row g-4">
 
@@ -49,26 +55,31 @@ Hello {{ username }}. Please select from one of the following:
     </div>
     {% endif %}
 
-
-    <!-- Add data-->
+    <!-- Data Management -->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
     <div class="col-12 col-lg-6 d-flex">
-        <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3 ">
+        <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3">
         <h2 class="mb-2"><strong>Data Management</strong></h2>
         <p>Import or Export units as a file (CSV or XLSX).</p>
         <div class="d-flex gap-2">
             <!-- Import Button  -->
-            <form method="post" action="{{ url_for('main.import_units') }}" enctype="multipart/form-data" class="d-inline">
+            <form method="post" action="{{ url_for('main.import_units') }}"
+                  enctype="multipart/form-data" class="d-inline" id="importForm">
                 <label for="importFile" class="btn mt-3 btn-warning">
                     Import from File
                 </label>
-                <input type="file" id="importFile" name="import_file" class="d-none" accept=".csv,.xlsx,.xls" onchange="this.form.submit()">
+                <input type="file" id="importFile" name="import_file" class="d-none"
+                       accept=".csv,.xlsx,.xls">
             </form>
-            <!-- Export Button -->
-            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_my_units') }}">Export My Units</a>
-            <a class="btn mt-3 btn-warning" href="{{ url_for('main.export_all_units') }}">Export All Units</a>
+            <!-- Export Buttons -->
+            <button class="btn mt-3 btn-warning" id="exportMyBtn">
+                Export My Units
+            </button>
+            <button class="btn mt-3 btn-warning" id="exportAllBtn">
+                Export All Units
+            </button>
         </div>
-    </div>
+        </div>
     </div>
     {% endif %}
 
@@ -82,6 +93,74 @@ Hello {{ username }}. Please select from one of the following:
         </div>
     </div>
     {% endif %}
-    
+
+    </div>
 </div>
+
+<!-- Loading Modal with Progress -->
+<div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false"
+     tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-5">
+                <div id="spinnerContainer">
+                    <div class="spinner-border text-warning mb-3" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <h5 id="loadingText">Processing...</h5>
+<!--                <div class="progress mb-3" style="height: 25px;">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                         role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                        <span id="progressText">0%</span>
+                    </div>
+                </div>-->
+                <p class="text-muted mb-0" id="loadingSubtext">Please wait while we process your request</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="text-success mb-3">
+                    <i class="bi bi-check-circle-fill" style="font-size: 3rem;"></i>
+                </div>
+                <h5 id="successTitle">Operation Completed!</h5>
+                <p class="text-muted mb-3" id="successMessage">Your operation has been completed successfully.</p>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <div class="text-danger mb-3">
+                    <i class="bi bi-exclamation-triangle-fill" style="font-size: 3rem;"></i>
+                </div>
+                <h5>Operation Failed</h5>
+                <p class="text-muted mb-3" id="errorMessage">An error occurred during the operation.</p>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Set URLs for JavaScript to use -->
+<script>
+    // These URLs will be used by the external JavaScript file
+    window.EXPORT_MY_URL = "{{ url_for('main.export_my_units') }}";
+    window.EXPORT_ALL_URL = "{{ url_for('main.export_all_units') }}";
+</script>
+
+<!-- Include the external JavaScript file -->
+<script src="{{ url_for('static', filename='js/data_management.js') }}"></script>
+
 {% endblock %}
