@@ -12,6 +12,21 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.action_chains import ActionChains
 import re
 
+'''
+
+What it does:
+Logs in (POST /login_page → 302 → /dashboard).
+Creates a unit (POST /new_unit → 302 → /main_page).
+Finds the unit in search.
+Opens the unit detail (/view/6629) and LO editor (/create_lo/6629).
+Clicks Add Outcome (POST /lo_api/add/6629 → 200), and the LO editor reloads.
+
+What it can’t do yet:
+After Add Outcome, the test can’t find the new LO row using "#lo-tbody tr[data-id]". 
+DOM selectors don’t match the actual page, so it times out before editing/saving.
+
+
+'''
 WAIT = 10
 
 def dump_debug(driver, label):
