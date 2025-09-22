@@ -26,6 +26,8 @@ After Add Outcome, the test can’t find the new LO row using "#lo-tbody tr[data
 DOM selectors don’t match the actual page, so it times out before editing/saving.
 
 
+I set the username and password as environmental variables and used this command to run:
+.venv/bin/python -m pytest -k e2e -vv -s
 '''
 WAIT = 10
 
