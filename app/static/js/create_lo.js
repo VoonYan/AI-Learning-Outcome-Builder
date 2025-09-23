@@ -389,11 +389,17 @@ function createOutcomeCard(outcome, index) {
             
             ${outcome.suggestion ? `
               <div class="mt-2 p-2 bg-light rounded">
-                <p class="small mb-0">
+                <p class="small mb-2">
                   <i class="bi bi-lightbulb me-1 text-warning"></i>
                   <strong>Suggested revision:</strong>
                   <em class="text-success">"${outcome.suggestion}"</em>
                 </p>
+                <button class="btn btn-sm btn-outline-success" 
+                        onclick="replaceOutcome(${index}, '${escapeQuotes(outcome.suggestion)}')"
+                        title="Replace the current learning outcome with this suggestion">
+                  <i class="bi bi-arrow-repeat me-1"></i>
+                  Click to Replace
+                </button>
               </div>
             ` : ''}
           </div>
@@ -404,6 +410,123 @@ function createOutcomeCard(outcome, index) {
 
   return card;
 }
+
+// Helper function to escape quotes for HTML attribute
+function escapeQuotes(str) {
+  return str.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+}
+
+// Global variable to store replacement history
+let replacementHistory = [];
+
+// Enhanced replace function with undo capability
+function replaceOutcome(outcomeNumber, suggestion) {
+  const table = document.getElementById('LOTable');
+  if (!table) return;
+
+  const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+  if (rows[outcomeNumber - 1]) {
+    const row = rows[outcomeNumber - 1];
+    const descriptionCell = row.querySelector('.loDesc div[contenteditable]');
+
+    if (descriptionCell) {
+      // Store the old value for undo
+      const oldValue = descriptionCell.textContent;
+      replacementHistory.push({
+        outcomeNumber: outcomeNumber,
+        oldValue: oldValue,
+        newValue: suggestion
+      });
+
+      // Replace with the suggestion
+      descriptionCell.textContent = suggestion;
+
+      // Trigger autosave
+      autoSave();
+
+      // Visual feedback
+      descriptionCell.style.transition = 'background-color 0.5s';
+      descriptionCell.style.backgroundColor = '#d4edda';
+      setTimeout(() => {
+        descriptionCell.style.backgroundColor = '';
+      }, 2000);
+
+      // Show confirmation with undo option
+      showReplacementSuccessWithUndo(outcomeNumber);
+    }
+  }
+}
+
+function showReplacementSuccessWithUndo(outcomeNumber) {
+  const alert = document.createElement('div');
+  alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-50 start-50 translate-middle';
+  alert.style.zIndex = '9999';
+  alert.innerHTML = `
+    <i class="bi bi-check-circle-fill me-2"></i>
+    Learning Outcome ${outcomeNumber} has been replaced.
+    <button type="button" class="btn btn-sm btn-outline-dark ms-2" onclick="undoLastReplacement()">
+      <i class="bi bi-arrow-counterclockwise me-1"></i>Undo
+    </button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  `;
+
+  document.body.appendChild(alert);
+
+  setTimeout(() => {
+    if (alert.parentNode) {
+      alert.classList.remove('show');
+      setTimeout(() => alert.remove(), 150);
+    }
+  }, 5000);
+}
+
+function undoLastReplacement() {
+  if (replacementHistory.length === 0) return;
+
+  const lastReplacement = replacementHistory.pop();
+  const table = document.getElementById('LOTable');
+  const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+  if (rows[lastReplacement.outcomeNumber - 1]) {
+    const row = rows[lastReplacement.outcomeNumber - 1];
+    const descriptionCell = row.querySelector('.loDesc div[contenteditable]');
+
+    if (descriptionCell) {
+      descriptionCell.textContent = lastReplacement.oldValue;
+      autoSave();
+
+      // Visual feedback for undo
+      descriptionCell.style.backgroundColor = '#fff3cd';
+      setTimeout(() => {
+        descriptionCell.style.backgroundColor = '';
+      }, 2000);
+    }
+  }
+}
+
+// // Function to show success message after replacement
+// function showReplacementSuccess(outcomeNumber) {
+//   // Create a temporary success alert
+//   const alert = document.createElement('div');
+//   alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-50 start-50 translate-middle';
+//   alert.style.zIndex = '9999';
+//   alert.innerHTML = `
+//     <i class="bi bi-check-circle-fill me-2"></i>
+//     Learning Outcome ${outcomeNumber} has been replaced with the suggested revision.
+//     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+//   `;
+//
+//   document.body.appendChild(alert);
+//
+//   // Auto-dismiss after 3 seconds
+//   setTimeout(() => {
+//     if (alert.parentNode) {
+//       alert.classList.remove('show');
+//       setTimeout(() => alert.remove(), 150);
+//     }
+//   }, 3000);
+// }
 
 function formatTextWithLineBreaks(text) {
   // Preserve line breaks and format text
