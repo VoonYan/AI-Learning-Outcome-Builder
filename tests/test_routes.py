@@ -14,12 +14,12 @@ def client():
     yield client
 
 def test_homepage_anonymous(client):
-  #to test homepage
+  #to test homepage as guest
   response = client.get('/', follow_redirects=False)
   assert response.status_code == 302
   assert "/home" in response.headers["Location"]
   
-def test__homepage_redirect_logged_in(client):
+def test_homepage_redirect_logged_in(client):
   #to test homepage redirect when logged in
   with client.session_transaction() as sess:
     sess['_user_id'] = 1 
@@ -27,3 +27,9 @@ def test__homepage_redirect_logged_in(client):
   response = client.get('/', follow_redirects=False)
   assert response.status_code == 302
   assert "/main_page" in response.headers["Location"]
+
+def test_help_page(client):
+  #to test help page
+  response = client.get('/help')
+  assert response.status_code == 200
+  assert b"Help" in response.data
