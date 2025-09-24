@@ -1,7 +1,7 @@
 from .ai_rewrite_tester import AIRewriteTester
 
 # Test with small sample first
-tester = AIRewriteTester(csv_path="app/UnitsOutcomes.csv",api_key="AIzaSyByecfN5mmplWCZLrxW1h4XG2ssN10rGsM")
+tester = AIRewriteTester(csv_path="app/UnitsOutcomes.csv",api_key=None)
 results = tester.run_test(
     output_path="test_results.csv",
     sample_size=0.01,  # 1% of units (~70 units)
