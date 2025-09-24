@@ -144,17 +144,6 @@ function formatAIResponse(responseText) {
     const container = document.createElement('div');
     container.className = 'ai-evaluation-content';
 
-/*    // Add LO Analysis header
-    const analysisHeader = document.createElement('div');
-    analysisHeader.className = 'alert alert-primary mb-3';
-    analysisHeader.innerHTML = `
-      <h6 class="alert-heading mb-2">
-        <i class="bi bi-clipboard-data me-2"></i>
-        <strong>LO Analysis</strong>
-      </h6>
-    `;
-    container.appendChild(analysisHeader);*/
-
     // Add each outcome evaluation
     if (outcomes.length > 0) {
       outcomes.forEach((outcome, index) => {
@@ -359,6 +348,10 @@ function createOutcomeCard(outcome, index) {
 
   card.className += ` ${borderColor}`;
 
+  // Use the actual outcome text as identifier instead of index
+  const outcomeTextEscaped = escapeQuotes(outcome.text);
+  const suggestionEscaped = escapeQuotes(outcome.suggestion || '');
+
   card.innerHTML = `
     <div class="card-body py-3 px-3">
       <div class="d-flex align-items-start">
@@ -395,7 +388,7 @@ function createOutcomeCard(outcome, index) {
                   <em class="text-success">"${outcome.suggestion}"</em>
                 </p>
                 <button class="btn btn-sm btn-outline-success" 
-                        onclick="replaceOutcome(${index}, '${escapeQuotes(outcome.suggestion)}')"
+                        onclick="replaceOutcomeByText('${outcomeTextEscaped}', '${suggestionEscaped}')"
                         title="Replace the current learning outcome with this suggestion">
                   <i class="bi bi-arrow-repeat me-1"></i>
                   Click to Replace
@@ -413,30 +406,57 @@ function createOutcomeCard(outcome, index) {
 
 // Helper function to escape quotes for HTML attribute
 function escapeQuotes(str) {
-  return str.replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+  if (!str) return '';
+  return str.replace(/\\/g, '\\\\')
+            .replace(/'/g, "\\'")
+            .replace(/"/g, '\\"')
+            .replace(/\n/g, '\\n');
 }
 
 // Global variable to store replacement history
 let replacementHistory = [];
 
-// Enhanced replace function with undo capability
-function replaceOutcome(outcomeNumber, suggestion) {
+// New function to replace outcome by matching text content (fixes reordering issue)
+function replaceOutcomeByText(originalText, suggestion) {
   const table = document.getElementById('LOTable');
   if (!table) return;
 
   const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+  let foundRow = null;
+  let displayNumber = -1;
 
-  if (rows[outcomeNumber - 1]) {
-    const row = rows[outcomeNumber - 1];
-    const descriptionCell = row.querySelector('.loDesc div[contenteditable]');
+  // Find the row that contains the matching outcome text
+  for (let i = 0; i < rows.length; i++) {
+    const descriptionCell = rows[i].querySelector('.loDesc div[contenteditable]');
+    if (descriptionCell) {
+      const cellText = descriptionCell.textContent.trim();
+      const originalTextTrimmed = originalText.trim();
+
+      // Match the text content (flexible matching to handle slight differences)
+      if (cellText === originalTextTrimmed ||
+          cellText.startsWith(originalTextTrimmed) ||
+          originalTextTrimmed.startsWith(cellText)) {
+        foundRow = rows[i];
+        // Get the display number from the first cell
+        const firstCell = rows[i].querySelector('.loPos');
+        displayNumber = firstCell ? firstCell.textContent.trim() : (i + 1);
+        break;
+      }
+    }
+  }
+
+  if (foundRow) {
+    const descriptionCell = foundRow.querySelector('.loDesc div[contenteditable]');
 
     if (descriptionCell) {
       // Store the old value for undo
       const oldValue = descriptionCell.textContent;
+
       replacementHistory.push({
-        outcomeNumber: outcomeNumber,
+        rowElement: foundRow,
         oldValue: oldValue,
-        newValue: suggestion
+        newValue: suggestion,
+        displayNumber: displayNumber
       });
 
       // Replace with the suggestion
@@ -453,18 +473,25 @@ function replaceOutcome(outcomeNumber, suggestion) {
       }, 2000);
 
       // Show confirmation with undo option
-      showReplacementSuccessWithUndo(outcomeNumber);
+      showReplacementSuccessWithUndo(displayNumber);
     }
+  } else {
+    // If no exact match found, show error
+    showReplacementError();
   }
 }
 
-function showReplacementSuccessWithUndo(outcomeNumber) {
+function showReplacementSuccessWithUndo(displayNumber) {
+  // Remove any existing alerts
+  const existingAlerts = document.querySelectorAll('.replacement-alert');
+  existingAlerts.forEach(alert => alert.remove());
+
   const alert = document.createElement('div');
-  alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-50 start-50 translate-middle';
-  alert.style.zIndex = '9999';
+  alert.className = 'alert alert-success alert-dismissible fade show position-fixed replacement-alert';
+  alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 350px;';
   alert.innerHTML = `
     <i class="bi bi-check-circle-fill me-2"></i>
-    Learning Outcome ${outcomeNumber} has been replaced.
+    Learning Outcome #${displayNumber} has been replaced.
     <button type="button" class="btn btn-sm btn-outline-dark ms-2" onclick="undoLastReplacement()">
       <i class="bi bi-arrow-counterclockwise me-1"></i>Undo
     </button>
@@ -481,52 +508,70 @@ function showReplacementSuccessWithUndo(outcomeNumber) {
   }, 5000);
 }
 
+function showReplacementError() {
+  const alert = document.createElement('div');
+  alert.className = 'alert alert-warning alert-dismissible fade show position-fixed replacement-alert';
+  alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 350px;';
+  alert.innerHTML = `
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    Could not find the matching outcome. It may have been edited.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  `;
+
+  document.body.appendChild(alert);
+
+  setTimeout(() => {
+    if (alert.parentNode) {
+      alert.classList.remove('show');
+      setTimeout(() => alert.remove(), 150);
+    }
+  }, 3000);
+}
+
 function undoLastReplacement() {
   if (replacementHistory.length === 0) return;
 
   const lastReplacement = replacementHistory.pop();
-  const table = document.getElementById('LOTable');
-  const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+  const descriptionCell = lastReplacement.rowElement.querySelector('.loDesc div[contenteditable]');
 
-  if (rows[lastReplacement.outcomeNumber - 1]) {
-    const row = rows[lastReplacement.outcomeNumber - 1];
-    const descriptionCell = row.querySelector('.loDesc div[contenteditable]');
+  if (descriptionCell) {
+    descriptionCell.textContent = lastReplacement.oldValue;
+    autoSave();
 
-    if (descriptionCell) {
-      descriptionCell.textContent = lastReplacement.oldValue;
-      autoSave();
+    // Visual feedback for undo
+    descriptionCell.style.backgroundColor = '#fff3cd';
+    setTimeout(() => {
+      descriptionCell.style.backgroundColor = '';
+    }, 2000);
 
-      // Visual feedback for undo
-      descriptionCell.style.backgroundColor = '#fff3cd';
-      setTimeout(() => {
-        descriptionCell.style.backgroundColor = '';
-      }, 2000);
-    }
+    // Show undo confirmation
+    showUndoSuccess(lastReplacement.displayNumber);
   }
 }
 
-// // Function to show success message after replacement
-// function showReplacementSuccess(outcomeNumber) {
-//   // Create a temporary success alert
-//   const alert = document.createElement('div');
-//   alert.className = 'alert alert-success alert-dismissible fade show position-fixed top-50 start-50 translate-middle';
-//   alert.style.zIndex = '9999';
-//   alert.innerHTML = `
-//     <i class="bi bi-check-circle-fill me-2"></i>
-//     Learning Outcome ${outcomeNumber} has been replaced with the suggested revision.
-//     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-//   `;
-//
-//   document.body.appendChild(alert);
-//
-//   // Auto-dismiss after 3 seconds
-//   setTimeout(() => {
-//     if (alert.parentNode) {
-//       alert.classList.remove('show');
-//       setTimeout(() => alert.remove(), 150);
-//     }
-//   }, 3000);
-// }
+function showUndoSuccess(displayNumber) {
+  // Remove any existing alerts
+  const existingAlerts = document.querySelectorAll('.replacement-alert');
+  existingAlerts.forEach(alert => alert.remove());
+
+  const alert = document.createElement('div');
+  alert.className = 'alert alert-info alert-dismissible fade show position-fixed replacement-alert';
+  alert.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+  alert.innerHTML = `
+    <i class="bi bi-arrow-counterclockwise me-2"></i>
+    Outcome #${displayNumber} has been restored.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  `;
+
+  document.body.appendChild(alert);
+
+  setTimeout(() => {
+    if (alert.parentNode) {
+      alert.classList.remove('show');
+      setTimeout(() => alert.remove(), 150);
+    }
+  }, 3000);
+}
 
 function formatTextWithLineBreaks(text) {
   // Preserve line breaks and format text
