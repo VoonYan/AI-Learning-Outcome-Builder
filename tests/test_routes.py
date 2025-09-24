@@ -33,3 +33,9 @@ def test_help_page(client):
   response = client.get('/help')
   assert response.status_code == 200
   assert b"Help" in response.data
+  
+def test_bloom_guide(client):
+  #to test bloom guide page
+  response = client.get('/bloom-guide')
+  assert response.status_code == 200
+  assert b"Bloom's Taxonomy" in response.data 
