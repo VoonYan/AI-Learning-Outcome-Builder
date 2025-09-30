@@ -1,0 +1,68 @@
+import pytest
+from app import create_app, db
+from app.models import User, UserType, Unit, LearningOutcome
+from flask import url_for
+import io
+import pandas as pd
+
+# -----------------------------
+# Fixtures
+# -----------------------------
+
+@pytest.fixture
+def app():
+    """Create and configure a new app instance for each test."""
+    app = create_app()
+    app.config.update({
+        "TESTING": True,
+        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+        "WTF_CSRF_ENABLED": False,  # Disable CSRF for testing forms
+    })
+
+    with app.app_context():
+        db.create_all()
+        yield app
+        db.session.remove()
+        db.drop_all()
+
+@pytest.fixture
+def client(app):
+    """A test client for the app."""
+    return app.test_client()
+
+@pytest.fixture
+def admin_user(app):
+    """Create an admin user for testing."""
+    user = User(username="admin", role=UserType.ADMIN, email="admin@test.com")
+    user.set_password("password")  # Assuming your User model has set_password
+    db.session.add(user)
+    db.session.commit()
+    return user
+
+@pytest.fixture
+def login_admin(client, admin_user):
+    """Log in as admin."""
+    client.post("/login", data={"username": "admin", "password": "password"})
+    return admin_user
+
+# -----------------------------
+# 1. New Unit Entry (Story 6)
+# -----------------------------
+def test_new_unit_entry(client, login_admin):
+    response = client.post("/new_unit", data={
+        "unitcode": "CS101",
+        "unitname": "Intro to CS",
+        "level": 1,
+        "creditpoints": 6,
+        "description": "Introductory unit"
+    }, follow_redirects=True)
+
+    # Check response contains success message
+    assert b"Unit Created" in response.data
+
+    # Check the unit exists in database
+    unit = Unit.query.filter_by(unitcode="CS101").first()
+    assert unit is not None
+    assert unit.unitname == "Intro to CS"
+    assert unit.level == 1
+    assert unit.creditpoints == 6
