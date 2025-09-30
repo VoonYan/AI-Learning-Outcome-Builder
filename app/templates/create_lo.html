@@ -57,7 +57,7 @@
               {% for lo in outcomes %}
               <tr data-id="{{ lo.id }}">
                 <td class="text-center loPos">{{ loop.index }}</td>
-                <td class="loDesc"><div contenteditable list="wordlist" oninput="autoSave()">{{ lo.description }}</div></td>
+                <td class="loDesc editable"><div contenteditable list="wordlist" oninput="autoSave()">{{ lo.description }}</div></td>
                 <td class="loAss"><div contenteditable oninput="autoSave()">{{ lo.assessment or '' }}</div></td>
                 <td class="text-center">
                     <button type="submit" class="btn btn-danger rounded-circle btn-sm" onclick="deleteOutcome('{{lo.id}}')">&minus;</button>
@@ -72,11 +72,8 @@
             </tbody>
           </table>
         </div>
-      <datalist id="wordlist">
-        {% for word in wordList %}
-          <option value="{{word}}"/>
-        {% endfor %}
-      </datalist>
+        <!-- Shared suggestion box -->
+        <div id="suggestions"></div>
       </div>
     </section>
 
@@ -207,51 +204,101 @@ document.querySelectorAll('#LOTable [contenteditable]').forEach(div => {
   div.addEventListener('blur', () => sendSaveRequest());
 });
 
-document.addEventListener('focusin', function (event) {
-	if (event.target.matches('[contenteditable]')) {
+//the starter word suggestion
+const SUGGESTIONS = {{wordList | safe}};
 
-        var editable = event.target
+const suggestionBox = document.getElementById('suggestions');
+let currentEditable = null;
 
-        // enter edit mode
-        editable.classList.add("editing")
-        
-        // get text
-        var text = editable.innerText
-        editable.textContent = ''; // Clear the div's conten
+function getCaretPosition(el) {
+  const range = window.getSelection().getRangeAt(0).cloneRange();
+  const rect = range.getBoundingClientRect();
+  return {
+    top: rect.bottom + window.scrollY,
+    left: rect.left + window.scrollX
+  };
+}
 
-        // create input
-        var input = document.createElement("input");
-        input.type = "text";
-        input.className = "editable-mirror";
-        input.setAttribute("list", "wordlist");
-        input.value = text;
-        
-        editable.appendChild(input);
+function placeCaretAtEnd(el) {
+  el.focus();
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  range.collapse(false);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
 
-				input.focus()
-        
-	}
-}, false);
-document.addEventListener('focusout', function (event) {
-    if (event.target.matches('.editable-mirror')) {
-        
-        var input = event.target
-        var editable = input.closest("[contenteditable]")
+function showSuggestions(text, el) {
+  const filtered = SUGGESTIONS.filter(opt =>
+    opt.toLowerCase().startsWith(text.toLowerCase())
+  );
 
-        // leave edit mode
-        editable.classList.remove("editing")
+  if (filtered.length === 0 || text === '') {
+    suggestionBox.style.display = 'none';
+    return;
+  }
 
-        // get text
-        var text = input.value;
+  suggestionBox.innerHTML = '';
+  filtered.forEach(item => {
+    const div = document.createElement('div');
+    div.textContent = item;
+    div.classList.add('suggestion');
+    div.style.padding = '5px';
+    div.style.cursor = 'pointer';
+    div.onclick = () => {
+      el.innerText = item;
+      suggestionBox.style.display = 'none';
+      placeCaretAtEnd(el);
+      autoSave(); // trigger autosave
+    };
+    suggestionBox.appendChild(div);
+  });
 
-        // destroy input
-        input.parentNode.removeChild(input);
+  const pos = getCaretPosition(el);
+  suggestionBox.style.position = 'absolute';
+  suggestionBox.style.left = `${pos.left}px`;
+  suggestionBox.style.top = `${pos.top}px`;
+  suggestionBox.style.background = '#fff';
+  suggestionBox.style.border = '1px solid #ccc';
+  suggestionBox.style.zIndex = 9999;
+  suggestionBox.style.width = `${el.offsetWidth}px`;
+  suggestionBox.style.maxHeight = '150px';
+  suggestionBox.style.overflowY = 'auto';
+  suggestionBox.style.display = 'block';
+}
 
-        // apply value
-        editable.innerText = text;
-        autoSave()
-    }
-}, false);
+// Attach event listeners to all editable .loDesc divs
+function attachSuggestionListeners() {
+  document.querySelectorAll('.loDesc div[contenteditable]').forEach(div => {
+    div.addEventListener('input', () => {
+      currentEditable = div;
+      const text = div.innerText.trim();
+      showSuggestions(text, div);
+    });
+
+    div.addEventListener('focus', () => {
+      currentEditable = div;
+      const text = div.innerText.trim();
+      showSuggestions(text, div);
+    });
+
+    div.addEventListener('blur', () => {
+      setTimeout(() => {
+        suggestionBox.style.display = 'none';
+      }, 200); // slight delay so click can register
+    });
+  });
+}
+
+// Run on page load
+attachSuggestionListeners();
+
+// Optional: re-run after dynamically adding new rows
+document.getElementById('addBtn')?.addEventListener('click', () => {
+  // Wait for reload (or use AJAX version)
+  setTimeout(() => attachSuggestionListeners(), 1000);
+});
 
 </script>
 
