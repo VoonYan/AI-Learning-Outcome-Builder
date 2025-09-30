@@ -5,9 +5,7 @@ from flask import url_for
 import io
 import pandas as pd
 
-# -----------------------------
 # Fixtures
-# -----------------------------
 
 @pytest.fixture
 def app():
