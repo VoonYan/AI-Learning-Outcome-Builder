@@ -13,7 +13,14 @@ from app.routes import (
     createCSVofLOs
 )
 
-#helper functions
+#run tests multiple times each with different inputs and expected outputs
+@pytest.mark.parametrize("int,expected", [
+    (["a","b"],"a,b"),
+    (["x"], "x"),
+    ([], ""),
+    ([" a "], " a "),  # whitespace preserved
+    (["hello", "world!"], "hello, world!"),  # special chars
+])
 def test_list_to_string_by_comma():
     assert listToStringByComma(["a", "b"]) == "a, b"
     assert listToStringByComma(["x"]) == "x"
