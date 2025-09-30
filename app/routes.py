@@ -16,7 +16,7 @@ import random
 
 main = Blueprint('main', __name__)
 
-
+# handles the empty route, unlogged in users should load into the home page but logged in users should load into the main page
 @main.route('/')
 def auto_route():
     if current_user.is_anonymous:
@@ -36,7 +36,7 @@ def home():
 def main_page(): 
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
-
+# learning outcome page
 @main.route('/create_lo/<int:unit_id>')
 @login_required
 def create_lo(unit_id):
@@ -48,7 +48,7 @@ def create_lo(unit_id):
     return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
 
 #all of this should be moved to some new api file
-
+#apis for the learning outcomes
 @main.delete("/lo_api/delete/<int:unit_id>/<int:lo_id>")
 @login_required
 def lo_delete(unit_id, lo_id):
@@ -128,7 +128,6 @@ def lo_save(unit_id):
     return jsonify({'status': 'ok'})
 
 
-#we need a button to export all of the units, and im assuming this is for one specific unit, perhaps a general function with single unit option is best here 
 @main.get("/lo_api/export.csv/<int:unit_id>")
 @login_required
 def lo_export_csv(unit_id):
@@ -146,7 +145,7 @@ def lo_export_csv(unit_id):
         "Content-Disposition": f'attachment; filename="{unit.unitcode}_outcomes.csv"'
     })
 
-
+#main evaluation function
 @main.post("/lo_api/evaluate/<int:unit_id>")
 @login_required
 def ai_evaluate(unit_id):
@@ -162,6 +161,7 @@ def ai_evaluate(unit_id):
     except Exception as e:
         return jsonify({"ok": False, "error": str(e)}), 500
 
+# Search page to search all units, just by unit code or name, potential to expand the search criteria
 @main.route('/search_unit', methods=['GET', 'POST'])
 def search_unit():
     if request.method == "GET":
@@ -199,7 +199,7 @@ def search_unit():
             can_edit=not current_user.is_anonymous 
         )
 
-
+# view page, this page acts as an intermediary for editing a unit and simply viewing it
 @main.route('/view/<int:unit_id>', methods=['GET'])
 def view(unit_id):
     if request.method == "GET":
@@ -208,6 +208,7 @@ def view(unit_id):
             abort(404)
         return render_template("view.html", title="Unit Details", unit=unit, UserType=UserType)
 
+# edit unit details page
 @main.route('/unit/<int:unit_id>/edit_unit', methods=['GET', 'POST'])
 @login_required
 def edit_unit(unit_id):
@@ -246,6 +247,7 @@ def edit_unit(unit_id):
         # redirect using the (possibly new) unitcode
         return redirect(url_for("main.view", unit_id=unit.id))
 
+#create a new unit form page, relys on the WTForm
 @main.route('/new_unit', methods = ['GET', 'POST'])
 @login_required
 def new_unit():
@@ -277,7 +279,7 @@ def new_unit():
         flash("Unit Created", 'success')
         return redirect("/main_page")
     
-
+# this is an api call for deleting a unit, perhaps an api file rather than routes is better
 @main.route('/delete_unit/<int:unit_id>', methods = ['DELETE'])
 @login_required
 def delete_unit(unit_id):
@@ -554,6 +556,8 @@ def import_units():
     flash(msg, "success")
     return redirect(url_for("main.main_page"))
 
+# a helper function as creating a csv is largely the same for all units or just user's units
+# here we use panda, in flask its not the fastest but in deployment it should be significantly faster than python's csv library
 def createCSVofLOs(userID=-1):
     if userID != -1:
         units = Unit.query.filter_by(creatorid=current_user.id).all()
@@ -587,6 +591,7 @@ def createCSVofLOs(userID=-1):
     df.to_csv(buf)
     return buf.getvalue()
 
+#here we use two exports as the team felt that all units might be excessive for general UC use.
 
 @main.route('/export_my_units')
 @login_required

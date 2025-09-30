@@ -8,6 +8,8 @@ from . import db
 auth = Blueprint("auth", __name__)
 #using a seperate file for user management as it will have 3 routes for this one purpose, login, signup and logout
 
+#auth file containing login, signup and logout
+
 @auth.route('/login_page', methods = ['GET', 'POST'])
 def login_page():
     if request.method == 'GET':
