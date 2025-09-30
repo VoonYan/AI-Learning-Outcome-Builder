@@ -57,7 +57,7 @@
               {% for lo in outcomes %}
               <tr data-id="{{ lo.id }}">
                 <td class="text-center loPos">{{ loop.index }}</td>
-                <td class="loDesc"><div contenteditable oninput="autoSave()">{{ lo.description }}</div></td>
+                <td class="loDesc"><div contenteditable list="wordlist" oninput="autoSave()">{{ lo.description }}</div></td>
                 <td class="loAss"><div contenteditable oninput="autoSave()">{{ lo.assessment or '' }}</div></td>
                 <td class="text-center">
                     <button type="submit" class="btn btn-danger rounded-circle btn-sm" onclick="deleteOutcome('{{lo.id}}')">&minus;</button>
@@ -72,6 +72,11 @@
             </tbody>
           </table>
         </div>
+      <datalist id="wordlist">
+        {% for word in wordList %}
+          <option value="{{word}}"/>
+        {% endfor %}
+      </datalist>
       </div>
     </section>
 
@@ -186,6 +191,7 @@ function sendSaveRequest() {
 
 // Debounced autosave while typing
 function autoSave() {
+  console.log('autosaving')
   clearTimeout(saveTimeout);
   saveTimeout = setTimeout(() => sendSaveRequest(), 750);
 }
@@ -200,6 +206,53 @@ document.getElementById("saveBtn").addEventListener("click", function() {
 document.querySelectorAll('#LOTable [contenteditable]').forEach(div => {
   div.addEventListener('blur', () => sendSaveRequest());
 });
+
+document.addEventListener('focusin', function (event) {
+	if (event.target.matches('[contenteditable]')) {
+
+        var editable = event.target
+
+        // enter edit mode
+        editable.classList.add("editing")
+        
+        // get text
+        var text = editable.innerText
+        editable.textContent = ''; // Clear the div's conten
+
+        // create input
+        var input = document.createElement("input");
+        input.type = "text";
+        input.className = "editable-mirror";
+        input.setAttribute("list", "wordlist");
+        input.value = text;
+        
+        editable.appendChild(input);
+
+				input.focus()
+        
+	}
+}, false);
+document.addEventListener('focusout', function (event) {
+    if (event.target.matches('.editable-mirror')) {
+        
+        var input = event.target
+        var editable = input.closest("[contenteditable]")
+
+        // leave edit mode
+        editable.classList.remove("editing")
+
+        // get text
+        var text = input.value;
+
+        // destroy input
+        input.parentNode.removeChild(input);
+
+        // apply value
+        editable.innerText = text;
+        autoSave()
+    }
+}, false);
+
 </script>
 
 <!-- Load the main JavaScript file -->
