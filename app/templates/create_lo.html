@@ -133,7 +133,7 @@
     <!-- Save current table state to server (debounced autoSave also runs on typing/blur) -->
     <button class="btn btn-success rounded-pill px-5 py-3 fw-semibold" type="button" id="saveBtn" onclick="autoSave()">Save</button>
     
-    <!-- Trigger AI evaluation (handled in create_lo.js if wired) -->
+    <!-- Trigger AI evaluation -->
     <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" type="button" id="evaluateBtn">Evaluate</button>
     
     <!-- Export current unit’s LOs to CSV -->
@@ -241,7 +241,7 @@ document.querySelectorAll('#LOTable [contenteditable]').forEach(div => {
 });
 </script>
 
-<!-- Page script: handles drag/reorder and evaluation (if implemented there) -->
+<!-- Page script: handles drag/reorder and evaluation -->
 <script src="{{ url_for('static', filename='js/create_lo.js') }}"></script>
 
 {% endblock %}
