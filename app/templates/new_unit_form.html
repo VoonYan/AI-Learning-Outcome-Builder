@@ -1,5 +1,14 @@
 {% extends "base_main.html" %}
 
+<!--
+  Template: Create a New Unit
+  Purpose: Collect core fields to create a unit (code, name, level, credit points, description).
+
+  Notes:
+    - Uses WTForms (form.hidden_tag provides CSRF and hidden fields).
+    - Form posts to main.new_unit and redirects with a flash on success/failure.
+-->
+
 {% block title %}Create a New Unit{% endblock %}
 {% block banner_title %}Create a New Unit{% endblock %}
 {% block banner_subtitle %}
@@ -31,9 +40,11 @@ Fill in unit details below to create a new entry
                         <i class="bi bi-pencil-square me-2"></i>Unit Details
                     </h3>
 
+                    <!-- Form: posts to /new_unit; novalidate disables native browser validation -->
                     <form method="POST" action="{{ url_for('main.new_unit') }}" novalidate>
                         {{ form.hidden_tag() }}
 
+                        <!-- Unit Code -->
                         <div class="mb-3">
                             {{ form.unitcode.label(class="form-label") }}
                             {{ form.unitcode(class="form-control", size=32) }}
@@ -42,6 +53,7 @@ Fill in unit details below to create a new entry
                             {% endfor %}
                         </div>
 
+                        <!-- Unit Name -->
                         <div class="mb-3">
                             {{ form.unitname.label(class="form-label") }}
                             {{ form.unitname(class="form-control", size=32) }}
@@ -50,21 +62,25 @@ Fill in unit details below to create a new entry
                             {% endfor %}
                         </div>
 
+                        <!-- Level (select) -->
                         <div class="mb-3">
                             {{ form.level.label(class="form-label") }}
                             {{ form.level(class="form-control") }}
                         </div>
 
+                        <!-- Credit Points (select) -->
                         <div class="mb-3">
                             {{ form.creditpoints.label(class="form-label") }}
                             {{ form.creditpoints(class="form-select") }}
                         </div>
 
+                        <!-- Description -->
                         <div class="mb-3">
                             {{ form.description.label(class="form-label") }}
                             {{ form.description(class="form-control", rows=4) }}
                         </div>
 
+                        <!-- Submit -->
                         <div class="text-center">
                             {{ form.submit(class="btn btn-warning text-dark px-4") }}
                         </div>
@@ -73,6 +89,8 @@ Fill in unit details below to create a new entry
             </section>
         </div>
     </main>
+
+    <!-- Footer year -->
     <script>
     document.getElementById('year').textContent = new Date().getFullYear();
     </script>
