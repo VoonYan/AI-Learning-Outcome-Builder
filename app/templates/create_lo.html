@@ -78,14 +78,14 @@
               <tr data-id="{{ lo.id }}">
                 <td class="text-center loPos">{{ loop.index }}</td>
                 <td class="loDesc">
-                  <!-- Description editor: contenteditable (triggers autoSave on input) -->
+                  <!-- Description editor -->
                   <div contenteditable oninput="autoSave()">{{ lo.description }}</div>
                 </td>
                 <td class="loAss">
-                  <!-- Assessment editor: contenteditable (triggers autoSave on input) -->
+                  <!-- Assessment editor -->
                   <div contenteditable oninput="autoSave()">{{ lo.assessment or '' }}</div></td>
                 <td class="text-center">
-                    <!-- Delete row (confirms, then calls DELETE endpoint) -->
+                    <!-- Delete row-->
                     <button type="submit" class="btn btn-danger rounded-circle btn-sm" onclick="deleteOutcome('{{lo.id}}')">&minus;</button>
                 </td>
                 <td class="text-center">

@@ -5,7 +5,7 @@
 
   Notes:
     - custom_styles.css is linked from /static; ensure the file exists to avoid 404s.
-    - Flash messages auto-dismiss after 2.5s (see script at bottom).
+    - Flash messages auto-dismiss after 2.5s.
 -->
 <html>
 <head>
@@ -14,7 +14,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
           crossorigin="anonymous">
-    <!-- Custom site CSS (ensure this exists at app/static/custom_styles.css) -->
+    <!-- Custom site CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
@@ -139,7 +139,7 @@
             setTimeout(() => alert.remove(), 500);
         });
     }, 2500);
-    
+
     // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 </script>
