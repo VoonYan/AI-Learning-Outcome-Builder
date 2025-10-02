@@ -65,7 +65,7 @@ Edit information about the selected unit.
                 <div class="mb-3">
                     {{ form.level.label(class="form-label") }}
                     {{ form.level(class="form-select", id='levelSelect')}}
-                <!-- Preselect current value (ensure option values match unit.level) -->
+                <!-- Preselect current value -->
                 <script>
                     document.getElementById('levelSelect').value = "{{unit.level}}";
                 </script>
@@ -75,7 +75,7 @@ Edit information about the selected unit.
                 <div class="mb-3">
                     {{ form.creditpoints.label(class="form-label")}}
                     {{ form.creditpoints(class="form-select", id='pointSelect')}}
-                <!-- Preselect current value (ensure option values match unit.creditpoints) -->
+                <!-- Preselect current value -->
                 <script>
                     document.getElementById('pointSelect').value = "{{unit.creditpoints}}";
                 </script>
