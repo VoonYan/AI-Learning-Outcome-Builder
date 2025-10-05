@@ -18,7 +18,7 @@ class TestLogin(unittest.TestCase):
         cls.base_url = os.getenv("BASE_URL", "http://127.0.0.1:5000")
         cls.username = os.getenv("TEST_USERNAME", "selenium")
         cls.password = os.getenv("TEST_PASSWORD", "abc123")
-# seems wrong password or account not match
+
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
