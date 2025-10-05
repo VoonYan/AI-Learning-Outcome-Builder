@@ -45,7 +45,9 @@ class TestLearningOutcome(unittest.TestCase):
     def setUpClass(cls):
         options = webdriver.ChromeOptions()
         options.add_argument("--headless=new")
-        options.add_argument("--window-size=1400,900")
+        # options.add_argument("--window-size=1400,900")
+        options.add_argument("--window-size=1920,1080")
+
         cls.driver = webdriver.Chrome(options=options)
         cls.base_url = os.getenv("BASE_URL", "http://127.0.0.1:5000")
 
@@ -57,9 +59,13 @@ class TestLearningOutcome(unittest.TestCase):
         driver = self.driver
         login(driver, self.base_url)
         driver.get(f"{self.base_url}/create_lo/1")  # example unit ID
-        WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.ID, "addBtn"))
-        ).click()
+        add_btn = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "addBtn"))
+        )
+        driver.execute_script("arguments[0].scrollIntoView(true);", add_btn)
+        time.sleep(0.5)
+        add_btn.click()
+
 
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "#lo-tbody tr[data-id]"))

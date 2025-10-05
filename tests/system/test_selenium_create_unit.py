@@ -5,7 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
 import os
 import time
-
+# manually checked: can see the new unit now
+# flow: login -> create unit
 
 class TestCreateUnit(unittest.TestCase):
 
@@ -45,6 +46,8 @@ class TestCreateUnit(unittest.TestCase):
     def setUpClass(cls):
         options = webdriver.ChromeOptions()
         options.add_argument("--headless=new")
+
+        options.add_argument("--window-size=1920,1080")
         cls.driver = webdriver.Chrome(options=options)
         cls.base_url = os.getenv("BASE_URL", "http://127.0.0.1:5000")
 
@@ -66,8 +69,13 @@ class TestCreateUnit(unittest.TestCase):
         Select(driver.find_element(By.ID, "level")).select_by_value("1")
         Select(driver.find_element(By.ID, "creditpoints")).select_by_value("6")
         driver.find_element(By.ID, "description").send_keys("Automated test")
+        submit_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "form button[type='submit'], form input[type='submit']"))
+        )
+        driver.execute_script("arguments[0].scrollIntoView(true);", submit_button)
+        time.sleep(0.5)  # brief pause for stability
+        submit_button.click()
 
-        driver.find_element(By.CSS_SELECTOR, "form button[type='submit'], form input[type='submit']").click()
 
         WebDriverWait(driver, 10).until_not(EC.url_contains("/new_unit"))
         self.assertNotIn("/new_unit", driver.current_url)
