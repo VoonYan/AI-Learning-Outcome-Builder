@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
-
+# created admin account, username: selenium, password: abc123
 
 class TestLogin(unittest.TestCase):
     """System test for login functionality."""
@@ -16,9 +16,9 @@ class TestLogin(unittest.TestCase):
         options.add_argument("--window-size=1400,900")
         cls.driver = webdriver.Chrome(options=options)
         cls.base_url = os.getenv("BASE_URL", "http://127.0.0.1:5000")
-        cls.username = os.getenv("TEST_USERNAME", "Jess")
+        cls.username = os.getenv("TEST_USERNAME", "selenium")
         cls.password = os.getenv("TEST_PASSWORD", "abc123")
-
+# seems wrong password or account not match
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit()
@@ -45,7 +45,8 @@ class TestLogin(unittest.TestCase):
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".alert, .text-danger"))
         )
-        self.assertIn("Invalid", driver.page_source)
+        self.assertIn("Login Failed", driver.page_source)
+
 
 
 if __name__ == "__main__":
