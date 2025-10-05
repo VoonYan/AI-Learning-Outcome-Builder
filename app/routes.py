@@ -16,9 +16,6 @@ import random
 
 main = Blueprint('main', __name__)
 
-@main.route("/login")
-def login_alias():
-    return redirect(url_for("auth.login_page"))
 
 @main.route('/')
 def auto_route():

@@ -16,8 +16,8 @@ class TestLogin(unittest.TestCase):
         options.add_argument("--window-size=1400,900")
         cls.driver = webdriver.Chrome(options=options)
         cls.base_url = os.getenv("BASE_URL", "http://127.0.0.1:5000")
-        cls.username = os.getenv("TEST_USERNAME", "admin")
-        cls.password = os.getenv("TEST_PASSWORD", "admin123")
+        cls.username = os.getenv("TEST_USERNAME", "Jess")
+        cls.password = os.getenv("TEST_PASSWORD", "abc123")
 
     @classmethod
     def tearDownClass(cls):
@@ -29,7 +29,7 @@ class TestLogin(unittest.TestCase):
 
         driver.find_element(By.NAME, "username").send_keys(self.username)
         driver.find_element(By.NAME, "password").send_keys(self.password)
-        driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+        driver.find_element(By.ID, "submit").click()
 
         WebDriverWait(driver, 10).until(EC.url_contains("/dashboard"))
         self.assertIn("/dashboard", driver.current_url, "Login failed")
@@ -40,7 +40,7 @@ class TestLogin(unittest.TestCase):
 
         driver.find_element(By.NAME, "username").send_keys("fakeuser")
         driver.find_element(By.NAME, "password").send_keys("wrongpass")
-        driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+        driver.find_element(By.ID, "submit").click()
 
         WebDriverWait(driver, 5).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".alert, .text-danger"))

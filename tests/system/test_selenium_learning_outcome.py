@@ -7,6 +7,15 @@ from selenium.webdriver.common.keys import Keys
 import os
 import time
 
+def login(driver, base_url, username="Jess", password="abc123"):
+        driver.get(f"{base_url}/login_page")
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.NAME, "username"))
+        )
+        driver.find_element(By.NAME, "username").send_keys(username)
+        driver.find_element(By.NAME, "password").send_keys(password)
+        driver.find_element(By.ID, "submit").click()
+        WebDriverWait(driver, 10).until(EC.url_contains("/dashboard"))
 
 class TestLearningOutcome(unittest.TestCase):
     """System test for adding and deleting learning outcomes."""
@@ -25,6 +34,7 @@ class TestLearningOutcome(unittest.TestCase):
 
     def test_add_learning_outcome(self):
         driver = self.driver
+        login(driver, self.base_url)
         driver.get(f"{self.base_url}/create_lo/1")  # example unit ID
         WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.ID, "addBtn"))
