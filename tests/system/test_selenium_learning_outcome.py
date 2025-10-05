@@ -7,6 +7,10 @@ from selenium.webdriver.common.keys import Keys
 import os
 import time
 
+
+# flow: login-> create new unit-> learning outcome
+# for isolation, will make each test fullly independent
+
 def login(driver, base_url, username="selenium", password="abc123"):
     driver.get(f"{base_url}/login_page")
     WebDriverWait(driver, 10).until(
@@ -58,7 +62,24 @@ class TestLearningOutcome(unittest.TestCase):
     def test_add_learning_outcome(self):
         driver = self.driver
         login(driver, self.base_url)
-        driver.get(f"{self.base_url}/create_lo/1")  # example unit ID
+        # driver.get(f"{self.base_url}/create_lo/1")  # example unit ID
+        # Reuse the latest created unit to make test robust
+        driver.get(f"{self.base_url}/new_unit")
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "unitcode")))
+        # driver.find_element(By.ID, "unitcode").send_keys("TSTLO")
+        unit_code = f"TST{int(time.time()) % 10000}"  # unique every run
+
+        driver.find_element(By.ID, "unitcode").send_keys(unit_code)
+        driver.find_element(By.ID, "unitname").send_keys("Learning Outcome Unit")
+        driver.find_element(By.ID, "description").send_keys("For LO test")
+        driver.find_element(By.CSS_SELECTOR, "form button[type='submit']").click()
+
+        # Extract unit ID from redirect (assuming redirect to /unit/<id> or /create_lo/<id>)
+        time.sleep(1)
+        current_url = driver.current_url
+        unit_id = current_url.split("/")[-1]
+        driver.get(f"{self.base_url}/create_lo/{unit_id}")
+
         add_btn = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "addBtn"))
         )
@@ -66,16 +87,26 @@ class TestLearningOutcome(unittest.TestCase):
         time.sleep(0.5)
         add_btn.click()
 
-
+        # Wait for LO row to appear and be stable
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "#lo-tbody tr[data-id]"))
         )
-        desc_div = driver.find_element(
-            By.CSS_SELECTOR, "#lo-tbody tr[data-id]:first-child td.loDesc [contenteditable]"
+
+        # Re-locate after a brief delay to avoid stale reference after JS refresh
+        time.sleep(0.5)
+        desc_div = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located(
+                (By.CSS_SELECTOR, "#lo-tbody tr[data-id]:first-child td.loDesc [contenteditable]")
+            )
         )
+
+        # Scroll and interact safely
+        driver.execute_script("arguments[0].scrollIntoView(true);", desc_div)
+        time.sleep(0.3)
         desc_div.click()
         desc_div.send_keys(Keys.CONTROL + "a")
         desc_div.send_keys("New Selenium LO")
+
 
         driver.find_element(By.ID, "saveBtn").click()
         time.sleep(1)

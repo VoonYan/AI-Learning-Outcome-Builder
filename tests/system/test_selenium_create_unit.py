@@ -7,6 +7,7 @@ import os
 import time
 # manually checked: can see the new unit now
 # flow: login -> create unit
+# each test will create a new unit with unique code
 
 class TestCreateUnit(unittest.TestCase):
 
@@ -64,7 +65,10 @@ class TestCreateUnit(unittest.TestCase):
         
 
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "unitcode")))
-        driver.find_element(By.ID, "unitcode").send_keys("TST001")
+        # driver.find_element(By.ID, "unitcode").send_keys("TST001")
+        unit_code = f"TST{int(time.time()) % 10000}"  # unique every run
+
+        driver.find_element(By.ID, "unitcode").send_keys(unit_code)
         driver.find_element(By.ID, "unitname").send_keys("Test Unit Selenium")
         Select(driver.find_element(By.ID, "level")).select_by_value("1")
         Select(driver.find_element(By.ID, "creditpoints")).select_by_value("6")
