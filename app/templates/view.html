@@ -48,19 +48,19 @@ Full information about the selected unit.
             <!-- Edit buttons -->
             <div class="mt-3">
                 <!-- Edit Unit button -->
-                <a href="{{ url_for('main.edit_unit', unit_id=unit.id) }}" 
+                <a id='EditUnitButton' href="{{ url_for('main.edit_unit', unit_id=unit.id) }}" 
                 class="btn btn-warning text-dark me-2">
                 Edit Unit
                 </a>
 
                 <!-- Edit Learning Outcomes button -->
-                <a href="{{ url_for('main.create_lo', unit_id=unit.id) }}" 
+                <a id="EditLearningOutcomesButton" href="{{ url_for('main.create_lo', unit_id=unit.id) }}" 
                 class="btn btn-warning text-dark me-2">
                 Edit Learning Outcomes
                 </a>
 
                 <!-- Delete Unit-->
-                <button onclick="deleteUnit()" 
+                <button id="deleteUnitButton" onclick="deleteUnit()" 
                 class="btn btn-danger text-dark me-2">
                 Delete Unit
                 </button>
