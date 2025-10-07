@@ -36,6 +36,14 @@ def home():
 def main_page(): 
     return render_template('main_page.html', title=f'{current_user.username} Dashboard', username=current_user.username)
 
+def getBloomsWordList(unitLevel):
+    currentConfig = config_manager.getCurrentParams()
+    bloomLevel = currentConfig[f'Level {unitLevel}']
+    levelTerms = bloomLevel.split(', ')
+    wordList = []
+    for level in levelTerms:
+        wordList.extend(currentConfig[level.upper()])
+    return wordList
 
 @main.route('/create_lo/<int:unit_id>')
 @login_required
@@ -45,7 +53,8 @@ def create_lo(unit_id):
     unit = Unit.query.get_or_404(unit_id)
     outcomes = unit.learning_outcomes if unit else []
     headings = ['#', 'Learning Outcome', 'Assessment', 'Delete', 'Reorder']
-    return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings)
+
+    return render_template('create_lo.html', title=f'Creation Page', username=current_user.username, unit=unit, outcomes=outcomes, headings=headings, wordList=getBloomsWordList(unit.level))
 
 #all of this should be moved to some new api file
 
@@ -58,30 +67,12 @@ def lo_delete(unit_id, lo_id):
     flash("Outcome deleted", "success")
     return jsonify({"ok": True})
 
-
-def returnLOOpener(level):
-    currentConfig = config_manager.getCurrentParams()
-    LEVEL_NAME = {
-        1: currentConfig["Level 1"],
-        2: currentConfig["Level 2"],
-        3: currentConfig["Level 3"],
-        4: currentConfig["Level 4"],
-        5: currentConfig["Level 5"],
-        6: currentConfig["Level 6"]
-    }
-    loLevel = LEVEL_NAME[level].upper()
-    wordlist = currentConfig[loLevel]
-    keyWord = random.choice(wordlist)
-    keyWord += '... '
-    return keyWord
-
-
 @main.post("/lo_api/add/<int:unit_id>")
 @login_required
 def lo_add(unit_id):
     unit = Unit.query.filter_by(id=unit_id).first()
     existing_los = LearningOutcome.query.filter_by(unit_id=unit_id).all()
-    blank_lo = LearningOutcome(unit_id=unit_id, position=len(existing_los)+1, description=returnLOOpener(unit.level))
+    blank_lo = LearningOutcome(unit_id=unit_id, position=len(existing_los)+1, description='')
     db.session.add(blank_lo)
     db.session.commit()
     flash("Outcome Added and Saved", "success")
