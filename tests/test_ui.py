@@ -124,6 +124,27 @@ def test_login(flask_server, driver):
     login(driver)
     assert 'Main Dashboard' in driver.page_source
 
+def test_login_failure(flask_server, driver):
+    driver.get("http://127.0.0.1:5000/login_page")
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "username"))
+    )
+    time.sleep(1)
+    driver.find_element(By.ID, "username").clear()
+    driver.find_element(By.ID, "username").send_keys('fake')
+    driver.find_element(By.ID, "password").clear()
+    driver.find_element(By.ID, "password").send_keys('false')
+
+    # Wait for button and click using JS to avoid overlay
+    submit_btn = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.ID, "submit"))
+    )
+    driver.execute_script("arguments[0].scrollIntoView(true);", submit_btn)
+    driver.execute_script("arguments[0].click();", submit_btn)
+
+    time.sleep(0.5)
+    assert 'Login Failed. Double Check Your Details And Try Again.' in driver.page_source
+
 def test_create_unit(flask_server, driver):
     # login before accessing protected page
     login(driver)
@@ -150,6 +171,7 @@ def test_create_unit(flask_server, driver):
 def search_unit(driver):
     driver.get("http://127.0.0.1:5000/search_unit")
     WebDriverWait(driver, 10).until(lambda d: "Unit Search" in d.title)
+    assert 'Professional Computing [CITS3200]' in driver.page_source
     query = driver.find_element(By.NAME, "query")
     query.send_keys('Professional')
     query.send_keys(Keys.ENTER)
@@ -192,21 +214,63 @@ def test_edit_unit(flask_server, driver):
     WebDriverWait(driver, 10).until(EC.url_contains("/view/"))
     assert 'Unit updated successfully!' in driver.page_source
 
-def test_add_and_edit_learning_outcome(flask_server, driver):
+def test_add_edit_suggest_and_delete_learning_outcome(flask_server, driver):
     login(driver)
     search_unit(driver)
     driver.find_element(By.ID, "EditLearningOutcomesButton").click()
     WebDriverWait(driver, 10).until_not(EC.url_contains("/view/"))
     
-
     # Wait for Add Outcome button and click
     add_btn = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.ID, "addBtn"))
     )
     driver.execute_script("arguments[0].scrollIntoView(true);", add_btn)
+    time.sleep(0.5)
     add_btn.click()
 
+    time.sleep(0.5)
     assert 'Outcome Added and Saved' in driver.page_source
 
-    
+    desc = driver.find_element(By.XPATH, "//td[contains(@class, 'editable')]/div[@contenteditable]")
 
+    desc.click()
+    desc.send_keys('W')
+
+    assert 'Write' in driver.page_source
+
+    desc.send_keys('rite the test desc')
+
+    save = driver.find_element(By.ID, "saveBtn")
+    driver.execute_script("arguments[0].scrollIntoView(true);", save)
+    time.sleep(1)
+    save.click()
+
+    alert = driver.switch_to.alert
+    alert.accept()
+
+    assert 'Write the test desc' in driver.page_source
+
+    button = driver.find_element(By.XPATH, "//td[@class='text-center']/button")
+    driver.execute_script("arguments[0].click();", button)
+    alert = driver.switch_to.alert
+    alert.accept()
+    time.sleep(1)
+
+    assert 'Outcome deleted' in driver.page_source
+
+def test_bloom_levels(flask_server, driver):
+    login(driver)
+    search_unit(driver)
+    driver.find_element(By.ID, "EditLearningOutcomesButton").click()
+    WebDriverWait(driver, 10).until_not(EC.url_contains("/view/"))
+    driver.find_element(By.LINK_TEXT, "Learn more").click()
+    windows = driver.window_handles  # List of window handles (tabs)
+    driver.switch_to.window(windows[-1])
+    assert "Bloom's Taxonomy Guide" in driver.page_source
+
+def test_guideline(flask_server, driver):
+    driver.get("http://127.0.0.1:5000/")
+    driver.find_element(By.ID, "adminHelp").click()
+    WebDriverWait(driver, 10).until(EC.url_contains("/help"))
+    time.sleep(3)
+    assert 'Everything you need to know about using the Learning Outcome Builder' in driver.page_source

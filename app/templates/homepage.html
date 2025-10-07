@@ -48,7 +48,7 @@
               <p class="card-text flex-grow-1">Admins can oversee the entire system, manage accounts, configure settings, and maintain platform integrity.</p>
               <div class="d-flex justify-content-center gap-2">
                 <a href="{{url_for('auth.login_page')}}" class="btn btn-warning px-4 text-dark">Login</a>
-                <a href="{{ url_for('main.help_page') }}" class="btn btn-info">
+                <a id='adminHelp' href="{{ url_for('main.help_page') }}" class="btn btn-info">
                   <i class="bi bi-question-circle me-2"></i>Help
                 </a>
               </div>
