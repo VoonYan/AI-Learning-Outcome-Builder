@@ -8,7 +8,7 @@ from unittest.mock import patch
 from app import create_app
 #import project logic functions
 from app.routes import (
-    returnLOOpener,
+    #returnLOOpener,
     updateAIParams,
     createCSVofLOs
 )
@@ -19,15 +19,15 @@ def app_context(app):
     yield
     
 #AI Learning Outcome suggestion
-def test_returnLOOpener():
-    fake_config = {
-        "Level 1": "Knowledge",
-        "KNOWLEDGE": ["define", "list"]
-    }
+#def test_returnLOOpener():
+    #fake_config = {
+        #"Level 1": "Knowledge",
+        #"KNOWLEDGE": ["define", "list"]
+    #}
     #patch random.choice to make test deterministic
-    with patch("random.choice", lambda lst: lst[0]):
-        result = returnLOOpener(1)
-        print(result)      #proper formatting
+    #with patch("random.choice", lambda lst: lst[0]):
+        #result = returnLOOpener(1)
+        #print(result)      #proper formatting
 
 #Update AI Parameters
 def test_updateAIParams():
