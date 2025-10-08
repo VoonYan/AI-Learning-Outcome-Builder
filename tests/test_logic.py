@@ -1,33 +1,54 @@
 import pytest
 import sys 
 import os
+import random
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from unittest.mock import patch
 from app import create_app
+from app import routes
 #import project logic functions
 from app.routes import (
-    #returnLOOpener,
+    getBloomsWordList,
     updateAIParams,
     createCSVofLOs
 )
 
-@pytest.fixture
-def app_context(app):
-    """Push app context for tests that require it"""
-    yield
     
 #AI Learning Outcome suggestion
-#def test_returnLOOpener():
-    #fake_config = {
-        #"Level 1": "Knowledge",
-        #"KNOWLEDGE": ["define", "list"]
-    #}
-    #patch random.choice to make test deterministic
-    #with patch("random.choice", lambda lst: lst[0]):
-        #result = returnLOOpener(1)
-        #print(result)      #proper formatting
+def test_getBloomsWordList(monkeypatch):
+    """Ensure correct Bloom's verbs are returned for a given level."""
+    #Mock configuration structure similar to what config_manager provides
+    mock_config = {
+        "Level 1": "Knowledge",
+        "Level 2": "Comprehension",
+        "Level 3": "Application",
+        "Level 4": "Analysis",
+        "Level 5": "Synthesis",
+        "Level 6": "Evaluation",
+        "KNOWLEDGE": ["define", "list", "recall"],
+        "COMPREHENSION": ["describe", "explain"],
+        "APPLICATION": ["apply", "use"],
+        "ANALYSIS": ["analyze", "compare"],
+        "SYNTHESIS": ["create", "design"],
+        "EVALUATION": ["evaluate", "judge"],
+    }
+
+    #patch config_manager to return our fake Bloom data
+    monkeypatch.setattr(routes.config_manager, "getCurrentParams", lambda: mock_config)
+
+    #test level3
+    verbs = routes.getBloomsWordList(3)
+
+    assert isinstance(verbs, list)
+    assert "apply" in verbs
+    assert "use" in verbs
+    assert len(verbs) > 0
+
+    #optional test to mimic old behaviour
+    random_verb = random.choice(verbs)
+    assert random_verb in mock_config["APPLICATION"]
 
 #Update AI Parameters
 def test_updateAIParams():
