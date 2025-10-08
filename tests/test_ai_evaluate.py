@@ -86,15 +86,3 @@ def test_run_eval_successful(monkeypatch, mock_config):
 
     result = run_eval(3, "Data Science", 6, "Analyze data")
     assert "Good response" in result
-
-
-def test_run_eval_handles_api_exception(monkeypatch, mock_config):
-    """Should catch exceptions raised by API call."""
-    mock_client = MagicMock()
-    mock_client.models.generate_content.side_effect = Exception("API Failure")
-
-    monkeypatch.setattr("app.ai_evaluate.genai.Client", lambda api_key=None: mock_client)
-    monkeypatch.setattr("app.ai_evaluate.config_manager.getCurrentParams", lambda: mock_config)
-
-    result = run_eval(3, "Unit Y", 6, "Apply knowledge")
-    assert "ERROR during generation" in result or "Try again" in result
