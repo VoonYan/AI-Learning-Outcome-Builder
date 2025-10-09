@@ -44,7 +44,7 @@ class TestingConfig(Config):
     Testing flag enabled for test-specific behavior.
     """
     # In-memory database for isolated testing
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///memory'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
 
     # Enable testing mode
     TESTING = True
