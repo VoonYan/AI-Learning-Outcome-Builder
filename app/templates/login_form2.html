@@ -5,9 +5,11 @@
 {% block banner_subtitle %}Access your dashboard tools by logging in.{% endblock %}
 
 {% block content %}
+    <!-- Centered login card -->
     <div class="container-fluid d-flex flex-grow justify-content-center align-items-center">
         <div class="card shadow p-3 text-white bg-primary">
 
+            <!-- Flash messages (error first, then success) -->
             {% with messages = get_flashed_messages(category_filter=["error"])%}
             {% if messages%}
             {% for message in messages%}
@@ -25,29 +27,37 @@
             {%endwith%}
 
             <h3 class="mb-3 text-center">Sign In</h3><n> 
+
+            <!-- Login form (WTForms: includes CSRF via hidden_tag) -->
             <form action="{{ url_for('auth.login_page') }}" method="post" novalidate>
                 {{ form.hidden_tag() }}
                 <div>
+                    <!-- Username -->
                     <div class="mb-3">
                         {{ form.username.label(class="form-label") }}
                         {{ form.username(class="form-control", size=32) }}
                     </div>
 
+                    <!-- Password -->
                     <div class="mb-3">
                         {{ form.password.label(class="form-label") }}
                         {{ form.password(class="form-control", size=32) }}
                     </div>
 
+                    <!-- Remember me -->
                     <div class="form-check mb-3">
                         {{ form.remember_me(class="form-check-input") }}
                         {{ form.remember_me.label(class="form-check-label") }}
                     </div>
 
+                    <!-- Submit -->
                     <div class="mb-2 d-flex justify-content-center">
                         {{ form.submit(class="btn btn-warning") }}
                     </div>
                 </div>
             </form>
+
+            <!-- Link to sign up -->
             <p>Don't have an account? <a class="text-white" href="{{url_for('auth.signup_page')}}">Signup Here</a></p>
         </div>
     </div>

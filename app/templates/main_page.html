@@ -1,8 +1,20 @@
+<!--
+  Template: Main Dashboard
+  Purpose: Landing hub after login. Provides entry points to search units, create units,
+           import/export data, and admin tools. Includes user feedback (flash messages)
+           and shared modals for async operations.
+
+  Visibility rules:
+    - Unit Search: visible to all authenticated users.
+    - New Units + Data Management: admin, unit_coordinator.
+    - Admin Tools: admin only.
+-->
 {% extends "base_main.html" %}
 
 {% block title %}Main Dashboard{% endblock %}
 {% block banner_title %}Main Dashboard{% endblock %}
 {% block banner_subtitle %}
+<!-- Greeting and simple instruction -->
 <div class="text-center">
 Hello {{ username }}. Please select from one of the following:
 </div>
@@ -21,7 +33,7 @@ Hello {{ username }}. Please select from one of the following:
         {% endfor %}
       {% endif %}
     {% endwith %}
-
+    <!-- Flash Messages: error -->
     {% with messages = get_flashed_messages(category_filter=["error"]) %}
       {% if messages %}
         {% for message in messages %}
@@ -35,7 +47,7 @@ Hello {{ username }}. Please select from one of the following:
 
     <div class="row g-4">
 
-    <!-- Unit Search -->
+    <!-- Card: Unit Search (available to all authenticated users) -->
     <div class="col-12 col-lg-6 d-flex">
         <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
         <h2 class="mb-2"><strong>Unit Search</strong></h2>
@@ -44,7 +56,7 @@ Hello {{ username }}. Please select from one of the following:
         </div>
     </div>
 
-    <!-- New Units-->
+    <!-- Card: New Units (restricted to admin and unit_coordinator) -->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
     <div class="col-12 col-lg-6 d-flex">
         <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
@@ -55,14 +67,14 @@ Hello {{ username }}. Please select from one of the following:
     </div>
     {% endif %}
 
-    <!-- Data Management -->
+    <!-- Card: Data Management (restricted to admin and unit_coordinator) -->
     {% if current_user.is_authenticated and current_user.role.value in ["admin", "unit_coordinator"] %}
     <div class="col-12 col-lg-6 d-flex">
         <div class="card shadow-lg flex-fill flex-column justify-content-center align-items-center text-center p-3">
         <h2 class="mb-2"><strong>Data Management</strong></h2>
         <p>Import or Export units as a file (CSV or XLSX).</p>
         <div class="d-flex gap-2">
-            <!-- Import Button  -->
+            <!-- Import: hidden file input triggered by label button -->
             <form method="post" action="{{ url_for('main.import_units') }}"
                   enctype="multipart/form-data" class="d-inline" id="importForm">
                 <label for="importFile" class="btn mt-3 btn-warning">
@@ -71,7 +83,7 @@ Hello {{ username }}. Please select from one of the following:
                 <input type="file" id="importFile" name="import_file" class="d-none"
                        accept=".csv,.xlsx,.xls">
             </form>
-            <!-- Export Buttons -->
+            <!-- Export actions handled by data_management.js using the globals below -->
             <button class="btn mt-3 btn-warning" id="exportMyBtn">
                 Export My Units
             </button>
@@ -83,7 +95,7 @@ Hello {{ username }}. Please select from one of the following:
     </div>
     {% endif %}
 
-    <!-- Admin Tools-->
+  <!-- Card: Admin Tools (admin-only) -->
     {% if current_user.is_authenticated and current_user.role.value == "admin" %}
     <div class="col-12 col-lg-6 d-flex">
         <div class="card shadow-lg flex-fill d-flex flex-column justify-content-center align-items-center text-center p-3">
@@ -97,7 +109,7 @@ Hello {{ username }}. Please select from one of the following:
     </div>
 </div>
 
-<!-- Loading Modal with Progress -->
+<!-- Modal: Loading/progress for async tasks (blocked UI) -->
 <div class="modal fade" id="loadingModal" data-bs-backdrop="static" data-bs-keyboard="false"
      tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -109,19 +121,13 @@ Hello {{ username }}. Please select from one of the following:
                     </div>
                 </div>
                 <h5 id="loadingText">Processing...</h5>
-<!--                <div class="progress mb-3" style="height: 25px;">
-                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
-                         role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                        <span id="progressText">0%</span>
-                    </div>
-                </div>-->
                 <p class="text-muted mb-0" id="loadingSubtext">Please wait while we process your request</p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Success Modal -->
+<!-- Modal: Success feedback -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -137,7 +143,7 @@ Hello {{ username }}. Please select from one of the following:
     </div>
 </div>
 
-<!-- Error Modal -->
+<!-- Modal: Error feedback -->
 <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -160,7 +166,7 @@ Hello {{ username }}. Please select from one of the following:
     window.EXPORT_ALL_URL = "{{ url_for('main.export_all_units') }}";
 </script>
 
-<!-- Include the external JavaScript file -->
+<!-- JS: Data management handlers (import/export, modal wiring, etc.) -->
 <script src="{{ url_for('static', filename='js/data_management.js') }}"></script>
 
 {% endblock %}

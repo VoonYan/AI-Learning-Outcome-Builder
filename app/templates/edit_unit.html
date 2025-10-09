@@ -3,13 +3,24 @@
 {% block title %}Edit Unit{% endblock %}
 {% block banner_title %}Edit Unit{% endblock %}
 {% block banner_subtitle %}
+<!-- Short helper text under the banner -->
 <div class ="text-center">
 Edit information about the selected unit.
 </div>
 {% endblock %}
 
 {% block content %}
+<!--
+  Purpose:
+    Form to edit a unit’s core fields (code, name, level, credit points, description).
+
+  Notes:
+    - WTForms provides CSRF and hidden fields via form.hidden_tag().
+    - Selects (level/creditpoints) are set to the current unit values via small inline scripts.
+    - Flash messages (success/error) shown at top of the form.
+-->
 <div class="container my-5">
+    <!-- Flash messages (success/error/info) -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
@@ -20,12 +31,19 @@ Edit information about the selected unit.
         {% endfor %}
     {% endif %}
     {% endwith %}
+
     <div class="card shadow-lg rounded-3 border-0">
         <div class="card-body p-4">
+            <!-- Context header -->
             <h2 class="fw-bold text-primary mb-4">Edit Unit: {{ unit.unitname }}</h2>
+
+            <!-- Edit form (POST back to same endpoint) -->
             <form method="POST">
                 {{ form.hidden_tag() }}
+
+            
             <div>
+                <!-- Unit Code -------------------------------------------------------- -->
                 <div class="mb-3">
                     {{ form.unitcode.label(class="form-label") }}
                     {{ form.unitcode(class="form-control", size=32) }}
@@ -34,6 +52,7 @@ Edit information about the selected unit.
                     {%endfor%}
                 </div>
 
+                <!-- Unit Name --------------------------------------------------- -->
                 <div class="mb-3">
                     {{ form.unitname.label(class="form-label") }}
                     {{ form.unitname(class="form-control", size=32) }}
@@ -42,29 +61,36 @@ Edit information about the selected unit.
                     {%endfor%}
                 </div>
 
+                <!-- Level (select) --------------------------------------------------- -->
                 <div class="mb-3">
                     {{ form.level.label(class="form-label") }}
                     {{ form.level(class="form-select", id='levelSelect')}}
+                <!-- Preselect current value -->
                 <script>
                     document.getElementById('levelSelect').value = "{{unit.level}}";
                 </script>
                 </div>
 
+                <!-- Credit Points (select) ------------------------------------------- -->
                 <div class="mb-3">
                     {{ form.creditpoints.label(class="form-label")}}
                     {{ form.creditpoints(class="form-select", id='pointSelect')}}
+                <!-- Preselect current value -->
                 <script>
                     document.getElementById('pointSelect').value = "{{unit.creditpoints}}";
                 </script>
                 </div>
 
+                <!-- Description ------------------------------------------------------ -->
                 <div class="mb-3">
                     {{ form.description.label(class="form-label") }}
                     {{ form.description(class="form-control", size=32)}}
                 </div>
 
+                <!-- Actions: Save/Cancel -------------------------------------------- -->
                 <div class="mb-2 d-flex">
                     {{ form.submit(class="btn btn-warning me-2") }}
+                    <!-- Cancel: back to unit detail page without saving -->
                     <a href="{{ url_for('main.view', unit_id=unit.id) }}" class="btn btn-secondary me-2">Cancel</a>
                 </div>
             </div>

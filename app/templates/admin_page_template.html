@@ -9,10 +9,11 @@ Configure AI models, taxonomy settings, and learning outcome parameters
 {% endblock %}
 
 {% block content %}
-<!-- Main Content -->
+<!-- Main content wrapper for admin configuration -->
   <main class="flex-grow-1">
     <div class="container my-4">
 
+      {# Flash messages (success) ------------------------------------------------ #}
       {% with messages = get_flashed_messages(category_filter=["success"])%}
       {% if messages%}
       {% for message in messages%}
@@ -22,6 +23,9 @@ Configure AI models, taxonomy settings, and learning outcome parameters
       {%endfor%}
       {%endif%}
       {%endwith%}
+
+
+      {# Flash messages (error) -------------------------------------------------- #}
       {% with messages = get_flashed_messages(category_filter=["error"])%}
       {% if messages%}
       {% for message in messages%}
@@ -32,9 +36,11 @@ Configure AI models, taxonomy settings, and learning outcome parameters
       {%endif%}
       {%endwith%}
 
+      <!-- Admin settings form -->
       <form id="adminSettingsForm" action="{{ url_for('main.admin') }}" method="POST">
       {{ form.hidden_tag() }}
-        <!-- AI Configuration -->
+
+        <!-- AI Configuration: model selection + API key -->
         <section class="card border-warning border-2 shadow-sm mb-4">
           <div class="card-body">
             <h3 class="h5 text-black border-bottom border-warning pb-2 mb-4 d-flex align-items-center">
@@ -42,15 +48,18 @@ Configure AI models, taxonomy settings, and learning outcome parameters
             </h3>
 
             <div class="row g-3">
+              <!-- Model select -->
               <div class="col-md-6">
                 {{form.model.label(class="form-label")}}
                 {{form.model(class="form-select")}}
                 <div class="form-text">Select the AI model for generating learning outcomes</div>
+                <!-- Initializes selected model value -->
                 <script>
                     document.getElementById('modelSelect').value = "{{config['selected_model']}}";
                 </script>
               </div>
 
+              <!-- API key input -->
               <div class="col-md-6">
                 {{form.apikey.label(class="form-label")}}
                 {{form.apikey(class="form-control", placeholder="Enter API key...", value=config['API_key'] )}}
@@ -60,7 +69,7 @@ Configure AI models, taxonomy settings, and learning outcome parameters
           </div>
         </section>
 
-        <!-- Bloom's Taxonomy Word Lists -->
+        <!-- Bloom's Taxonomy Word Lists: 6 categories -->
         <section class="card border-warning border-2 shadow-sm mb-4">
           <div class="card-body">
             <h3 class="h5 text-black border-bottom border-warning pb-2 mb-4 d-flex align-items-center">
@@ -93,7 +102,7 @@ Configure AI models, taxonomy settings, and learning outcome parameters
         </section>
 
 
-        <!-- Banned Words -->
+        <!-- Banned Words in LOs -->
         <section class="card border-warning border-2 shadow-sm mb-4">
           <div class="card-body">
             <h3 class="h5 text-black border-bottom border-warning pb-2 mb-4 d-flex align-items-center">
@@ -108,7 +117,7 @@ Configure AI models, taxonomy settings, and learning outcome parameters
           </div>
         </section>
 
-        <!-- Unit Level Mapping -->
+        <!-- Unit Level to Taxonomy Mapping -->
         <section class="card border-warning border-2 shadow-sm mb-4">
           <div class="card-body">
             <h3 class="h5 text-black border-bottom border-warning pb-2 mb-4 d-flex align-items-center">
@@ -136,6 +145,7 @@ Configure AI models, taxonomy settings, and learning outcome parameters
             </h3>
 
             <div class="row g-3">
+              <!-- 6 CP -->
               <div class="col-md-4">
                 {{form.cp6.label(class="form-label")}}
                 {{form.cp6(class="form-control", placeholder="3-6", value=config['6 Points'])}}
@@ -144,6 +154,8 @@ Configure AI models, taxonomy settings, and learning outcome parameters
                 {%endfor%}
                 <div class="form-text">Range of learning outcomes. Must use format of [num]-[num] e.g. 3-6</div>
               </div>
+
+              <!-- 12 CP -->
               <div class="col-md-4">
                 {{form.cp12.label(class="form-label")}}
                 {{form.cp12(class="form-control", placeholder="5-9", value=config['12 Points'])}}
@@ -152,6 +164,8 @@ Configure AI models, taxonomy settings, and learning outcome parameters
                 {%endfor%}
                 <div class="form-text">Range of learning outcomes. Must use format of [num]-[num] e.g. 5-9</div>
               </div>
+
+              <!-- 24 CP -->
               <div class="col-md-4">
                 {{form.cp24.label(class="form-label")}}
                 {{form.cp24(class="form-control", placeholder="8-12", value=config['24 Points'])}}
@@ -164,7 +178,7 @@ Configure AI models, taxonomy settings, and learning outcome parameters
           </div>
         </section>
 
-        <!-- Actions -->
+        <!-- Actions: reset/undo/save -->
         <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
           <button type="button" class="btn btn-danger px-4" onclick="resetDefault()">
             <i class="bi bi-x-circle me-2"></i>Reset to Default
@@ -181,5 +195,6 @@ Configure AI models, taxonomy settings, and learning outcome parameters
     </div>
   </main>
 
+<!-- Page script: admin tools (handles reset/undo behaviors) -->
 <script src="{{ url_for('static', filename='js/admin_tools.js') }}"></script>
 {% endblock %}

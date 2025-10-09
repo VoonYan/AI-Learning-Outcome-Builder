@@ -9,16 +9,27 @@ Please enter unit details or upload a file here.
 {% endblock %}
 
 {% block content %}
+<!--
+  Template: Unit Search
+  Purpose:
+    - Let users search units by name or code.
+    - Show results with quick link to the unit detail page (/view/<id>).
+-->
 <div class="container my-5">
 
+    <!-- Search form container -->
     <div class="container my-5 text-center d-flex justify-content-center gap-3">
         
         
         <!-- Normal Search Form (GET) -->
         <form method="get" action="{{ url_for('main.search_unit') }}" class="d-inline" style="max-width: 600px; width: 100%;">
+            
+            <!-- Query + filter selector -->
             <div class="input-group input-group-lg mb-4 mx-auto rounded-pill border border-dark overflow-hidden">
+                <!-- Search query -->
                 <input type="text" name="query" class="form-control border-0" placeholder="Search" value="{{ query }}">
                 
+                <!-- Filter type -->
                 <select name="filter" class="form-select form-select-sm border-0 bg-light text-dark rounded-pill px-2"
                 style="width: 150px; flex: 0 0 auto; font-size: 0.95rem;">
                 <option value="name" {% if filter_type=='name' %}selected{% endif %}>By Unit Name</option>
@@ -26,6 +37,7 @@ Please enter unit details or upload a file here.
             </select>
         </div>
         
+        <!-- Submit -->
         <div class="d-flex justify-content-center gap-3">
             <button type="submit" class="btn btn-warning text-dark px-4" style="width:180px;">View Results</button>
         </div>
@@ -39,6 +51,7 @@ Please enter unit details or upload a file here.
 {% if results %}
 <div class="container pt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Heading reflects whether a query was provided -->
         <h4 class="fw-bold mb-0">
             {% if query %}
             RESULTS
@@ -46,14 +59,19 @@ Please enter unit details or upload a file here.
             Showing all units
             {% endif %}
         </h4>
+
+        <!-- Sort control: reloads page with ?sort=... -->
         <select class="form-select w-auto" onchange="location.href=this.value;">
             <option value="?query={{ query }}&filter={{ filter_type }}&sort=unitcode" {% if sort_by=='unitcode' %}selected{% endif %}>Sort by Unit Code</option>
             <option value="?query={{ query }}&filter={{ filter_type }}&sort=unitlevel" {% if sort_by=='unitlevel' %}selected{% endif %}>Sort by Unit Level</option>
         </select>
     </div>
+
+    <!-- Results list: each item links to the unit detail page -->
     <ul class="list-unstyled" style="max-height:300px; overflow-y:auto;">
         {% for unit in results %}
         <li class="mb-3 p-3 border rounded bg-light">
+            <!-- Unit detail link (/view/<id>) -->
             <a href="{{ url_for('main.view', unit_id=unit.id) }}"
             class="fw-bold text-dark text-decoration-none link-hover">
             {{ unit.unitname }} [{{ unit.unitcode }}]
@@ -65,11 +83,13 @@ Please enter unit details or upload a file here.
     {% endfor %}
 </ul>
 </div>
+
 {% elif query %}
+<!-- No-results message shown only if a query was submitted -->
 <p class="text-center text-muted">No results found for "{{ query }}"</p>
 {% endif %}
 
-<!-- JS for hover effect -->
+<!-- JS for hover effect: underline + color on hover for result links -->
 <script>
     document.querySelectorAll('.link-hover').forEach(link => {
         link.addEventListener('mouseenter', () => {

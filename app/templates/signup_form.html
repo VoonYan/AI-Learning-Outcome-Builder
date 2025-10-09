@@ -5,8 +5,11 @@
 {% block banner_subtitle %}Create an Account{% endblock %}
 
 {% block content %}
+    <!-- Centered sign-up card -->
     <div class="container-fluid d-flex flex-grow justify-content-center align-items-center">
         <div class="card shadow p-3 text-white bg-primary">
+            
+            <!-- Flash errors (e.g., username taken, validation issues) -->
             {% with messages = get_flashed_messages(category_filter=["error"])%}
             {% if messages%}
             {% for message in messages%}
@@ -15,9 +18,13 @@
             {%endif%}
             {%endwith%}
             <h3 class="mb-3 text-center">Sign Up</h3><n> 
-            <form action="{{ url_for('auth.signup_page') }}" method="post" novalidate>
+                  
+                <!-- Sign-up form (WTForms: CSRF via hidden_tag) -->
+                <form action="{{ url_for('auth.signup_page') }}" method="post" novalidate>
                 {{ form.hidden_tag() }}
                 <div>
+                    
+                    <!-- Username -------------------------------------------------------- -->
                     <div class="mb-3">
                         {{ form.username.label(class="form-label") }}
                         {{ form.username(class="form-control", size=32) }}
@@ -26,6 +33,7 @@
                         {%endfor%}
                     </div>
 
+                    <!-- Password -------------------------------------------------------- -->
                     <div class="mb-3">
                         {{ form.password.label(class="form-label") }}
                         {{ form.password(class="form-control", size=32) }}
@@ -34,25 +42,29 @@
                         {%endfor%}
                     </div>
 
+                    <!-- Confirm Password ------------------------------------------------ -->
                     <div class="mb-3">
                         {{ form.confirmpassword.label(class="form-label") }}
                         {{ form.confirmpassword(class="form-control", size=32) }}
                         {% for error in form.confirmpassword.errors %}
                         <div class="alert alert-danger" role="alert">{{error}}</div>
                         {%endfor%}
-
                     </div>
 
+                    <!-- User Type (role) ----------------------------------------------- -->
                     <div class="mb-3">
                         {{ form.usertype.label(class="form-label")}}
                         {{ form.usertype(class="form-select") }}
                     </div>
 
+                    <!-- Submit ---------------------------------------------------------- -->
                     <div class="mb-2 d-flex justify-content-center">
                         {{ form.submit(class="btn btn-warning") }}
                     </div>
                 </div>
             </form>
+
+            <!-- Link to login -->
             <p>Already have an account? <a class="text-white" href="{{url_for('auth.login_page')}}">Log In Here</a></p>
         </div>
     </div>

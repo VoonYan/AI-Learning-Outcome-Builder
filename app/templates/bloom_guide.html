@@ -1,19 +1,30 @@
 {% extends "base_main.html" %}
 
+{# Page title and banner text ------------------------------------------------- #}
 {% block title %}Bloom's Taxonomy Guide{% endblock %}
 {% block banner_title %}Bloom's Taxonomy Guide{% endblock %}
 {% block banner_subtitle %}
+<!-- Short context for the page under the banner -->
   <div class="text-center">
     A framework for writing measurable and effective learning outcomes
   </div>
 {% endblock %}
 
 {% block content %}
-<!-- Main Content -->
+<!--
+  Main content area:
+  - Intro to Bloom's taxonomy
+  - UWA level mapping
+  - Six levels with example outcomes and action verbs
+  - Banned words for outcomes
+  - Credit points guidance
+  - Writing tips
+  - Navigation back to dashboard/editor
+-->
 <main class="flex-grow-1">
   <div class="container my-5">
 
-    <!-- Introduction Card -->
+    <!-- Introduction Card: overview of Bloom's taxonomy -->
     <div class="card border border-2 border-warning shadow-sm mb-5">
       <div class="card-body">
         <h2 class="card-title h4 text-primary mb-3">What is Bloom's Taxonomy?</h2>
@@ -29,7 +40,7 @@
       </div>
     </div>
 
-    <!-- Level Mapping Information -->
+    <!-- UWA Level Mapping: shows how unit levels map to Bloom's categories -->
     <div class="alert alert-info mb-5" role="alert">
       <h5 class="alert-heading">
         <i class="bi bi-info-circle-fill me-2"></i>
@@ -46,12 +57,12 @@
       </ul>
     </div>
 
-    <!-- Bloom's Levels Cards -->
+    <!-- Section: the six Bloom's levels with examples and verb lists -->
     <h3 class="text-primary mb-4">The Six Levels of Bloom's Taxonomy</h3>
     
     <div class="row g-4">
       
-      <!-- 1. Knowledge -->
+      <!-- Level 1: Knowledge -->
       <div class="col-12">
         <div class="card h-100 border border-2 border-warning shadow-sm">
           <div class="card-header bg-primary text-white">
@@ -75,14 +86,14 @@
             <div class="alert alert-light border">
               <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
               <div id="knowledge-verbs" class="text-primary fw-semibold">
-                <!-- Will be populated by JavaScript -->
+                <!-- Populated by script below -->
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 2. Comprehension -->
+      <!-- Level 2: Comprehension -->
       <div class="col-12">
         <div class="card h-100 border border-2 border-warning shadow-sm">
           <div class="card-header bg-primary text-white">
@@ -106,14 +117,14 @@
             <div class="alert alert-light border">
               <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
               <div id="comprehension-verbs" class="text-primary fw-semibold">
-                <!-- Will be populated by JavaScript -->
+                <!-- Populated by script below -->
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 3. Application -->
+      <!-- Level 3: Application -->
       <div class="col-12">
         <div class="card h-100 border border-2 border-warning shadow-sm">
           <div class="card-header bg-primary text-white">
@@ -137,14 +148,14 @@
             <div class="alert alert-light border">
               <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
               <div id="application-verbs" class="text-primary fw-semibold">
-                <!-- Will be populated by JavaScript -->
+                <!-- Populated by script below -->
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 4. Analysis -->
+      <!-- Level 4: Analysis -->
       <div class="col-12">
         <div class="card h-100 border border-2 border-warning shadow-sm">
           <div class="card-header bg-primary text-white">
@@ -168,14 +179,14 @@
             <div class="alert alert-light border">
               <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
               <div id="analysis-verbs" class="text-primary fw-semibold">
-                <!-- Will be populated by JavaScript -->
+                <!-- Populated by script below -->
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 5. Synthesis -->
+      <!-- Level 5: Synthesis -->
       <div class="col-12">
         <div class="card h-100 border border-2 border-warning shadow-sm">
           <div class="card-header bg-primary text-white">
@@ -199,14 +210,14 @@
             <div class="alert alert-light border">
               <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
               <div id="synthesis-verbs" class="text-primary fw-semibold">
-                <!-- Will be populated by JavaScript -->
+                <!-- Populated by script below -->
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 6. Evaluation -->
+      <!-- Level 6: Evaluation -->
       <div class="col-12">
         <div class="card h-100 border border-2 border-warning shadow-sm">
           <div class="card-header bg-primary text-white">
@@ -230,7 +241,7 @@
             <div class="alert alert-light border">
               <h6 class="alert-heading"><i class="bi bi-pencil-square me-2"></i>Action Verbs:</h6>
               <div id="evaluation-verbs" class="text-primary fw-semibold">
-                <!-- Will be populated by JavaScript -->
+                <!-- Populated by script below -->
               </div>
             </div>
           </div>
@@ -238,7 +249,7 @@
       </div>
     </div>
 
-    <!-- Banned Words Section -->
+    <!-- Banned Words: quick reference of terms to avoid in outcomes -->
     <div class="card border border-2 border-danger shadow-sm mt-5">
       <div class="card-header bg-danger text-white">
         <h4 class="mb-0">
@@ -252,13 +263,13 @@
         </p>
         <div class="alert alert-light border-danger">
           <div id="banned-words" class="text-danger">
-            <!-- Will be populated by JavaScript -->
+            <!-- Populated by script below -->
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Credit Points Guidelines -->
+    <!-- Credit Points Guidelines: recommended LO counts by CP -->
     <div class="card border border-2 border-warning shadow-sm mt-5">
       <div class="card-header bg-warning text-dark">
         <h4 class="mb-0">
@@ -297,7 +308,7 @@
       </div>
     </div>
 
-    <!-- Tips Section -->
+    <!-- Tips: quick best-practice checklist -->
     <div class="card border border-2 border-success shadow-sm mt-5">
       <div class="card-header bg-success text-white">
         <h4 class="mb-0">
@@ -317,7 +328,7 @@
       </div>
     </div>
 
-    <!-- Back to Editor Button -->
+    <!-- Navigation: close window or return to dashboard -->
     <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
       <a href="javascript:window.close();" class="btn btn-warning text-dark px-5">
         <i class="bi bi-arrow-left me-2"></i>
@@ -334,13 +345,16 @@
   </div>
 </main>
 
-<!-- Script to populate verbs from config -->
+<!--
+  Script: populates dynamic content from Flask-provided config_json.
+  Expects keys: KNOWLEDGE, COMPREHENSION, APPLICATION, ANALYSIS, SYNTHESIS, EVALUATION, BANNED,
+                "Level 1"..."Level 6", "6 Points", "12 Points", "24 Points".
+-->
 <script>
   // Config data passed from Flask backend
   const config = {{ config_json | safe }};
 
   // Populate verb lists
-  //dude, jinja...
   document.getElementById('knowledge-verbs').textContent = config.KNOWLEDGE.join(', ');
   document.getElementById('comprehension-verbs').textContent = config.COMPREHENSION.join(', ');
   document.getElementById('application-verbs').textContent = config.APPLICATION.join(', ');
