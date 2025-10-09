@@ -2,7 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from .config import DevelopmentConfig
+from .config import DevelopmentConfig, TestingConfig
+from werkzeug.security import generate_password_hash
 import os
 from .ai_handler import ConfigManager
 
@@ -21,7 +22,11 @@ def load_user(user_id):
 
 def create_app(config=DevelopmentConfig):
     flaskApp = Flask(__name__)
-    flaskApp.config.from_object(config)
+    config_name = os.getenv("FLASK_CONFIG", "Development")
+    if config_name == 'testing':
+        flaskApp.config.from_object(TestingConfig)
+    else:
+        flaskApp.config.from_object(config)
     db.init_app(flaskApp)  
     migrate.init_app(flaskApp, db, render_as_batch=True)
     login_manager.init_app(flaskApp)
@@ -38,6 +43,30 @@ def create_app(config=DevelopmentConfig):
          with flaskApp.app_context():
             db.create_all()
             db.session.commit()
+    
+    if config_name == 'testing':
+        with flaskApp.app_context():
+            from app.models import User, Unit, UserType
+            db.create_all()
+            db.session.add(
+                User(
+                    username='admin',
+                    password_hash=generate_password_hash("password"),
+                    userType=UserType('admin').name
+                )
+            )
+            db.session.add(
+                Unit(
+                    unitcode= 'CITS3200', 
+                    unitname= 'Professional Computing', 
+                    level= 3, 
+                    creditpoints= 6, 
+                    description= 'description for testing',
+                    creatorid = 1
+                )
+            )
+            db.session.commit()
+    
             
     @flaskApp.after_request
     def add_header(response):
