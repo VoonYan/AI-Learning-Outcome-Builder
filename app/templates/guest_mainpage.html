@@ -1,5 +1,10 @@
 {% extends "base_main.html" %}
 
+<!--
+  Template: Guest Dashboard
+  Purpose: Let unauthenticated users explore by searching units and running AI evaluations
+           on visible outcomes (read-only view).
+-->
 {% block title %}Guest Dashboard{% endblock %}
 {% block banner_title %}Guest Dashboard{% endblock %}
 {% block banner_subtitle %}
@@ -12,7 +17,7 @@
 <div class="container-xl my-4">
   <div class="row g-4">
 
-    <!-- Search Units -->
+    <!-- Section: Unit search (guest-accessible) -->
     <section class="col-12">
       <div class="card p-4 border-primary border-2 rounded-4">
         <h4 class="text-primary">Search Units</h4>
@@ -23,7 +28,7 @@
       </div>
     </section>
 
-    <!-- Outcomes Table -->
+    <!-- Section: Outcomes table (read-only for guests) -->
     <section class="col-12 col-lg-8">
       <div class="bg-white rounded-4 p-3 border border-primary border-3">
         <div class="table-responsive">
@@ -51,7 +56,7 @@
       </div>
     </section>
 
-    <!-- Evaluation Panel -->
+    <!-- Section: AI evaluation panel (results are injected here) -->
     <aside class="col-12 col-lg-4">
       <div class="card bg-light rounded-4 p-4">
         <h5 class="text-primary mb-3">AI Evaluation</h5>
@@ -62,15 +67,18 @@
     </aside>
   </div>
 
-  <!-- Buttons -->
+  <!-- Actions: Evaluate current outcomes -->
   <div class="d-flex justify-content-center gap-3 mt-4">
     <button class="btn btn-warning rounded-pill px-5 py-3 fw-semibold text-dark" 
             type="button" id="evaluateBtn">Evaluate</button>
   </div>
 </div>
 
+<!-- Runtime endpoint used by the evaluation script -->
 <script>
   const AI_EVALUATE_URL = "{{ url_for('main.ai_evaluate') }}";
 </script>
+
+<!-- Page script: handles evaluate click and result rendering into #evaluationPanel -->
 <script src="{{ url_for('static', filename='create_lo.js') }}"></script>
 {% endblock %}

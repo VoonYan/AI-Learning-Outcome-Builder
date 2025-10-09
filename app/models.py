@@ -9,11 +9,11 @@ from datetime import datetime
 def load_user(id):
     return User.query.get(id)
 
+# usertype enum, potentially not needed but is useful for implementing more user types as we have in the development process
 class UserType(enum.Enum):
     ADMIN = "admin"
     UC = "unit_coordinator"
 
-#user class
 class User(UserMixin, db.Model):
     __tablename__ = "user"
 
@@ -55,8 +55,5 @@ class LearningOutcome(db.Model):
     description = db.Column(db.Text, nullable=False)
     assessment = db.Column(db.String(255), nullable=True)
     position = db.Column(db.Integer, nullable=False, default=0)
-
-    #created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    #updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     unit = db.relationship("Unit", back_populates="learning_outcomes",foreign_keys=[unit_id],)

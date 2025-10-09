@@ -1,13 +1,24 @@
 <!DOCTYPE html>
+<!--
+  Base layout (Bootstrap) used by most pages.
+  Provides: navbar, banner slots, flash messages, main content, footer.
+
+  Notes:
+    - custom_styles.css is linked from /static; ensure the file exists to avoid 404s.
+    - Flash messages auto-dismiss after 2.5s.
+-->
 <html>
 <head>
     <title>{% block title %}AI Builder{% endblock %}</title>
+    <!-- CSS: Bootstrap and site styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
           crossorigin="anonymous">
+    <!-- Custom site CSS -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom_styles.css') }}">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <!-- this is for the help page, I dont have time to deal with it not being bootstrap native -->
+        <!-- Page-scoped helper styles (help page, feature cards, etc.) -->
         <style>
         .help-nav {
             position: sticky;
@@ -34,19 +45,22 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     
-    <!-- Navbar -->
+    <!-- Navbar: brand + auth-aware links -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container-fluid px-3 px-lg-4">
+            <!-- Brand/logo -->
             <a class="navbar-brand d-flex align-items-center gap-3" href="{{url_for('main.home')}}">
                 <img src="{{ url_for('static', filename='images/logo-uwacrest-white.svg') }}" alt="UWA Logo" class="img-fluid">
                 <span class="fw-bold fs-5">Learning Outcome Builder</span>
             </a>
 
+            <!-- Mobile toggle -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+            <!-- Nav links -->
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     {% if current_user.is_authenticated %}
@@ -78,13 +92,13 @@
         </div>
     </nav>
 
-    <!-- Banner -->
+    <!-- Banner: page title/subtitle slots -->
     <section class="bg-warning d-flex flex-column justify-content-center align-items-center text-center" style="min-height: 120px;">
         <h2 class="fw-bold text-dark mb-1">{% block banner_title %}Default Title{% endblock %}</h2>
         <p class="mb-0 text-dark">{% block banner_subtitle %}Default subtitle text{% endblock %}</p>
     </section>
 
-    <!-- Flash messages -->
+    <!-- Flash messages (Bootstrap alerts). Auto-dismissed by script below -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
     <div id="flash-container" class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index:1050;">
@@ -98,7 +112,7 @@
     {% endif %}
     {% endwith %}
 
-    <!-- Page content -->
+    <!-- Main content placeholder -->
     <main class="flex-grow-1 container my-4">
         {% block content %}{% endblock %}
     </main>
@@ -109,11 +123,14 @@
     </footer>
 </div>
 
+<!-- JS: Bootstrap bundle (includes Popper) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
 
+<!-- Page scripts: auto-dismiss flash + dynamic year -->
 <script>
+    // Auto-close flash alerts after 2.5s
     setTimeout(() => {
         const alerts = document.querySelectorAll('#flash-container .alert');
         alerts.forEach(alert => {
@@ -123,6 +140,7 @@
         });
     }, 2500);
 
+    // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 
