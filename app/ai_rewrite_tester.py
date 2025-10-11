@@ -12,8 +12,8 @@ from datetime import datetime
 # Import your existing functions
 import sys
 sys.path.append('app')  # Adjust path as needed
-from .ai_evaluate import build_prompt, run_eval
-from .ai_handler import ConfigManager
+from ai_testing_evaluate import build_prompt_test, run_eval_test
+from ai_handler import ConfigManager
 
 class AIRewriteTester:
     def __init__(self, csv_path: str, api_key: str = None, config_path: str = 'app/AIConfig.json'):
@@ -246,7 +246,7 @@ class AIRewriteTester:
         for attempt in range(self.max_retries):
             try:
                 # Build prompt using existing function with ALL outcomes
-                prompt = build_prompt(level, unit_name, credit_points, outcome_texts, self.config)
+                prompt = build_prompt_test(level, unit_name, credit_points, outcome_texts, self.config)
                 
                 # Generate response
                 resp = self.client.models.generate_content(
@@ -582,8 +582,17 @@ COMPARISONS:
 
 # Main execution  
 if __name__ == "__main__":
-    CSV_PATH = "UnitsOutcomes.csv"
-    OUTPUT_PATH = f"ai_rewrite_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    import os
+
+    BASE_DIR = os.path.dirname(__file__)  # folder where the script is
+    CSV_PATH = os.path.join(BASE_DIR, 'AI Testing Files', 'Input_Files', 'UnitsOutcomes.csv')
+    OUTPUT_DIR = os.path.join(BASE_DIR, 'AI Testing Files', 'Output_Files')
+    os.makedirs(OUTPUT_DIR, exist_ok=True)  # make sure folder exists
+
+    OUTPUT_PATH = os.path.join(
+        OUTPUT_DIR,
+        f"ai_rewrite_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    )
     
     # Create tester
     tester = AIRewriteTester(
