@@ -1,0 +1,517 @@
+﻿unit id,unitcode,level,credit points,description,position,flag
+1,PHAR2220,2,6,"describe drug action at molecular, cellular, tissue and whole-body levels",1,Good
+1,PHAR2220,2,6,"describe both the effects of the drug on its target, and the effects of disease processes and other drugs on this relationship",2,Good
+1,PHAR2220,2,6,discuss ethical approaches to responsible conduct in learning and research,3,Good
+1,PHAR2220,2,6,"select, critically appraise, and communicate scientific information on a selected drug",4,Needs Revision
+1,PHAR2220,2,6,perform laboratory experiments relevant to assessing the action of drugs and their impact on pathophysiological processes,5,Good
+1,PHAR2220,2,6,work constructively in a team,6,Could Improve
+2,SCIE2100,2,6,recognise ethical issues in their fields of study or profession,1,Good
+2,SCIE2100,2,6,understand theoretical frameworks used to analyse ethical practice,2,Good
+2,SCIE2100,2,6,identify core values of ethical practice relating to their fields of study or profession,3,Good
+2,SCIE2100,2,6,demonstrate moral sensitivity to competing interests in diverse contexts,4,Needs Revision
+2,SCIE2100,2,6,engage in informed discussion and ethical reasoning to reach morally defensible decisions,5,Good
+2,SCIE2100,2,6,"communicate orally and in writing on ethical issues in a logical, organised manner that clearly and accurately conveys their thoughts, arguments, evidence, reasoning and conclusions",6,Good
+3,ECON3301,3,6,explain game theory and how to think strategically,1,Good
+3,ECON3301,3,6,identify when an understanding of strategy can enhance business practices or economic policy making,2,Needs Revision
+3,ECON3301,3,6,explain the limitations of models based upon the science of game strategy,3,Good
+4,EMPL3301,3,6,describe the core debates over the meaning of the term 'globalisation',1,Needs Revision
+4,EMPL3301,3,6,explain the relationship between globalisation and labour market and workplace restructuring,2,Good
+4,EMPL3301,3,6,identify organisations and institutions central to globalisation and their impact on work,3,Good
+4,EMPL3301,3,6,gain a critical appreciation of how globalisation reshapes the experience of work and worker identity,4,Could Improve
+4,EMPL3301,3,6,develop a critical understanding of individual and collective responses to the impact of globalisation on work,5,Good
+4,EMPL3301,3,6,"demonstrate enhanced written, oral and information literacy skills through participation in class discussions, and through the preparation of an individual essay and written responses in the final examination",6,Good
+5,EMPL3302,3,6,nan,1,Could Improve
+6,MGMT3302,3,6,apply several leadership theories and perspectives,1,Could Improve
+6,MGMT3302,3,6,prescribe change management strategies for organisations,2,Needs Revision
+6,MGMT3302,3,6,"recognise their personal values, emotional intelligence and leadership style, and develop an action plan to improve their leadership potential",3,Good
+6,MGMT3302,3,6,demonstrate an understanding of their communication competence as a leader and know how to improve their communication capability,4,Good
+6,MGMT3302,3,6,analyse their own leadership development needs,5,Needs Revision
+7,MGMT3335,3,6,identify and analyse business information requirements,1,Needs Revision
+7,MGMT3335,3,6,conduct a feasibility analysis for ERP acquisition and make a justified recommendation,2,Good
+7,MGMT3335,3,6,prepare and use various information gathering techniques for eliciting user requirements and system expectations,3,Needs Revision
+7,MGMT3335,3,6,identify and describe the essential functionality of ERP software,4,Good
+7,MGMT3335,3,6,use formal process modelling techniques to map business processes,5,Good
+7,MGMT3335,3,6,efficiently navigate and access information in an ERP system,6,Good
+7,MGMT3335,3,6,assess the potential impacts of ERP implementations,7,Good
+7,MGMT3335,3,6,develop teamwork skills,8,Could Improve
+8,MGMT3304,3,6,identify the key contextual issues affecting the formulation and implementation of an international business venture,1,Good
+8,MGMT3304,3,6,"conceptualise, formulate and articulate (in both verbal and written form) appropriate responses to specific international business issues",2,Needs Revision
+8,MGMT3304,3,6,"identify and utilise resources to develop an international business venture which includes personnel, financial, technological and other appropriate resources",3,Good
+8,MGMT3304,3,6,demonstrate the ability to work collaboratively with others,4,Needs Revision
+8,MGMT3304,3,6,demonstrate appreciation of ethical and cultural diversity,5,Good
+8,MGMT3304,3,6,"develop critical thinking, analytical as well as interpersonal, oral and written communication skills and teamwork skills",6,Needs Revision
+9,MKTG3301,3,6,demonstrate knowledge and skills in marketing through study and research-based enquiry,1,Good
+9,MKTG3301,3,6,"produce clear, specific, effective and succinct professional marketing communications",2,Good
+9,MKTG3301,3,6,develop skills to complete individual tasks contributing towards a team-based project,3,Good
+9,MKTG3301,3,6,demonstrate self-management and independent learning skills,4,Needs Revision
+9,MKTG3301,3,6,demonstrate personal awareness of the ethical issues of marketing,5,Good
+10,IMED2200,2,6,describe what it means to be mentally healthy in today's world.,1,Needs Revision
+10,IMED2200,2,6,discuss factors that impact on mental health and wellbeing.,2,Good
+10,IMED2200,2,6,analyse the reltionships between factors that impact on mental health and wellbeing.,3,Good
+10,IMED2200,2,6,discuss how positive psychology promotes mental health and wellbeing.,4,Good
+10,IMED2200,2,6,examine how stigma impacts on the lives of people with a mental illness.,5,Good
+10,IMED2200,2,6,"analyse strategies that promote mental health and wellbeing at an individual, family and societal level",6,Good
+10,IMED2200,2,6,discuss strategies for effective advocacy in the field of mental health.,7,Good
+11,PSYC1101,1,6,"explain the nature of some important psychological processes, how they are measured, and their relation to brain function",1,Needs Revision
+11,PSYC1101,1,6,identify the basic principles of psychological measurement and experimental design,2,Good
+11,PSYC1101,1,6,describe data relevant to psychological questions and draw appropriate inferences from such data,3,Good
+11,PSYC1101,1,6,write research reports relevant to psychological issues in the format appropriate for psychological science (American Psychological Association style),4,Good
+11,PSYC1101,1,6,discuss and use the language of psychology appropriately,5,Could Improve
+12,NEUR3301,3,6,recall and integrate key knowledge and concepts about (a) structure and function of neurons and glia; (b) synaptic physiology including plasticity; (c) peripheral sensory transduction and central aspects of sensory processing in normal and pathological states; (d) higher cognitive and motor functions in normal and pathological states; (e) growth and development of the nervous system; (f) responses of the nervous system to injury; and (g) cellular and technological strategies for repair of nervous systems,1,Needs Revision
+12,NEUR3301,3,6,research a chosen neuroscience topic in depth and deliver a seminar on that topic,2,Good
+13,NEUR3302,3,6,"describe and explain in vitro and in vivo electrophysiological recording from single cells, animal and human nervous systems",1,Good
+13,NEUR3302,3,6,describe and explain tissue culture and immuno-labelling techniques,2,Good
+13,NEUR3302,3,6,describe and explain accurate counting of neuron numbers,3,Needs Revision
+13,NEUR3302,3,6,perform a comprehensive literature search of a chosen neuroscience topic and clearly report the results in writing,4,Good
+13,NEUR3302,3,6,verbally report on and critically appraise the contents of recent research articles,5,Needs Revision
+13,NEUR3302,3,6,summarise the contents of a previously unseen research article,6,Could Improve
+14,PHYL2001,2,6,recall and integrate key knowledge and concepts about (a) control of body processes by the autonomic nervous system and endocrine system; (b) function and control of the cardiovascular system; (c) function and control of the respiratory system for gas exchange; (d) body fluid and electrolyte composition and its control; and (e) gastrointestinal functions and reproduction,1,Needs Revision
+14,PHYL2001,2,6,obtain skills in (a) the design of simple scientific experiments; (b) taking accurate measurements of experimental variables; (c) data analysis and interpretation of results; (d) measuring body function using classical physiology techniques and modern computer techniques; (e) communicating in writing the results of laboratory work; (f) oral communication via tutorial presentations; and (g) teamwork and working in small groups,2,Needs Revision
+15,PHYL2002,2,6,"recall and integrate key knowledge and concepts about membrane transport and function of epithelia, nerve cell function, cellular basis of sensation, and cellular basis of movement",1,Needs Revision
+15,PHYL2002,2,6,"acquire skills in dissection and handling materials for experimentation,",2,Could Improve
+15,PHYL2002,2,6,"use instrumentation for physiological experimentation and measurement, data recording and analysis including simple use of a spreadsheet, and simple statistical tests",3,Good
+15,PHYL2002,2,6,document experience gained from laboratory work and reading and write clearly in correct scientific style and format,4,Good
+15,PHYL2002,2,6,work effectively as a team member to explore and present a topic,5,Needs Revision
+16,ECON1101,1,6,"explain, demonstrate and apply various economic models to real life situations",1,Needs Revision
+16,ECON1101,1,6,demonstrate the ability to produce clear and concise written and oral communication in an economic context to a variety of audiences,2,Good
+16,ECON1101,1,6,conduct an economic analysis of policy in a realistic and current context,3,Good
+16,ECON1101,1,6,"recognise, understand and respond appropriately to ethical, cultural, social and sustainability issues",4,Good
+17,ECON1102,1,6,"describe the operation of the Australian economy and the causes and effects of economic growth, inflation, unemployment and government policy",1,Good
+17,ECON1102,1,6,develop the ability to analyse how foreign political and economic events affect the Australian economy,2,Needs Revision
+17,ECON1102,1,6,critically evaluate the financial press as it relates to the macro economy,3,Good
+17,ECON1102,1,6,assess how government policies and changing macroeconomic conditions affect their own welfare,4,Good
+17,ECON1102,1,6,reflect on recent economic history and its impact on current policy initiatives,5,Good
+18,ECON2233,2,6,identify the fundamental economic forces driving seemingly complex behaviour of micro-entities.,1,Good
+18,ECON2233,2,6,apply the supply-and-demand model to analyze the likely outcomes of changes in public policies.,2,Good
+18,ECON2233,2,6,effectively communicate economic issues.,3,Could Improve
+18,ECON2233,2,6,understand and apply concepts of game theory when analyzing strategic interaction between entities.,4,Needs Revision
+19,ECON2234,2,6,explain how equilibrium is determined in the goods and financial markets in a closed economy,1,Good
+19,ECON2234,2,6,"demonstrate an understanding of various macroeconomic models for analysing issues such as unemployment, inflation, growth and open economy",2,Good
+20,ECON2271,2,6,demonstrate an understanding of the concept of ordinary least squares regression and its underlying assumptions,1,Good
+20,ECON2271,2,6,conduct regression analysis with common nonlinear specifications,2,Needs Revision
+20,ECON2271,2,6,"conduct multivariate regression analysis, working with explanatory variables which are continuous, ordinal, nominal and binary",3,Needs Revision
+20,ECON2271,2,6,conduct analysis of limited and discrete dependent variables,4,Needs Revision
+20,ECON2271,2,6,"demonstrate an understanding of the difference between cross-sectional, time-series and panel data regression",5,Good
+20,ECON2271,2,6,"appreciate the importance of data quality, fundamentals of sound research design, and the limitations of commonly applied econometric techniques",6,Needs Revision
+21,ECON3310,3,6,identify and discuss the major themes of economic thought,1,Good
+21,ECON3310,3,6,demonstrate an understanding of distinctive phases in the evolution of economic thought,2,Good
+21,ECON3310,3,6,gain an understanding of the origins of modern economic thought,3,Good
+22,ECON3350,3,6,"explain the operation of modern financial markets and their regulation, including the behaviour of the markets for a variety of financial instruments",1,Good
+22,ECON3350,3,6,identify recent trends in financial markets and their causes and effects,2,Good
+22,ECON3350,3,6,analyse institutional and regulatory changes in financial markets and the conduct of monetary policy since the global financial crisis in 2008,3,Needs Revision
+22,ECON3350,3,6,analyse the operation of financial markets and financial intermediaries and their effect on the economy,4,Good
+23,ECON3371,3,6,demonstrate an understanding of a range of statistical tools required to undertake applied economic research,1,Good
+23,ECON3371,3,6,develop computational skills to analyse economic data,2,Good
+23,ECON3371,3,6,critically evaluate empirical economic research,3,Good
+24,ECON3372,3,6,acquire further mathematical tools that are useful in modern quantitative economics and econometrics,1,Needs Revision
+25,ECON1111,1,6,solve unknowns in equations representing business activities and economic concepts,1,Needs Revision
+25,ECON1111,1,6,determine the behaviour of linear and nonlinear functions using algebra and calculus techniques,2,Good
+25,ECON1111,1,6,work with discrete and continuous compound growth models to calculate the value of financial assets at different points in time,3,Good
+25,ECON1111,1,6,"understand the concepts of events and of discrete random variables, and basic properties of probabilities",4,Good
+26,ECON2105,2,6,explain the issues surrounding globalisation with respect to international trade,1,Good
+26,ECON2105,2,6,explain the issues surrounding globalisation with respect to the international flow of capital and labour (migration),2,Good
+26,ECON2105,2,6,critically evaluate the causes and consequences of major global economic crises over the past century,3,Needs Revision
+26,ECON2105,2,6,"critically assess the political and institutional issues surrounding globalisation, from both a domestic and international standpoint",4,Needs Revision
+27,ECON3203,3,6,understand the factors affecting economic growth in selected Asian economies,1,Needs Revision
+27,ECON3203,3,6,explain the nature of and reasons for the dynamism of selected Asian economies since 1960,2,Good
+27,ECON3203,3,6,understand concepts of foreign direct investment and regional integration,3,Good
+27,ECON3203,3,6,evaluate the possibility of integration of selected Asian economies,4,Needs Revision
+27,ECON3203,3,6,examine the impact of economic growth on the environment,5,Could Improve
+27,ECON3203,3,6,evaluate Australia’s position in Asia,6,Could Improve
+28,ECON3210,3,6,explain the workings of financial markets and how they interact with the macro-economy,1,Good
+28,ECON3210,3,6,compare and critically discuss the diverse approaches to the theory of monetary economics,2,Good
+28,ECON3210,3,6,outline the roles of central banks in the economy,3,Needs Revision
+28,ECON3210,3,6,discuss the relationship between monetary theory and monetary policy,4,Good
+28,ECON3210,3,6,"explain the advantages and disadvantages of debts, deficits and financial crises",5,Good
+29,ECON3220,3,6,develop an understanding of the economic problems of development,1,Good
+29,ECON3220,3,6,apply the basic principles of macro and micro economics to issues relating to developing countries,2,Good
+29,ECON3220,3,6,critically evaluate relevant development issues,3,Could Improve
+30,ECON3235,3,6,demonstrate how economic concepts can be applied to understand the complex issues associated with international trade,1,Good
+30,ECON3235,3,6,"understand the roles of exports and imports, international market interactions and market shocks in global trade",2,Good
+30,ECON3235,3,6,critically examine media reporting on issues relating to international trade,3,Could Improve
+30,ECON3235,3,6,explain how models can help understand complex economic relations,4,Could Improve
+31,ECON3236,3,6,explain the national income and balance of payments accounts,1,Good
+31,ECON3236,3,6,"explain the foreign exchange (FX) market and the concepts of nominal, real, spot, and forward exchange rates",2,Good
+31,ECON3236,3,6,explain the money market and the theory of money demand and money supply,3,Good
+31,ECON3236,3,6,explain the theories of exchange-rate determination,4,Good
+31,ECON3236,3,6,explain the role of monetary and fiscal policy in floating and fixed exchange rate regimes,5,Good
+32,ECON3272,3,6,"explain key concepts in mathematics, including the method of deductive reasoning and the concept of a mathematical proof",1,Good
+32,ECON3272,3,6,use mathematical tools for economic analysis and in economic modelling,2,Good
+32,ECON3272,3,6,identify and utilise software to solve problems numerically,3,Good
+32,ECON3272,3,6,engage in teamwork to solve mathematical problems with an economic application,4,Good
+33,ECON3395,3,6,demonstrate understanding of the rationale for government intervention in a market economy and critically discuss the corresponding (dis)advantages,1,Good
+33,ECON3395,3,6,"demonstrate understanding of the broad implications of government policies in the main areas of public policy (education, healthcare, environment, poverty and inequality, and military)",2,Good
+33,ECON3395,3,6,articulate a range of policy options based on an understanding of welfare economics and the role of government in a market economy,3,Needs Revision
+33,ECON3395,3,6,demonstrate understanding of the most effective scientific methods to understand the roots of prevalent public policy concerns,4,Good
+34,PHAR2210,2,6,describe the processes that regulate the fate of drugs in the body and the influence of these processes on drug response,1,Good
+34,PHAR2210,2,6,"describe the actions of drugs at the molecular, cellular and tissue levels, discriminating between the actions of agonists and antagonists",2,Good
+34,PHAR2210,2,6,"relate therapeutic effects and unwanted adverse effects to drug action, being able to describe the mechanisms underlying drug-induced toxicities and the relevance of genetic polymorphism to drug response",3,Good
+34,PHAR2210,2,6,"select, critically appraise, and communicate scientific information on a topic related to pharmacology",4,Needs Revision
+34,PHAR2210,2,6,perform laboratory experiments relevant to assessing the action of drugs,5,Needs Revision
+35,ABUS2290,2,6,"identify the essential characteristics of the major business traditions in the region (Japanese, Korean, overseas Chinese, mainland Chinese, Indian and Western)",1,Good
+35,ABUS2290,2,6,"have a clear understanding of the historical forces (society, culture, politics) shaping these traditions",2,Good
+35,ABUS2290,2,6,comprehend how free trade and the market ideology of neo-liberal globalisation impacts on these traditions,3,Good
+35,ABUS2290,2,6,recognise the remarkable transformations in the roles of India and China in the restructuring of the global economy,4,Good
+35,ABUS2290,2,6,respond with the appropriate degree of sensitivity to these traditions should they be engaged in such business dealings in the future,5,Could Improve
+36,HRMT2237,2,6,identify and analyse concepts and techniques in Human Resource Management (HRM),1,Good
+36,HRMT2237,2,6,"explain the importance, purpose and objectives of HRM",2,Good
+36,HRMT2237,2,6,demonstrate awareness of the internal and external factors that influence the conduct of HRM in organisations,3,Good
+36,HRMT2237,2,6,describe and analyse current issues and trends in HRM,4,Good
+36,HRMT2237,2,6,apply their learning about HRM concepts to practical contexts and issues,5,Needs Revision
+36,HRMT2237,2,6,"critically analyse information about HRM from the library, the web and other sources of information",6,Good
+37,HRMT3344,3,6,describe 'best practice' and 'best fit' HR strategies and how they affect an organisation's staffing policy and practices,1,Needs Revision
+37,HRMT3344,3,6,explain how aspects of an employee's job affects that person and the organisation,2,Good
+37,HRMT3344,3,6,compare and contrast the appropriateness of commonly used recruitment tools and techniques for selection and placement decisions,3,Good
+37,HRMT3344,3,6,describe different forms of performance measurement that can be used to validate selection systems and motivate performance,4,Good
+37,HRMT3344,3,6,list and compare major strategies for retaining talented staff,5,Needs Revision
+37,HRMT3344,3,6,develop written communication skills in explaining well-researched staffing principles,6,Could Improve
+38,HRMT3345,3,6,"demonstrate understanding and knowledge regarding a range of human resource management (HRM) topics (e.g. high performance work systems, training and development, performance appraisal)",1,Good
+38,HRMT3345,3,6,"demonstrate understanding and knowledge regarding a range of individual difference factors that are relevant to the design and evaluation of HRM interventions (e.g. work attitudes, motivation and emotions)",2,Good
+38,HRMT3345,3,6,demonstrate the ability to conduct and write a literature review regarding a specific HRM issue that draws on theoretical and empirical research,3,Good
+38,HRMT3345,3,6,demonstrate the ability to write a project proposal or report,4,Needs Revision
+39,INMT2232,2,6,demonstrate understanding of project management knowledge areas,1,Good
+39,INMT2232,2,6,"apply project management skills, tools and techniques in a realistic setting, including the 'hard' project management activities and the 'soft' project management activities",2,Good
+39,INMT2232,2,6,make use of standard project management software,3,Good
+39,INMT2232,2,6,communicate a project plan by way of an oral presentation and written report,4,Good
+39,INMT2232,2,6,assess the worth of project management as a tool for implementing decisions,5,Good
+40,EMPL1101,1,6,express the contextual factors that contribute to employment relations,1,Good
+40,EMPL1101,1,6,identify the key actors in the employment relationship and describe their roles,2,Good
+40,EMPL1101,1,6,explain cooperation or conflict in the workplace,3,Good
+40,EMPL1101,1,6,describe the significance of employment relations and work to society and economy,4,Needs Revision
+41,MGMT1135,1,6,explain organisational behaviour theories and concepts across cultures and nations,1,Needs Revision
+41,MGMT1135,1,6,describe the importance of an evidence-based approach to management and organisational behaviour,2,Good
+41,MGMT1135,1,6,"interpret organisational problems in terms of individual, interpersonal and group processes",3,Good
+41,MGMT1135,1,6,analyse organisational problems using a number of established theoretical frameworks,4,Needs Revision
+41,MGMT1135,1,6,create solutions to managerial problems through the application of well-researched organisational behaviour principles,5,Good
+41,MGMT1135,1,6,develop oral and written communication skills,6,Could Improve
+42,MGMT1136,1,6,"contrast and compare theories of management and organisations, demonstrating an understanding of their historical development",1,Good
+42,MGMT1136,1,6,identify the key factors in the organisation's external and internal environment that impact on how managers and organisations work,2,Good
+42,MGMT1136,1,6,"demonstrate an awareness of ethics, social responsibility and sustainability when managing people and organisations",3,Good
+42,MGMT1136,1,6,"detail the major management functions and skills, including communication, human resources and motivation skills, and roles in relation to the management of people in organisations",4,Good
+42,MGMT1136,1,6,describe the process by which change is introduced into organisations and how innovation can be fostered,5,Good
+42,MGMT1136,1,6,"locate, utilise and reference a range of information sources proficiently",6,Good
+43,MGMT3342,3,6,develop an understanding of the entrepreneurial process through exposure to theoretical concepts and current developments in the field,1,Good
+43,MGMT3342,3,6,"examine the knowledge, qualities and skills needed to become a successful entrepreneur",2,Good
+43,MGMT3342,3,6,identify and evaluate strategies that drive entrepreneurial performance and growth,3,Needs Revision
+43,MGMT3342,3,6,produce an appropriate business plan for a new entrepreneurial venture or critically analyse an existing business model with a view of enhancing its future potential,4,Good
+44,MGMT3346,3,6,"recognise the issues, problems and opportunities arising from organisational change",1,Good
+44,MGMT3346,3,6,"demonstrate an understanding of various change theories, models and frameworks, their relevant foundations and strengths and weaknesses",2,Good
+44,MGMT3346,3,6,understand the skills and abilities required to be an effective change facilitator,3,Needs Revision
+44,MGMT3346,3,6,develop reflective and evaluative skills as change facilitators,4,Could Improve
+44,MGMT3346,3,6,apply change models and concepts and research skills to real-life organisational change in a case study,5,Good
+44,MGMT3346,3,6,identify the abilities and skills required to effectively facilitate innovation,6,Needs Revision
+45,MGMT3347,3,6,explain the strategic management process through exposure to theoretical concepts and current developments in the field,1,Good
+45,MGMT3347,3,6,"develop an appreciation of the organisation as an integrated system through extensive case analysis, encompassing a variety of concepts and theories covered in the class",2,Good
+45,MGMT3347,3,6,"apply the unit's theories, frameworks and tools to identify key challenges, opportunities and solutions to organisational problems",3,Good
+45,MGMT3347,3,6,apply critical thinking and analysis to make informed recommendations for the organisation's sustainable performance,4,Good
+46,ABUS3204,3,6,develop a familiarity and a critical understanding of core concepts used in analysing the business context and management practices in the Asian region,1,Good
+46,ABUS3204,3,6,develop an informed understanding of contextual factors that affect management practices in the Asian region,2,Good
+46,ABUS3204,3,6,become cognisant of strategies and resources that assist in managing the interaction between the context framing business operations in the Asian region and the management strategies that have been developed to deal with these,3,Good
+46,ABUS3204,3,6,understand the significance of management practices in facilitating effective international business activity in the region,4,Good
+46,ABUS3204,3,6,engage in comparative analysis of business traditions and business practices in the Asian region,5,Good
+46,ABUS3204,3,6,"apply all of the above in critical thinking exercises including case study analyses, small group and teamwork",6,Good
+46,ABUS3204,3,6,"develop interpersonal, oral and written communication skills, as well as teamwork skills",7,Needs Revision
+47,INMT3231,3,6,develop decision strategies that are based on sound methodology,1,Needs Revision
+47,INMT3231,3,6,examine the uses and limitations of decision techniques that managers can use in uncertain situations,2,Good
+47,INMT3231,3,6,communicate decision analysis to stakeholders,3,Needs Revision
+47,INMT3231,3,6,structure uncertainties and risk using probability theory,4,Good
+47,INMT3231,3,6,employ a Bayesian approach to using information for decision making,5,Good
+47,INMT3231,3,6,use probability measures for policy evaluation and policy creation,6,Good
+48,INMT3234,3,6,"demonstrate business quality communication, presentation and team skills",1,Needs Revision
+48,INMT3234,3,6,know the theory of database design sufficiently to create a small user developed system,2,Needs Revision
+48,INMT3234,3,6,learn independently how to use a new piece of desktop software,3,Needs Revision
+48,INMT3234,3,6,understand the relationship between business strategy and information systems strategy and apply these to real situations,4,Good
+48,INMT3234,3,6,"know about issues and approaches for managing information, knowledge and information technology as strategic resources including techniques and approaches to planning and managing IT infrastructure; people management skills for IT professionals and business professionals; evolution of systems development practices in the e-Business and knowledge management eras; ethical issues special to IS and IT; funding models for IT and IS; and project management for IS/IT development",5,Needs Revision
+49,EMPL2202,2,6,"explain the major philosophical, regulatory and institutional changes that have occurred in Australian employment relations",1,Good
+49,EMPL2202,2,6,describe key social and economic factors that have contributed to these changes,2,Good
+49,EMPL2202,2,6,explain the role of the key actors and their relationships in the Australian employment relations system,3,Good
+49,EMPL2202,2,6,demonstrate writing skills and oral communication skills,4,Needs Revision
+49,EMPL2202,2,6,demonstrate information literacy,5,Needs Revision
+50,CITS1001,1,6,interpret the behaviour of simple Java programs,1,Needs Revision
+50,CITS1001,1,6,implement Java classes from specifications,2,Good
+50,CITS1001,1,6,understand and apply the object-oriented principles of information hiding and program by contract,3,Good
+50,CITS1001,1,6,"make effective use of software development tools to write, test, debug and document Java programs",4,Good
+50,CITS1001,1,6,use a software engineering process to develop small Java programs,5,Good
+50,CITS1001,1,6,"critique the quality of Java programs using criteria such as readability, encapsulation, cohesion and coupling",6,Good
+51,CITS1002,1,6,nan,1,Could Improve
+52,EMPL1206,1,6,explain how multiple identities emerge and develop in the workplace and how we negotiate those identities,1,Good
+52,EMPL1206,1,6,demonstrate an understanding of both inter-individual and inter-group relations and how they impact on social relations at work,2,Good
+52,EMPL1206,1,6,"explain the role of stereotypes, prejudice and discrimination, and how they relate to workplace conflict and co-operation",3,Needs Revision
+52,EMPL1206,1,6,demonstrate oral communication skills through the presentation of ideas to the class,4,Good
+52,EMPL1206,1,6,"evidence research design skills aimed at collecting, analysing, interpreting and reporting data",5,Needs Revision
+53,PHYS5405,5,6,understand basic concepts of radiation physics including the properties of ionising and non-ionising radiation,1,Needs Revision
+53,PHYS5405,5,6,discuss biological and health effects of radiation,2,Good
+53,PHYS5405,5,6,use appropriate units to quantify radiation exposure,3,Could Improve
+53,PHYS5405,5,6,discuss sources of natural and artificial radiation,4,Good
+53,PHYS5405,5,6,describe the principles underlying risk reduction and procedures to minimise risk of exposure,5,Needs Revision
+53,PHYS5405,5,6,discuss legislation regarding protection and safety,6,Good
+53,PHYS5405,5,6,perform basic procedures that involve use and monitoring of radiation,7,Needs Revision
+53,PHYS5405,5,6,describe approaches for monitoring of staff and work areas,8,Needs Revision
+54,CITS2200,2,6,undertake problem identification via abstraction,1,Could Improve
+54,CITS2200,2,6,describe common and important data structures and algorithms in the computing discipline,2,Good
+54,CITS2200,2,6,implement a range of data structures and information literacy algorithms in a high-level programming language,3,Good
+54,CITS2200,2,6,apply existing data structures and algorithms from pre-built software libraries,4,Good
+54,CITS2200,2,6,design data structures and algorithms,5,Good
+54,CITS2200,2,6,critically assess the performance of different data structures and algorithms,6,Good
+55,CITS2232,2,6,nan,1,Could Improve
+56,CITS3002,3,6,"demonstrate an understanding of the basic physical operation of networks, including the concepts of data encoding and error detection and recovery;",1,Needs Revision
+56,CITS3002,3,6,"explain the design motivation for, and operation of, contemporary wide-area, local-area and wireless networking technologies;",2,Good
+56,CITS3002,3,6,"understand the TCP/IP protocol stack, and its support for client/server and peer-to-peer networking models;",3,Good
+56,CITS3002,3,6,apply industry standard networking programming interfaces from within procedural and object-oriented programming languages;,4,Good
+56,CITS3002,3,6,develop distributed applications for heterogeneous computer systems; and,5,Good
+56,CITS3002,3,6,understand the security and privacy factors raised by contemporary networks and their applications.,6,Good
+57,CITS3003,3,6,demonstrate technical competence in three-dimensional graphics,1,Good
+57,CITS3003,3,6,"apply basic knowledge of graphics systems, graphical techniques and rendering",2,Good
+57,CITS3003,3,6,develop graphics applications using the OpenGL API and the C programming language,3,Good
+57,CITS3003,3,6,"identify, formulate and create three-dimensional virtual worlds and interactively manipulate these virtual worlds",4,Needs Revision
+57,CITS3003,3,6,"advance into areas involving graphics and spatial computation, such as games programming, computer vision and scientific visualisation",5,Needs Revision
+58,EMPL3208,3,6,"understand current developments in the management of workplace diversity, and differentiate between diversity, equality and inclusion",1,Good
+58,EMPL3208,3,6,relate diversity issues to sociological and psychological theories of work and organisations,2,Good
+58,EMPL3208,3,6,identify and analyse the effectiveness of management strategies that promote workplace diversity and inclusion,3,Needs Revision
+58,EMPL3208,3,6,"articulate why diversity, equality and inclusion are important for organisational performance and culture",4,Good
+58,EMPL3208,3,6,"develop interpersonal communication skills, openness, and understanding of the importance of listening to different views and opinions",5,Good
+59,PSYC2217,2,6,explain the importance of the scientific method in advancing psychological knowledge,1,Good
+59,PSYC2217,2,6,describe the neural bases of selected psychological processes,2,Good
+59,PSYC2217,2,6,describe and use research tools for studying brain function relevant to psychology,3,Good
+59,PSYC2217,2,6,identify the effect of brain damage on psychological processes and how to measure that effect,4,Good
+59,PSYC2217,2,6,critically evaluate cognitive neuroscience research,5,Needs Revision
+59,PSYC2217,2,6,present written and oral summaries of scientific research,6,Good
+60,BIOL5???,5,6,demonstrate advanced data analysis skills including accessing remote databases,1,Good
+60,BIOL5???,5,6,apply skills in version control and collaborative data analytics,2,Good
+60,BIOL5???,5,6,construct a written report of publishable standard,3,Good
+61,PATH2220,2,6,describe the aetiology and pathological processes involved in the initiation of major human diseases,1,Good
+61,PATH2220,2,6,outline the clinical signs and symptoms that are associated with major human diseases,2,Good
+61,PATH2220,2,6,interpret clinical and laboratory data used in diagnosing and monitoring treatment of major human diseases,3,Good
+61,PATH2220,2,6,"apply skills in the synthesis, critique and presentation of selected clinical and laboratory data associated with major human diseases
+",4,Good
+62,EMPL3241,3,6,demonstrate a critical understanding of core concepts in the scholarly literature on international and comparative employment relations,1,Good
+62,EMPL3241,3,6,"demonstrate an informed understanding of broad patterns of employment relations parties, practices, and institutions, in a number of key countries",2,Good
+62,EMPL3241,3,6,demonstrate the ability to engage in comparative analysis,3,Good
+62,EMPL3241,3,6,critically reflect on learning experiences and the application of new knowledge to various topical issues relevant to international employment relations,4,Good
+62,EMPL3241,3,6,"demonstrate advanced research, essay and report writing, and verbal presentation skills",5,Needs Revision
+62,EMPL3241,3,6,"apply ethical and cultural awareness in an international context, and an understanding of comparative institutional development, to relevant lecture content, discussions in seminars, and assigned readings",6,Good
+63,EMPL3270,3,6,develop an informed and critical understanding of negotiation and conflict management processes,1,Good
+63,EMPL3270,3,6,"develop improved negotiation skills, knowledge of negotiation theory, and the ability to reflect on the actual practice of negotiation",2,Needs Revision
+63,EMPL3270,3,6,work in teams in order to develop an original case study and then to apply and test relevant concepts from the academic literature on negotiation and conflict management,3,Good
+63,EMPL3270,3,6,develop interactive and cooperative negotiation skills,4,Could Improve
+63,EMPL3270,3,6,improve research skills,5,Could Improve
+63,EMPL3270,3,6,develop effective presentation and report writing skills,6,Could Improve
+64,MGMT2311,2,6,"describe and discuss theories, concepts and models of organisational learning and innovation pertaining to firms in knowledge-intensive industries",1,Good
+64,MGMT2311,2,6,describe and discuss key processes and mechanisms that organisations need to develop in order to build learning and innovation capabilities to achieve long-term competitive advantage,2,Good
+64,MGMT2311,2,6,"discuss the role of leadership, organisational structure and processes in facilitating organisational learning and innovation",3,Good
+64,MGMT2311,2,6,explain and identify the potential issues and problems that managers and leaders encounter in the effective management of organisational learning and innovation,4,Good
+64,MGMT2311,2,6,demonstrate an understanding of the unit's content through its application to solving problems in real-life case studies,5,Good
+65,ECON3302,3,6,understand and apply the principles of microeconomics to microeconomic policy issues,1,Good
+65,ECON3302,3,6,critically evaluate and communicate understanding of these principles,2,Good
+65,ECON3302,3,6,develop an ability to present and develop ideas and critical thinking,3,Good
+65,ECON3302,3,6,critically reflect on the ability to present and develop ideas,4,Needs Revision
+66,PSYC1102,1,6,describe and distinguish the major psychological constructs and phenomena relevant to the areas of psychology covered in the unit,1,Good
+66,PSYC1102,1,6,identify and apply the basic principles of a correlational research design and how to interpret correlations,2,Needs Revision
+66,PSYC1102,1,6,interpret data relevant to psychological questions and write a research report in the appropriate format for psychological science,3,Good
+66,PSYC1102,1,6,express the language of psychology appropriately,4,Needs Revision
+67,ECON3303,3,6,identify the key issues in recent macroeconomic policy,1,Needs Revision
+67,ECON3303,3,6,identify the theory needed to analyse these issues and then learn how to conduct analysis using very standard and intuitive macroeconomic models,2,Good
+67,ECON3303,3,6,"demonstrate the ability to apply, analyse, synthesise and evaluate information from multiple sources to assess issues in macroeconomics that are relevant to both the private and public sectors",3,Good
+68,ENSC1001,1,6,"demonstrate improved communication skills including accurate, active listening (note taking, acquiring language and terminology of the speaker), seeing (sketching, visual representation), reading and comprehension skills, oral and written presentation skills, the ability to clearly and concisely communicate the results of a project, and learn how to learn and teach others",1,Good
+68,ENSC1001,1,6,"demonstrate improved teamwork skills including the development of a cooperative relationship with peers and experts in order to obtain information and assistance when needed, to become aware of distributed expertise/coordination, to develop the ability to work well in multidisciplinary and multicultural teams and understand the role as team leader and player, and to manage effectively with dysfunctional teams and resolve conflicts",2,Good
+68,ENSC1001,1,6,"demonstrate improved project management skills including the ability to plan projects efficiently and effectively, as well as time management",3,Needs Revision
+68,ENSC1001,1,6,"demonstrate improved enquiry skills including the ability to critique the historical function of engineering and its role in society, to appreciate and critique common ways of thinking, researching and practicing engineering as well as common modes of discourse",4,Needs Revision
+68,ENSC1001,1,6,"demonstrate improved literacy skills including the ability to source, critique, assess reliability of, and potential bias of, information from a variety of sources and properly reference these",5,Needs Revision
+68,ENSC1001,1,6,demonstrate enhanced creative thinking and appreciate the barriers to creative thought,6,Needs Revision
+68,ENSC1001,1,6,"demonstrate an improved ability to critique, analyse the risk and synthesise data related to environmental, legal, ethical, health and safety impacts of engineering",7,Good
+68,ENSC1001,1,6,"demonstrate sensitivity and inclusivity towards cultural and gender diversity especially in relation to Indigenous knowledge, values and culture",8,Good
+68,ENSC1001,1,6,demonstrate a deeper understanding of sustainability including the ability to apply that understanding throughout a project life cycle,9,Needs Revision
+68,ENSC1001,1,6,"demonstrate a deeper understanding of the environmental, social and economic context in which engineering is practised",10,Needs Revision
+68,ENSC1001,1,6,"recognise and diagnose some of the common failure modes of tools, components, structures and materials",11,Good
+68,ENSC1001,1,6,"describe the difference between ill-structured and well-structured engineering problems and demonstrate the ability to frame an ill-structured design problem in terms of functions, objectives and constraints",12,Good
+68,ENSC1001,1,6,identify critical design parameters and understand their use in guiding design decisions,13,Good
+68,ENSC1001,1,6,utilise a systematic method for qualitatively evaluating a range of alternative design candidate solutions,14,Needs Revision
+69,ENSC1002,1,6,"explain how interatomic bonding, geometrical atomic arrangements and atomic defects dictate important properties of solid materials.",1,Good
+69,ENSC1002,1,6,"describe common classes of engineering materials and their general chemical, physical and mechanical properties.",2,Good
+69,ENSC1002,1,6,"describe various mechanical properties, their effect on materials performance, and how they are measured.",3,Good
+69,ENSC1002,1,6,describe common forms of corrosion and their common mitigation strategies.,4,Good
+69,ENSC1002,1,6,draw free body diagrams of simple structures under different loading and support conditions,5,Good
+69,ENSC1002,1,6,apply Newton's first and third laws to analyse static equilibrium of simple systems,6,Good
+69,ENSC1002,1,6,"calculate axial, shear and bending stress in simple structures and apply this information to assess strength of beams and bars",7,Good
+69,ENSC1002,1,6,analyse 2D truss structures using the method of sections and the method of joints.,8,Good
+69,ENSC1002,1,6,"articulate technical concepts clearly and concisely in oral, written and visual forms.",9,Needs Revision
+69,ENSC1002,1,6,work effectively in a team and take responsibility for team outcomes.,10,Needs Revision
+70,ENSC2002,2,6,apply the ideal gas equation and explain its limitations,1,Good
+70,ENSC2002,2,6,define various thermodynamic properties and determine values using thermodynamic property tables,2,Good
+70,ENSC2002,2,6,"explain what interconversion of energy means, and calculate the extraction of heat and work from closed and open systems and their corresponding efficiencies",3,Good
+70,ENSC2002,2,6,solve simple problems involving thermodynamic cycles for power and refrigeration,4,Good
+70,ENSC2002,2,6,analyse electrical circuits for voltage/current and power generation/absorption behaviour,5,Needs Revision
+70,ENSC2002,2,6,analyse simple circuits involving capacitors and inductors using phasors and impedance models,6,Needs Revision
+70,ENSC2002,2,6,"explain and apply the basic principles of AC, single phase, and three-phase power",7,Good
+70,ENSC2002,2,6,"explain the basic principles of electromagnetism and apply these to generators, motors and transformers",8,Good
+70,ENSC2002,2,6,"communicate working clearly and concisely in oral, written and visual forms",9,Needs Revision
+70,ENSC2002,2,6,work effectively in a team and take responsibility for team outcomes,10,Needs Revision
+71,ENSC2001,2,6,define a suitable system and system boundary to allow engineering problems to be solved,1,Good
+71,ENSC2001,2,6,articulate the role of each component of a system in relation to the whole,2,Good
+71,ENSC2001,2,6,make appropriate assumptions to develop a system model,3,Could Improve
+71,ENSC2001,2,6,"draw schematics and free body diagrams to represent a model, and select a suitable reference frame and time scale to analyse behaviour",4,Needs Revision
+71,ENSC2001,2,6,"apply conservation laws and accounting principles to simple electrical, fluid and mechanical systems",5,Good
+71,ENSC2001,2,6,evaluate differences between predicted and measured behaviour,6,Needs Revision
+71,ENSC2001,2,6,use discourse conventions relevant to the discipline,7,Could Improve
+71,ENSC2001,2,6,locate and evaluate technical literature,8,Needs Revision
+71,ENSC2001,2,6,"communicate working clearly and concisely in oral, written and visual forms",9,Good
+71,ENSC2001,2,6,work effectively in a team and take responsibility for team outcomes,10,Needs Revision
+72,CITS2401,2,6,"devise and produce graphs and visualisations of numerical data
+",1,Could Improve
+72,CITS2401,2,6,analyse data and hypotheses,2,Good
+72,CITS2401,2,6,demonstrate strong programming skills,3,Good
+72,CITS2401,2,6,manage data using spreadsheet applications,4,Good
+72,CITS2401,2,6,"understand the computational model, limitations and uncertainty",5,Good
+72,CITS2401,2,6,"devise and implement computational models and simple numerical methods in a modern programming language
+",6,Good
+73,ENSC3014,3,6,"demonstrate how the evolution of electronic device technology has transformed industries such as energy, communications, manufacturing and medicine",1,Good
+73,ENSC3014,3,6,"relate carrier transport phenomena (scattering, thermal velocity, drift, diffusion) and band structure (conductors, semiconductors and insulators) to doping, conductive properties, and electron and hole currents",2,Good
+73,ENSC3014,3,6,"use Fermi-Dirac statistics (electron and hole populations), continuity equation (non-equilibrium carrier distributions), electrostatics and the depletion approximation to derive current-voltage characteristics of transistors and diodes",3,Needs Revision
+73,ENSC3014,3,6,model physical characteristics of a transistor as an electric circuit,4,Good
+73,ENSC3014,3,6,"identify and explain experiment aims, methodology and outcomes orally and in a written report",5,Good
+73,ENSC3014,3,6,"demonstrate an ability to participate constructively, via meaningful contribution and respect for others' contributions, in team- or partner-based activities",6,Good
+74,ENSC3015,3,6,demonstrate an ability to work in a professional engineering capacity,1,Good
+74,ENSC3015,3,6,apply time-domain concepts and methods of analysis—impulse response and convolution to signals and systems,2,Good
+74,ENSC3015,3,6,"apply frequency-domain concepts and methods of analysis—Laplace, Z, and Fourier transforms to signals and systems",3,Good
+74,ENSC3015,3,6,model complex systems using block diagrams,4,Good
+74,ENSC3015,3,6,analyse sampling and reconstruction of signals,5,Good
+74,ENSC3015,3,6,apply simulation tools to predict time and frequency domain behaviour of systems,6,Good
+75,ENSC3016,3,6,demonstrate an ability to work effectively in laboratory teams,1,Good
+75,ENSC3016,3,6,analyse and compare two basic principles (generation of EMF and torque) that govern the electromagnetic energy conversion,2,Needs Revision
+75,ENSC3016,3,6,"develop equivalent circuits for DC machines, transformers, induction and synchronous machines",3,Needs Revision
+75,ENSC3016,3,6,"develop phasor diagrams for transformers, induction and synchronous machines",4,Needs Revision
+75,ENSC3016,3,6,"using equivalent circuits, analyse and assess the performance (regulation, losses and efficiency) of DC machines, transformers, induction and synchronous machines",5,Good
+75,ENSC3016,3,6,"differentiate between motor and generator operations for DC, induction and synchronous machines",6,Good
+75,ENSC3016,3,6,analyse torque-speed characteristics to develop speed control techniques for DC and induction motors,7,Good
+75,ENSC3016,3,6,develop transmission line parameters and power system representation,8,Good
+75,ENSC3016,3,6,explain the working of special purpose electrical machines including single phase induction motors,9,Good
+76,ENSC3017,3,6,"analyse circuits using network reduction techniques, superposition, and s-domain analysis",1,Good
+76,ENSC3017,3,6,"analyse circuits comprising non-linear elements such as transistors, using the concepts of load lines, operation points and small-signal analysis",2,Good
+76,ENSC3017,3,6,apply principles of amplifier design and identify their benefits and limitations,3,Good
+76,ENSC3017,3,6,employ operational amplifiers to process analog signals,4,Good
+76,ENSC3017,3,6,explain digital encoding of information and its associated benefits/limitations,5,Good
+76,ENSC3017,3,6,apply Boolean Algebra to describe the function of a given digital circuit,6,Good
+76,ENSC3017,3,6,implement a given Boolean function using MOSFET transistors as building blocks,7,Good
+76,ENSC3017,3,6,build memory elements such as latches and flip-flops,8,Needs Revision
+76,ENSC3017,3,6,construct simple electronic analog/digital circuits and analyse their performance,9,Good
+76,ENSC3017,3,6,work effectively as part of a team and communicate results in a concise technical report,10,Needs Revision
+77,ENSC3009,3,6,write concise technical reports,1,Good
+77,ENSC3009,3,6,apply critical thinking to assignments and laboratory work,2,Could Improve
+77,ENSC3009,3,6,use interpersonal skills when working in teams,3,Could Improve
+77,ENSC3009,3,6,identify the role of geotechnical engineering in the civil engineering design process,4,Needs Revision
+77,ENSC3009,3,6,apply geotechnical design principles in civil engineering design,5,Good
+77,ENSC3009,3,6,identify soil properties of compressibility and strength for soil foundation design,6,Good
+77,ENSC3009,3,6,perform soil laboratory tests on soil properties for foundation design,7,Good
+77,ENSC3009,3,6,assess the pros and cons of soil laboratory testing and in situ soil field tests,8,Needs Revision
+77,ENSC3009,3,6,work in teams,9,Could Improve
+78,ENSC3007,3,6,"demonstrate writing that is clear, well-structured and appropriate to audience and purpose.",1,Good
+78,ENSC3007,3,6,demonstrate critical information literacy skills that are appropriate to context and question accepted wisdom.,2,Good
+78,ENSC3007,3,6,demonstrate interpersonal skills that are sensitive and appropriate to the context.,3,Could Improve
+78,ENSC3007,3,6,appreciate the transport properties of materials important to thermal engineering.,4,Could Improve
+78,ENSC3007,3,6,analyse steady state thermal conduction and convection problems.,5,Good
+78,ENSC3007,3,6,analyse engineering problems involving finned or extended surface areas,6,Good
+78,ENSC3007,3,6,"appreciate the similarity between momentum, convective heat and convective mass transfers and appreciate the importance of dimensionless numbers in heat and mass transfer analyses.",7,Needs Revision
+78,ENSC3007,3,6,estimate the convective heat and/or mass transfer coefficients for flows over an external surface and flows within conduits.,8,Good
+78,ENSC3007,3,6,appreciate the radiative and/or optical properties of materials relevant to thermal engineering.,9,Good
+78,ENSC3007,3,6,analyse radiative heat transfer problems.,10,Good
+78,ENSC3007,3,6,appreciate the similarity between conduction heat transfer and diffusive mass transfer under many situations and analyse diffusive mass transfer problems.,11,Needs Revision
+78,ENSC3007,3,6,"think logically, understand the consequences of assumptions made during analyses and synthesise solutions to new problems.",12,Needs Revision
+78,ENSC3007,3,6,recognise the social and environmental context of the core subject materials.,13,Needs Revision
+79,ENSC3018,3,6,write concise technical reports,1,Needs Revision
+79,ENSC3018,3,6,work in a team,2,Could Improve
+79,ENSC3018,3,6,prepare the primary chemical process design documentation,3,Good
+79,ENSC3018,3,6,apply Pinch Technology for energy use minimisation,4,Good
+79,ENSC3018,3,6,consider minimum vapour traffic in distillation column sequencing,5,Needs Revision
+79,ENSC3018,3,6,understand multicomponent distillation columns,6,Needs Revision
+79,ENSC3018,3,6,apply design skills associated with membrane separation technology,7,Good
+79,ENSC3018,3,6,appreciate the different approaches available for chemical process synthesis and design,8,Needs Revision
+79,ENSC3018,3,6,conduct quantitative environmental impact estimations based on gaseous emissions,9,Good
+79,ENSC3018,3,6,appreciate the safety and economic constraints on process design,10,Good
+79,ENSC3018,3,6,conduct preliminary cost estimations for process design,11,Good
+79,ENSC3018,3,6,develop strategies for dealing with open-ended problems,12,Needs Revision
+79,ENSC3018,3,6,develop strategies for dealing with large multicomponent projects,13,Needs Revision
+80,ENSC3011,3,6,apply critical thinking and information literacy (locate and evaluate sources of information for assignments),1,Good
+80,ENSC3011,3,6,produce high quality written communications,2,Needs Revision
+80,ENSC3011,3,6,apply knowledge of basic science and engineering fundamentals,3,Good
+80,ENSC3011,3,6,distinguish the fundamental technologies employed in the common methods of surface and underground mining,4,Good
+80,ENSC3011,3,6,determine appropriate equipment (in size and quantity) to apply to an excavation scenario,5,Good
+80,ENSC3011,3,6,"explain the multidisciplinary nature of mining engineering, and the various roles of engineers within these operations",6,Good
+81,ENSC3012,3,6,appreciate why statistical analysis is crucial in the study of natural systems,1,Good
+81,ENSC3012,3,6,use statistics to determine if signals observed in the field are significant,2,Good
+81,ENSC3012,3,6,quantitatively describe the strength of a relationship between two variables measured in the field,3,Good
+81,ENSC3012,3,6,interpret temporal signals in data to aid understanding of forcing processes,4,Good
+81,ENSC3012,3,6,work closely with a team of peers to arrive at a superior engineering solution,5,Could Improve
+81,ENSC3012,3,6,clearly and concisely communicate the results of a project in oral and written forms,6,Good
+82,STAT2061,2,6,nan,1,Could Improve
+83,MATH3021,3,6,understand the important properties of nonlinear dynamical systems,1,Needs Revision
+83,MATH3021,3,6,understand the origin and onset of chaotic dynamics in both maps and flows,2,Needs Revision
+83,MATH3021,3,6,describe the key concepts of universality,3,Good
+84,STAT3061,3,6,apply statistical reasoning to analyse the essential structure of problems involving random processes,1,Good
+84,STAT3061,3,6,extend their knowledge of mathematical and statistical techniques and adapt known solutions to different situations,2,Good
+84,STAT3061,3,6,communicate effectively with others,3,Needs Revision
+84,STAT3061,3,6,present mathematical results in a logical and coherent fashion,4,Good
+84,STAT3061,3,6,"undertake continuous learning, aware that an understanding of fundamentals is necessary for effective application",5,Could Improve
+84,STAT3061,3,6,use symbolic mathematics applications to compute numerical attributes of specific Markov chain/process models,6,Good
+85,MATH3032,3,6,demonstrate intuition and skills in topology and differential geometry,1,Good
+85,MATH3032,3,6,understand how these geometry techniques can be applied to mechanics and physics,2,Good
+86,MATH3022,3,6,"appreciate the important characteristics of biological, physical and industrial problems that are described by partial differential equations",1,Needs Revision
+86,MATH3022,3,6,"model and solve biological, physical and industrial problems through the use of partial differential equations",2,Good
+87,STAT3062,3,6,demonstrate knowledge of fundamental concepts in probability and statistical inference,1,Good
+87,STAT3062,3,6,apply probability and statistical models to real-world problems,2,Good
+87,STAT3062,3,6,recognise the appropriate statistical techniques for use in particular real-world settings and correctly apply these techniques for data analysis,3,Good
+87,STAT3062,3,6,present relevant mathematical results in a logical and coherent manner,4,Good
+88,MATH3031,3,6,demonstrate skills and insights in a wide range of algebraic topics with important applications,1,Good
+89,MATH1601,1,6,apply knowledge to real-life problems,1,Needs Revision
+89,MATH1601,1,6,develop and analyse an academic argument.,2,Needs Revision
+89,MATH1601,1,6,awareness of contributions of other cultures.,3,Good
+89,MATH1601,1,6,understanding mathematics as a model for describing the real world.,4,Good
+90,MGMT2341,2,6,identify the key external and internal factors that influence the management of international organisations,1,Good
+90,MGMT2341,2,6,demonstrate how major management functions and skills vary as a result of managing organisations internationally,2,Good
+90,MGMT2341,2,6,describe why and how ethics and corporate social responsibility vary when managing organisations internationally,3,Good
+90,MGMT2341,2,6,describe the contribution that teamwork and virtuality have in international project management,4,Good
+90,MGMT2341,2,6,demonstrate writing and oral communication skills,5,Needs Revision
+91,ANIM3320,3,6,understand neurobiological principles in a range of animal species,1,Good
+91,ANIM3320,3,6,"learn to present, analyse and interpret original data collected in the laboratory",2,Good
+91,ANIM3320,3,6,engage with conventions of scientific publications,3,Good
+91,ANIM3320,3,6,analyse and present large and complex datasets using R,4,Good
+92,ACCT2242,2,6,identify and explain the roles and components of AIS,1,Good
+92,ACCT2242,2,6,describe the role of an internal control system in maintaining data integrity and recommend internal control improvements to protect key business processes,2,Good
+92,ACCT2242,2,6,critically evaluate business processes and system documentation,3,Needs Revision
+92,ACCT2242,2,6,demonstrate basic data analytics and visualisation techniques that enhances the efficiency and effectiveness of communication,4,Good
+92,ACCT2242,2,6,explain the impact of ICT on current and emerging accounting practices,5,Good
+92,ACCT2242,2,6,develop competencies to work effectively in teams to resolve ICT issues.,6,Good
+93,STAT1400,1,6,appreciate the power of statistical concepts in the interpretation of data,1,Good
+93,STAT1400,1,6,demonstrate knowledge of fundamental statistical tools and computer packages for applying these tools,2,Good
+93,STAT1400,1,6,"recognise the appropriate statistical techniques for use in particular real-world settings, and correctly apply these techniques for data analysis",3,Good
+93,STAT1400,1,6,effectively communicate the results of these analyses,4,Good
+93,STAT1400,1,6,undertake continuous learning and realise that understanding the fundamentals is necessary for effective application,5,Good
+94,STAT2402,2,6,demonstrate their knowledge of fundamental concepts in probability and statistics,1,Good
+94,STAT2402,2,6,apply statistical models to real-world problems for data that are not normally distributed,2,Good
+94,STAT2402,2,6,use computer package(s) for fitting such models to data,3,Good
+94,STAT2402,2,6,communicate the results of these analyses effectively to non-statisticians,4,Good
+95,STAT2401,2,6,demonstrate skills in the statistical analysis of data from designed experiments and observational studies,1,Good
+95,STAT2401,2,6,apply the fundamentals of designing random experiments in different situations,2,Good
+95,STAT2401,2,6,articulate the use of linear models,3,Needs Revision
+95,STAT2401,2,6,develop and apply linear models for data from real-world experiments and studies,4,Good
+95,STAT2401,2,6,proficiently use a statistical computer package for linear modelling,5,Good
+96,STAT3403,3,6,design surveys for different situations arising in different disciplines,1,Good
+96,STAT3403,3,6,analyse data from surveys,2,Good
+96,STAT3403,3,6,communicate the results effectively,3,Needs Revision
+97,STAT3402,3,6,demonstrate and reflect on a range of professional reporting and writing styles and skills used by quantitative researchers,1,Good
+97,STAT3402,3,6,demonstrate and reflect on a range of professional speaking and presentation skills used by quantitative researchers,2,Good
+97,STAT3402,3,6,"demonstrate and reflect on a range of professional critical information literacy concepts and skills expected of quantitative researchers—in particular, to access and critically appraise information from various sources, including formal statistical content in journal articles and media publications",3,Good
+97,STAT3402,3,6,demonstrate and reflect on a range of professional interpersonal concepts and skills required of a successful statistical consultant,4,Good
+97,STAT3402,3,6,effectively analyse data and communicate statistical results clearly to a non-technical audience by both written and oral presentations,5,Good
+97,STAT3402,3,6,demonstrate statistical problem-solving skills in addressing a scientific enquiry from a client,6,Good
+98,STAT3404,3,6,perform elementary probability calculations,1,Good
+98,STAT3404,3,6,appreciate statistical reasoning and its role in exploring data (3) understand the need for appropriate statistical models and valid statistical reasoning,2,Needs Revision
+98,STAT3404,3,6,perform relevant statistical calculations using appropriate statistical software,3,Good
+98,STAT3404,3,6,understand the need for and role of statistical methods in scientific research,4,Good
+98,STAT3404,3,6,"acquire further related knowledge and skills by internet and library searches, and reading",5,Good
+99,STAT3401,3,6,understand statistical models for complex data,1,Needs Revision
+99,STAT3401,3,6,fit models to their data using modern statistical techniques and packages,2,Good
+99,STAT3401,3,6,critically assess fitted models,3,Good
+99,STAT3401,3,6,interpret and communicate results of analysis of complex correlated data,4,Good
+100,MGMT3308,3,6,demonstrate an understanding of supply chain issues,1,Good
+100,MGMT3308,3,6,"analyse management trade-off business decisions concerning supply relationships, cost, customer service and information control which impact the supply chain",2,Good
+100,MGMT3308,3,6,explain strategies that help improve supply chain operations,3,Good

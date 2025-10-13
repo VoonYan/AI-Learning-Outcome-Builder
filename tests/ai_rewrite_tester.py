@@ -9,11 +9,10 @@ from google.genai import types
 import os
 from datetime import datetime
 
-# Import your existing functions
 import sys
-sys.path.append('app')  # Adjust path as needed
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from ai_testing_evaluate import build_prompt_test, run_eval_test
-from ai_handler import ConfigManager
+from app.ai_handler import ConfigManager
 
 class AIRewriteTester:
     def __init__(self, csv_path: str, api_key: str = None, config_path: str = 'app/AIConfig.json'):

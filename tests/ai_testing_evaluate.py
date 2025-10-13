@@ -2,7 +2,9 @@
 
 import json
 from typing import List
-from ai_handler import ConfigManager
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from app.ai_handler import ConfigManager
 
 import os, json
 import google.genai as genai

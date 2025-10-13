@@ -1,0 +1,66 @@
+﻿unit id,unitcode,level,description,credit points,position,flag
+4,EMPL3301,3,describe the core debates over the meaning of the term 'globalisation',6,1,GOOD
+4,EMPL3301,3,explain the relationship between globalisation and labour market and workplace restructuring,6,2,GOOD
+4,EMPL3301,3,identify organisations and institutions central to globalisation and their impact on work,6,3,NEEDS_REVISION
+4,EMPL3301,3,gain a critical appreciation of how globalisation reshapes the experience of work and worker identity,6,4,NEEDS_REVISION
+4,EMPL3301,3,develop a critical understanding of individual and collective responses to the impact of globalisation on work,6,5,GOOD
+4,EMPL3301,3,"demonstrate enhanced written, oral and information literacy skills through participation in class discussions, and through the preparation of an individual essay and written responses in the final examination",6,6,GOOD
+11,PSYC1101,1,"explain the nature of some important psychological processes, how they are measured, and their relation to brain function",6,1,GOOD
+11,PSYC1101,1,identify the basic principles of psychological measurement and experimental design,6,2,GOOD
+11,PSYC1101,1,describe data relevant to psychological questions and draw appropriate inferences from such data,6,3,GOOD
+11,PSYC1101,1,write research reports relevant to psychological issues in the format appropriate for psychological science (American Psychological Association style),6,4,NEEDS_REVISION
+11,PSYC1101,1,discuss and use the language of psychology appropriately,6,5,NEEDS_REVISION
+92,ACCT2242,2,identify and explain the roles and components of AIS,6,1,NEEDS_REVISION
+92,ACCT2242,2,describe the role of an internal control system in maintaining data integrity and recommend internal control improvements to protect key business processes,6,2,COULD_IMPROVE
+92,ACCT2242,2,critically evaluate business processes and system documentation,6,3,GOOD
+92,ACCT2242,2,demonstrate basic data analytics and visualisation techniques that enhances the efficiency and effectiveness of communication,6,4,GOOD
+92,ACCT2242,2,explain the impact of ICT on current and emerging accounting practices,6,5,GOOD
+92,ACCT2242,2,develop competencies to work effectively in teams to resolve ICT issues.,6,6,NEEDS_REVISION
+417,LAWS3214,3,explain the origins of the SDGs and their role in achieving global UN goals;,6,1,NEEDS_REVISION
+417,LAWS3214,3,synthesize knowledge of the 17 SDGs and describe their relationship with international law and policy;,6,2,NEEDS_REVISION
+417,LAWS3214,3,assess the significance and effectiveness of the SDGs at the global and national level;,6,3,GOOD
+417,LAWS3214,3,demonstrate advanced oral and written communication skills ;,6,4,GOOD
+417,LAWS3214,3,develop and apply skills in independent scholarly research,6,5,GOOD
+468,CITS2211,2,demonstrate critical thinking and information literacy,6,1,NEEDS_REVISION
+468,CITS2211,2,"demonstrate a familiarity with basic set theory, relations, functions, predicate logic, correctness proofs, finite state automata and automata theory as tools used in computer science and software engineering",6,2,NEEDS_REVISION
+468,CITS2211,2,"identify, abstract and analyse problems in computer science and software engineering using the mathematical models",6,3,NEEDS_REVISION
+468,CITS2211,2,apply logical reasoning to problems in software engineering,6,4,GOOD
+749,PHIL1001,1,evaluate arguments in philosophical texts,6,1,GOOD
+749,PHIL1001,1,independently construct arguments for philosophical positions,6,2,GOOD
+749,PHIL1001,1,apply the methodologies of contemporary philosophy,6,3,GOOD
+749,PHIL1001,1,evaluate assumptions underpinning ethical theories,6,4,GOOD
+749,PHIL1001,1,demonstrate sound research skills and written and oral communication skills,6,5,GOOD
+749,PHIL1001,1,demonstrate an understanding of important historical and contemporary philosophical ideas in moral philosophy,6,6,NEEDS_REVISION
+749,PHIL1001,1,articulate a number of contemporary ethical problems arising out of the development of digital technologies,6,7,NEEDS_REVISION
+749,PHIL1001,1,"demonstrate their understanding of, and evaluate, several influential ethical theories",6,8,NEEDS_REVISION
+749,PHIL1001,1,apply the ethical theories studied to the problems arising out of the development of digital technologies,6,9,GOOD
+749,PHIL1001,1,"apply ethical theories to, and reason effectively about, new ethical questions",6,10,GOOD
+1261,ELEC5505,5,demonstrate professional engineering skills and abilities when working in teams,6,1,NEEDS_REVISION
+1261,ELEC5505,5,"demonstrate the ability to model power systems components (transmission lines, transformers, generators and loads)",6,2,NEEDS_REVISION
+1261,ELEC5505,5,"analyse the power flow of a simple interconnected power system with multiple sources and loads using Gauss-Siedal, Newton Raphson, and decoupled power flow methods",6,3,NEEDS_REVISION
+1261,ELEC5505,5,analyse the impact of short-circuit faults on the power network and make design changes to the network to control the fault currents,6,4,GOOD
+1261,ELEC5505,5,analyse various protection schemes for power transmission and distribution systems,6,5,GOOD
+1261,ELEC5505,5,analyse the techniques for control of voltage and frequency of interconnected power systems,6,6,GOOD
+1261,ELEC5505,5,Identify potential hazards and describe safety measures,6,7,GOOD
+5746,PHYS2003,2,"analyse the concepts and physical principles related to magnetism, the foundations of quantum mechanics and electronic properties of materials;",6,1,GOOD
+5746,PHYS2003,2,"communicate ideas, both orally and written, relating to related to magnetism, the foundations of quantum mechanics and electronic devices;",6,2,COULD_IMPROVE
+5746,PHYS2003,2,"solve problems in a range of realistic situations relating to magnetism, the foundations of quantum mechanics and electronic properties of materials",6,3,GOOD
+5746,PHYS2003,2,execute experiments relevant to magnetism and electronic devices; and,6,4,GOOD
+5746,PHYS2003,2,evaluate the results of an experiment to magnetism and electronic devices.,6,5,NEEDS_REVISION
+5771,DENT3005,3,"explain the clinical signs, symptoms and pathogenesis of systemic conditions relevant to dental practice",6,1,GOOD
+5771,DENT3005,3,"discuss the pathogenicity and virulence of micro-organisms, the sources of infection and routes of transmission, and the role of vaccines in infectious (communicable) diseases",6,2,GOOD
+5771,DENT3005,3,"apply the principles of infection prevention and control in dental practice, including when treating patients with communicable diseases",6,3,GOOD
+5771,DENT3005,3,explain the measures required to manage systemic medical conditions during dental treatment,6,4,COULD_IMPROVE
+5771,DENT3005,3,classify the most common medical emergencies in dental practice and their management,6,5,GOOD
+5771,DENT3005,3,"explain the principles of drug delivery, drug metabolism and associated pharmacological aspects as they relate to dental practice",6,6,GOOD
+5771,DENT3005,3,explain how various drugs can affect dental practice and how these situations can be managed,6,7,GOOD
+5771,DENT3005,3,"outline the common medications used in dental practice including their indications, contra-indications and management of adverse reactions",6,8,GOOD
+5771,DENT3005,3,outline the regulatory requirements and demonstrate how to write a prescription,6,9,GOOD
+5771,DENT3005,3,display professional behaviour in the educational and clinical setting,6,10,GOOD
+5815,ELEC3016,3,demonstrate an ability to work effectively in laboratory teams,6,1,COULD_IMPROVE
+5815,ELEC3016,3,analyse two basic principles (generation of EMF and torque) that govern electromagnetic energy conversion and differentiate between motor and generator operation,6,2,GOOD
+5815,ELEC3016,3,"analyse the performance (regulation, losses and efficiency) of DC machines, transformers, induction and synchronous machines based on the equivalent circuits",6,3,GOOD
+5815,ELEC3016,3,explain the working principle of transformers and AC electrical machines by using phasor diagrams,6,4,NEEDS_REVISION
+5815,ELEC3016,3,analyse torque-speed characteristics to develop speed control techniques for DC and induction motors,6,5,GOOD
+5815,ELEC3016,3,develop transmission line parameters and power system representation,6,6,GOOD
+5815,ELEC3016,3,"demonstrate compliance with work, health and safety regulations, codes and standards when operating electrical machines",6,7,GOOD
